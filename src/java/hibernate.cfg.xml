@@ -4,8 +4,8 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://198.38.82.203:3306/asmine_main?user=asmine_user&amp;password=aS3421</property>
-        
+        <property name="hibernate.connection.url">jdbc:mysql://IPADRESS:3306/asmine_main?user=USERNAME&amp;password=PASSWORD</property>
+        z
         
         <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
         <property name="connection.autoReconnect">true</property>
