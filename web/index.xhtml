@@ -220,8 +220,15 @@
                                     </p:graphicImage>
                                 </a>
                                 <h3>#{product.type.brand.brandName}</h3>
-                                <p>#{product.type.typeName}</p>
-                                <p>#{product.productPrice} TL</p>
+                                <p>
+                                    <h:outputText value="#{product.type.typeName}           " />
+                                    <h:outputText style="background-color: red; color: white; font-weight: bold;" value="% #{product.discount} İndirim " 
+                                                  rendered="#{product.discount gt 30}"/>
+                                </p>
+                                <p>
+                                    <h:outputText style="text-decoration: line-through;" value="#{product.productFirstPrice} TL" />
+                                    <h:outputText style=" font-size: x-large; color: orange;" value="    #{product.productPrice} TL" />
+                                </p>
                                 <ul class="actions">
                                     <li><a href="#" class="button">Detay</a></li>
                                 </ul>
