@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head>
+        <title>Asmine Duru</title>
+        <link href="../assets/css/style.css" rel="stylesheet" type="text/css"/>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:messages id="msg" autoUpdate="true" closable="true"/>
+            <p:dataTable value="#{addProductMB.productList}" var="product" id="table" 
+                         emptyMessage="Liste boştur.">
+                <f:facet name="header" id="hee">
+                    <div style="text-align: center">  Ürün Listesi</div>
+                    <div style="text-align: right">
+                        <p:commandButton value="Yeni Ürün Ekle" icon="ui-icon-plusthick" 
+                                         action="#{addProductMB.clearAddProduct}"
+                                         oncomplete="PF('dlg').show();" update="ekleForm">
+                            <p:resetInput target="ekleForm" />
+                        </p:commandButton></div>                    
+                </f:facet>
+                <p:column headerText="Ürün Adı" style="text-align: center; width: 100px">
+                    <p:outputLabel value="#{product.productName}" />
+                </p:column>
+                <p:column headerText="Ürün Fiyatı" style="text-align: center">                   
+                    <p:outputLabel value="#{product.productPrice}" />
+                </p:column>
+                <p:column headerText="Ürün İlk Fiyatı" style="text-align: center">                   
+                    <p:outputLabel value="#{product.productFirstPrice}" />
+                </p:column> 
+                <p:column headerText="Kullanım Durumu" style="text-align: center">                   
+                    <p:outputLabel value="#{product.usageStatus}" />
+                </p:column>
+                <p:column headerText="Ürün Kodu" style="text-align: center">                   
+                    <p:outputLabel value="#{product.productCode}" />
+                </p:column>
+                 <p:column headerText="Sol Tarafta Görünsün" style="text-align: center">                   
+                     <p:selectBooleanCheckbox value="#{product.showLeftSide}" disabled="true"/>
+                </p:column>
+                <p:column headerText="Ana Sayfada Görünsün" style="text-align: center">                   
+                    <p:selectBooleanCheckbox value="#{product.showMainPage}" disabled="true"/>
+                </p:column>
+                
+                <p:column headerText="Fotoğraf" style="text-align: center; width: 80px;">
+                    <center>
+                        <p:graphicImage id="myImage" value="#{imageStreamerMB.image}" 
+                                        height="100" alt="Resim bulunamadı.">
+                            <f:param name="imageId" value="#{product.imageList.get(0).imageId}" />
+                        </p:graphicImage>
+                    </center>
+                </p:column>
+                <p:column>
+                    <center>
+                        <p:commandLink action="#{addProductMB.findProductForUpdate}" 
+                                       update="ekleForm" id="duzenle">
+                            <p:graphicImage value="/images/duzenle.png" />
+                            <f:setPropertyActionListener value="#{product}" 
+                                                         target="#{addProductMB.selectedProduct}" />
+                            <p:resetInput target="ekleForm" />
+                        </p:commandLink>
+                        <p:tooltip id="toolTipDuzenle" for="duzenle" value="Düzenle" trackMouse="true"/>
+                        <p:spacer width="10" />
+                        <p:commandLink onclick="PF('sil').show();" id="sil">
+                            <p:graphicImage value="/images/delete.png" />
+                            <f:setPropertyActionListener value="#{c}" 
+                                                         target="#{addProductMB.selectedProduct}" />
+                        </p:commandLink>
+                        <p:tooltip id="toolTipSil" for="sil" value="Sil" trackMouse="true"/>
+                    </center>
+                </p:column>
+                <f:facet name="footer">                    
+                    Toplam ürün sayısı: #{fn:length(addProductMB.productList)}
+                </f:facet>
+            </p:dataTable>
+            <center>
+                 
+
+            </center>
+            <br/>
+        </h:form>
+        
+        <p:dialog header="Ürün Ekle" widgetVar="dlg" id="dialog">
+            <h:form id="ekleForm">
+                <p:messages id="msg" autoUpdate="true" closable="true"/>
+                <center>
+                    <p:panelGrid columns="2" id="upload">
+                    <h:outputText value="Marka: " />
+                    <p:selectOneMenu required="true" value="#{addProductMB.brand}" converter="#{brandConverter}"
+                                     requiredMessage="Lütfen kullanici seçiniz.">
+                        <p:ajax listener="#{addProductMB.findTypeList}" update="type" />
+                        <f:selectItem itemLabel="Seçiniz.." itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{addProductMB.brandList}" var="brand"
+                                       itemLabel="#{brand.brandName}" itemValue="#{brand}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="type" value="Çeşit: " />
+                    <p:selectOneMenu id="type" value="#{addProductMB.type}" 
+                                     converter="#{typeConverter}">
+                        <f:selectItem itemLabel="Seçiniz.." itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{addProductMB.typeList}" var="type"
+                                       itemLabel="#{type.typeName}" itemValue="#{type}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Ürün Adı: " style="display: block; width: 200px;"/>
+                    <p:inputText value="#{addProductMB.selectedProduct.productName}" required="true" 
+                                 requiredMessage="Lütfen ürün adı giriniz."
+                                 style="text-transform: uppercase;"/>
+                    <h:outputText value="Ürün Fiyatı: " />
+                    <p:inputText value="#{addProductMB.selectedProduct.productPrice}" required="true" 
+                                 requiredMessage="Lütfen ürün fiyatı giriniz."
+                                 style="text-transform: uppercase;"/>
+                    <h:outputText value="Ürün İlk Fiyatı: " />
+                    <p:inputText value="#{addProductMB.selectedProduct.productFirstPrice}" required="true" 
+                                 requiredMessage="Lütfen ürün ilk fiyatı giriniz."
+                                 style="text-transform: uppercase;"/>    
+
+                    <p:fileUpload id="choose" label="Resim Seç" previewWidth="50"                                       
+                                      fileUploadListener="#{addProductMB.handleFileUpload}"				
+                                      multiple="false"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" auto="true"
+                                      update="myImage" required="true" mode="advanced"  process=""
+                                      requiredMessage="Lütfen resim yükleyiniz."/>                    
+                    <p:graphicImage id="myImage" value="#{imageStreamerMB.image}" 
+                                        height="100" alt="Resim bulunamadı.">
+                            <f:param name="imageId" value="#{addProductMB.image.imageId}" />
+                        </p:graphicImage>
+                    <h:outputText value="Sol Tarafta Görünsün: " />
+                    <p:selectBooleanCheckbox value="#{addProductMB.selectedProduct.showLeftSide}" />
+                    <h:outputText value="Ana Sayfada Görünsün: " />
+                    <p:selectBooleanCheckbox value="#{addProductMB.selectedProduct.showMainPage}" />
+                </p:panelGrid>
+            </center>
+            <br/>
+              <center>
+                    <p:commandButton id="kaydetButon" update="form:table, ekleForm" value="Kaydet" 
+                                     actionListener="#{addProductMB.saveProduct()}"
+                                     rendered="#{!addProductMB.showUpdate}"/>
+                    <p:commandButton id="guncelleButon" update="form:table, ekleForm" value="Güncelle" 
+                                     actionListener="#{addProductMB.updateProduct()}"
+                                     rendered="#{addProductMB.showUpdate}"/>
+                    <p:commandButton id="kapatButon" value="Kapat" style="margin-left: 10px;"
+                                     actionListener="#{addProductMB.clearAddProduct()}"
+                                     update="form:table, ekleForm" oncomplete="PF('dlg').hide();"
+                                     process="@this"/>
+                </center>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Ürün Sil Onay" widgetVar="sil" resizable="false">
+            <h:form id="silForm">               
+                <p:outputLabel value="Ürünü silmek istediğinize emin misiniz?" />                
+                <br/><br/>
+                <center>
+                    <p:commandButton update="form:table" value="Evet" oncomplete="PF('sil').hide();"
+                                     action="#{addProductMB.delete}"/>
+                    <p:commandButton value="Hayır" style="margin-left: 10px;"
+                                     onclick="PF('sil').hide();"/> 
+                </center>
+            </h:form>
+        </p:dialog>
+
+    </h:body>
+</html>
+
+
+

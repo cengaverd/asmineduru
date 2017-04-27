@@ -1,0 +1,99 @@
+package com.asmineduru.dao;
+
+import com.asmineduru.util.HibernateUtil;
+import java.util.List;
+import org.hibernate.Session;
+
+/**
+ *
+ * @author Erhan
+ */
+public abstract class Dao {
+
+    public void saveObject(Object object) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.save(object);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    public void saveOrUpdateObject(Object object) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.saveOrUpdate(object);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    public void deleteObject(Object object) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.delete(object);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    public void saveObjectList(List<Object> objectList) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            for (Object object : objectList) {
+                session.save(object);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    public void saveOrUpdateObjectList(List<Object> objectList) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            for (Object object : objectList) {
+                session.saveOrUpdate(object);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    public <T> T findObje(Class<T> c, String id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        T result;
+        try {
+            result = c.cast(session.get(c, id));
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+}
