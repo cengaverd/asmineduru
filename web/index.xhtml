@@ -179,16 +179,17 @@
                     <div class="posts">
                         <c:forEach var="product" items="#{mainPageMB.mainPageProductList}" >
                             <article>
-                                <a href="#" class="image">
-                                    <p:graphicImage id="myImage1" value="#{imageStreamerMB.image}" 
+                                <h:link id="ajax" outcome="product" class="image">
+                                    <f:param name="productId" value="#{product.productId}" />
+                                    <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" 
                                                     alt="Resim bulunamadı.">
                                         <f:param name="imageId" value="#{product.imageList.get(0).imageId}" />
                                     </p:graphicImage>
-                                </a>
+                                </h:link>
                                 <h3>#{product.type.brand.brandName}</h3>
                                 <p>
                                     <h:outputText value="#{product.type.typeName}           " />
-                                    <h:outputText style="background-color: red; color: white; font-weight: bold;" value="% #{product.discount} İndirim " 
+                                    <h:outputText style="background-color: deeppink; color: white; font-weight: bold;" value="% #{product.discount} İndirim " 
                                                   rendered="#{product.discount gt 30}"/>
                                 </p>
                                 <p>
@@ -196,7 +197,12 @@
                                     <h:outputText style=" font-size: x-large; color: orange;" value="    #{product.productPrice} TL" />
                                 </p>
                                 <ul class="actions">
-                                    <li><a href="#" class="button">Detay</a></li>
+                                    <li>
+                                        <h:link id="detay" outcome="product" class="button">
+                                            <f:param name="productId" value="#{product.productId}" />
+                                            Detay
+                                        </h:link>
+                                    </li>
                                 </ul>
                             </article>
                         </c:forEach>                                
@@ -236,7 +242,7 @@
                         </c:forEach>                                
                     </div>
                 </section>
-                
+
             </h:form>
         </ui:define>
     </ui:composition>    

@@ -59,9 +59,12 @@
                                         <ul>
                                             <c:forEach var="type" items="#{brand.typeList}" >
                                                 <li>
-                                                    <p:commandLink id="ajax" ajax="false" actionListener="#{mainPageMB.navigateProducts(type)}">
+<!--                                                    <p:commandLink id="ajax" ajax="false" actionListener="#{mainPageMB.navigateProducts(type)}">
                                                         <h:outputText value="#{type.typeName}" />
-                                                    </p:commandLink>
+                                                    </p:commandLink>-->
+                                                    <h:link id="ajax" outcome="products" value="#{type.typeName}">
+                                                        <f:param name="typeId" value="#{type.typeId}" />
+                                                    </h:link>
                                                 </li>                                        
                                             </c:forEach>
                                         </ul>
@@ -79,16 +82,18 @@
                                 <div class="mini-posts">
                                     <center>
                                         <article>
-                                            <a href="#" class="image">
+                                            
+                                            <h:link id="left" outcome="product" class="image">
+                                                <f:param name="productId" value="#{product.productId}" />
                                                 <p:graphicImage id="myImage" value="#{imageStreamerMB.image}" 
                                                                 alt="Resim bulunamadı.">
                                                     <f:param name="imageId" value="#{product.imageList.get(0).imageId}" />
                                                 </p:graphicImage>
-                                            </a>
+                                            </h:link>
                                         </article>
                                         <p>
                                             <h:outputText value="#{product.type.typeName}           " />
-                                            <h:outputText style="background-color: red; color: white; font-weight: bold;" value="% #{product.discount} İndirim "
+                                            <h:outputText style="background-color: deeppink; color: white; font-weight: bold;" value="% #{product.discount} İndirim "
                                                           rendered="#{product.discount gt 30}"/>
                                         </p>
                                         <p>

@@ -42,16 +42,18 @@ public class MainPageMB implements Serializable {
         }
     }
     
-    public void navigateProducts(Type type) {
+    public String navigateProducts(Type type) {
         try {
 
            selectedType=type;
            productList = mainDao.findProductByTypeIdInUsage(type.getTypeId());
            showMainPage=false;
+           
 
         } catch (Exception e) {
             
-        }        
+        }    
+        return "index.xhtml";
     }
 
 ///////////////////// Getter ve Setter ////////////////////////////////////////

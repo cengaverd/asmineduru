@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ViewScoped;
@@ -47,12 +48,16 @@ public class AddProductMB implements Serializable {
     private Product selectedProduct=new Product();
     private boolean showUpdate;
     
+    private List<Image> imageList;
+    private Image selectedImage;
+    
     @PostConstruct
     public void init() {
         try {
 
             brandList = mainDao.findAllBrandInUsage();
             productList = mainDao.findAllProduct();
+            imageList=new ArrayList<>();
 
         } catch (Exception e) {
         }
@@ -60,23 +65,25 @@ public class AddProductMB implements Serializable {
 
     public void handleFileUpload(FileUploadEvent event) throws IOException {
         uploadedFile = event.getFile();
+        image = new Image();
         image.setImageShow(new DefaultStreamedContent(new ByteArrayInputStream(uploadedFile.getContents())));
         image.setOriginImage(uploadedFile.getContents());
         image.setImage(scale(uploadedFile.getContents(), 250, 320));
-        image.setProduct(product);
+        image.setProduct(selectedProduct);
+        image.setUsageStatus(1);
+        imageList.add(image);
     }
 
     public void saveProduct() {
         try {
 
-            product.setType(type);
-            product.setProductCode("MK-001");
-            product.setUsageStatus(1);
-            image.setUsageStatus(1);
+            selectedProduct.setType(type);
+            selectedProduct.setProductCode("MK-001");
+            selectedProduct.setUsageStatus(true);
+            selectedProduct.setImageList(imageList);
 
-            mainDao.saveProductAndImage(product, image);
-            product.getImageList().add(image);
-            productList.add(product);
+            mainDao.saveProductAndImageList(selectedProduct);
+            productList = mainDao.findAllProduct();
             clearAddProduct();
             MessagesController.bilgiVer("Kaydetme işlemi yapıldı.");
             RequestContext context = RequestContext.getCurrentInstance();
@@ -91,12 +98,14 @@ public class AddProductMB implements Serializable {
     public void findProductForUpdate() {
         try {
 
+            imageList=new ArrayList<>();
             showUpdate = true;
             brand=selectedProduct.getType().getBrand();
             typeList = mainDao.findAllTypeByBrand(brand);
             type=selectedProduct.getType();
             brand=type.getBrand();
             image=selectedProduct.getImageList().get(0);
+            imageList.addAll(selectedProduct.getImageList());
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('dlg').show();");
 
@@ -110,7 +119,9 @@ public class AddProductMB implements Serializable {
         try {
             
             selectedProduct.setType(type);
-            mainDao.saveOrUpdateProductAndImage(selectedProduct, image);
+            selectedProduct.getImageList().addAll(imageList);
+            mainDao.saveOrUpdateProductAndImageList(selectedProduct);
+            productList = mainDao.findAllProduct();
             clearAddProduct();
             MessagesController.bilgiVer("Ürün bilgileri güncellenmiştir.");
             RequestContext context = RequestContext.getCurrentInstance();
@@ -163,6 +174,11 @@ public class AddProductMB implements Serializable {
             image = new Image();
             type=new Type();
             brand = new Brand();
+            if (typeList!=null && !typeList.isEmpty()) {
+                typeList.clear();
+            }            
+            imageList.clear();    
+            selectedProduct=new Product();
 
         } catch (Exception e) {
             MessagesController.hataVer("Temizleme işleminde hata oluştu");
@@ -171,11 +187,21 @@ public class AddProductMB implements Serializable {
 
     public void deleteProduct() {
         try {
-            mainDao.deleteObject(selectedProduct);
-            productList.remove(selectedProduct);
+            mainDao.deleteProductAndImageList(selectedProduct);
+            productList = mainDao.findAllProduct();
             MessagesController.bilgiVer("Ürün silinmiştir.");
         } catch (Exception e) {
             MessagesController.hataVer("Ürün silme işleminde hata oluştu");
+        }
+    }
+    
+     public void deleteImage() {
+        try {
+            imageList.remove(selectedImage);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('resimSil').hide();");
+        } catch (Exception e) {
+            MessagesController.hataVer("Resim silme işleminde hata oluştu");
         }
     }
 
@@ -265,6 +291,22 @@ public class AddProductMB implements Serializable {
 
     public void setShowUpdate(boolean showUpdate) {
         this.showUpdate = showUpdate;
+    }
+
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
+    }
+
+    public Image getSelectedImage() {
+        return selectedImage;
+    }
+
+    public void setSelectedImage(Image selectedImage) {
+        this.selectedImage = selectedImage;
     }
 
 }

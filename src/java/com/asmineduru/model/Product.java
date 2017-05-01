@@ -55,7 +55,7 @@ public class Product implements Serializable {
     private BigInteger productFirstPrice;
     @Basic(optional = false)
     @Column(nullable = false)
-    private int usageStatus;
+    private boolean usageStatus;
     @Basic(optional = false)
     @Column(nullable = false, length = 45)
     private String productCode;
@@ -116,13 +116,13 @@ public class Product implements Serializable {
         this.productFirstPrice = productFirstPrice;
     }   
 
-    public int getUsageStatus() {
+    public boolean isUsageStatus() {
         return usageStatus;
     }
 
-    public void setUsageStatus(int usageStatus) {
+    public void setUsageStatus(boolean usageStatus) {
         this.usageStatus = usageStatus;
-    }
+    }   
 
     public List<Image> getImageList() {
         return imageList;

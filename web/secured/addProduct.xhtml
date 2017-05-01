@@ -1,10 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <html 
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>Asmine Duru</title>
         <link href="../assets/css/style.css" rel="stylesheet" type="text/css"/>
@@ -33,25 +34,21 @@
                     <p:outputLabel value="#{product.productFirstPrice}" />
                 </p:column> 
                 <p:column headerText="Kullanım Durumu" style="text-align: center">                   
-                    <p:outputLabel value="#{product.usageStatus}" />
+                    <p:selectBooleanCheckbox value="#{product.usageStatus}" disabled="true"/>
                 </p:column>
                 <p:column headerText="Ürün Kodu" style="text-align: center">                   
                     <p:outputLabel value="#{product.productCode}" />
                 </p:column>
-                 <p:column headerText="Sol Tarafta Görünsün" style="text-align: center">                   
-                     <p:selectBooleanCheckbox value="#{product.showLeftSide}" disabled="true"/>
+                <p:column headerText="Sol Tarafta Görünsün" style="text-align: center">                   
+                    <p:selectBooleanCheckbox value="#{product.showLeftSide}" disabled="true"/>
                 </p:column>
                 <p:column headerText="Ana Sayfada Görünsün" style="text-align: center">                   
                     <p:selectBooleanCheckbox value="#{product.showMainPage}" disabled="true"/>
                 </p:column>
-                
+
                 <p:column headerText="Fotoğraf" style="text-align: center; width: 80px;">
-                    <center>
-                        <p:graphicImage id="myImage" value="#{imageStreamerMB.image}" 
-                                        height="100" alt="Resim bulunamadı.">
-                            <f:param name="imageId" value="#{product.imageList.get(0).imageId}" />
-                        </p:graphicImage>
-                    </center>
+                    <img width="80" src="#{product.imageList.get(0).stringImage}"  />
+
                 </p:column>
                 <p:column>
                     <center>
@@ -77,62 +74,114 @@
                 </f:facet>
             </p:dataTable>
             <center>
-                 
+
 
             </center>
             <br/>
         </h:form>
-        
+
         <p:dialog header="Ürün Ekle" widgetVar="dlg" id="dialog">
             <h:form id="ekleForm">
                 <p:messages id="msg" autoUpdate="true" closable="true"/>
                 <center>
-                    <p:panelGrid columns="2" id="upload">
-                    <h:outputText value="Marka: " />
-                    <p:selectOneMenu required="true" value="#{addProductMB.brand}" converter="#{brandConverter}"
-                                     requiredMessage="Lütfen kullanici seçiniz.">
-                        <p:ajax listener="#{addProductMB.findTypeList}" update="type" />
-                        <f:selectItem itemLabel="Seçiniz.." itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{addProductMB.brandList}" var="brand"
-                                       itemLabel="#{brand.brandName}" itemValue="#{brand}"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel for="type" value="Çeşit: " />
-                    <p:selectOneMenu id="type" value="#{addProductMB.type}" 
-                                     converter="#{typeConverter}">
-                        <f:selectItem itemLabel="Seçiniz.." itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{addProductMB.typeList}" var="type"
-                                       itemLabel="#{type.typeName}" itemValue="#{type}"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="Ürün Adı: " style="display: block; width: 200px;"/>
-                    <p:inputText value="#{addProductMB.selectedProduct.productName}" required="true" 
-                                 requiredMessage="Lütfen ürün adı giriniz."
-                                 style="text-transform: uppercase;"/>
-                    <h:outputText value="Ürün Fiyatı: " />
-                    <p:inputText value="#{addProductMB.selectedProduct.productPrice}" required="true" 
-                                 requiredMessage="Lütfen ürün fiyatı giriniz."
-                                 style="text-transform: uppercase;"/>
-                    <h:outputText value="Ürün İlk Fiyatı: " />
-                    <p:inputText value="#{addProductMB.selectedProduct.productFirstPrice}" required="true" 
-                                 requiredMessage="Lütfen ürün ilk fiyatı giriniz."
-                                 style="text-transform: uppercase;"/>    
-
-                    <p:fileUpload id="choose" label="Resim Seç" previewWidth="50"                                       
-                                      fileUploadListener="#{addProductMB.handleFileUpload}"				
-                                      multiple="false"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" auto="true"
-                                      update="myImage" required="true" mode="advanced"  process=""
-                                      requiredMessage="Lütfen resim yükleyiniz."/>                    
-                    <p:graphicImage id="myImage" value="#{imageStreamerMB.image}" 
-                                        height="100" alt="Resim bulunamadı.">
-                            <f:param name="imageId" value="#{addProductMB.image.imageId}" />
-                        </p:graphicImage>
-                    <h:outputText value="Sol Tarafta Görünsün: " />
-                    <p:selectBooleanCheckbox value="#{addProductMB.selectedProduct.showLeftSide}" />
-                    <h:outputText value="Ana Sayfada Görünsün: " />
-                    <p:selectBooleanCheckbox value="#{addProductMB.selectedProduct.showMainPage}" />
-                </p:panelGrid>
-            </center>
-            <br/>
-              <center>
+                    <p:panelGrid id="upload">
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Marka: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu required="true" value="#{addProductMB.brand}" converter="#{brandConverter}"
+                                                 requiredMessage="Lütfen kullanici seçiniz.">
+                                    <p:ajax listener="#{addProductMB.findTypeList}" update="type" />
+                                    <f:selectItem itemLabel="Seçiniz.." itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{addProductMB.brandList}" var="brand"
+                                                   itemLabel="#{brand.brandName}" itemValue="#{brand}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="type" value="Çeşit: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="type" value="#{addProductMB.type}" 
+                                                 converter="#{typeConverter}">
+                                    <f:selectItem itemLabel="Seçiniz.." itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{addProductMB.typeList}" var="type"
+                                                   itemLabel="#{type.typeName}" itemValue="#{type}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Ürün Adı: " style="display: block; width: 200px;"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{addProductMB.selectedProduct.productName}" required="true" 
+                                             requiredMessage="Lütfen ürün adı giriniz."
+                                             style="text-transform: uppercase;"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Ürün Fiyatı: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{addProductMB.selectedProduct.productPrice}" required="true" 
+                                             requiredMessage="Lütfen ürün fiyatı giriniz."
+                                             style="text-transform: uppercase;"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Ürün İlk Fiyatı: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{addProductMB.selectedProduct.productFirstPrice}" required="true" 
+                                             requiredMessage="Lütfen ürün ilk fiyatı giriniz."
+                                             style="text-transform: uppercase;"/>  
+                            </p:column>
+                        </p:row>
+                        <p:row id="resimRow">
+                            <p:column>
+                                <h:outputText value="Resimler: " />
+                                <p:commandButton id="resimEkleButon" update="resimEkleForm" value="Resim Düzenle" 
+                                                 oncomplete="PF('resimEkle').show();" process="@this"/>
+                            </p:column>
+                            <p:column>
+                                <c:forEach var="image" items="#{addProductMB.imageList}" >
+                                    <img width="80" src="#{image.stringImage}"   title="#{productMB.selectedProduct.productName}"/>
+                                </c:forEach>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Sol Tarafta Görünsün: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox value="#{addProductMB.selectedProduct.showLeftSide}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Ana Sayfada Görünsün: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox value="#{addProductMB.selectedProduct.showMainPage}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Kullanım Durumu: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox value="#{addProductMB.selectedProduct.usageStatus}" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </center>
+                <br/>
+                <center>
                     <p:commandButton id="kaydetButon" update="form:table, ekleForm" value="Kaydet" 
                                      actionListener="#{addProductMB.saveProduct()}"
                                      rendered="#{!addProductMB.showUpdate}"/>
@@ -146,19 +195,72 @@
                 </center>
             </h:form>
         </p:dialog>
-        
+
         <p:dialog header="Ürün Sil Onay" widgetVar="sil" resizable="false">
             <h:form id="silForm">               
                 <p:outputLabel value="Ürünü silmek istediğinize emin misiniz?" />                
                 <br/><br/>
                 <center>
                     <p:commandButton update="form:table" value="Evet" oncomplete="PF('sil').hide();"
-                                     action="#{addProductMB.delete}"/>
+                                     action="#{addProductMB.deleteProduct}"/>
                     <p:commandButton value="Hayır" style="margin-left: 10px;"
                                      onclick="PF('sil').hide();"/> 
                 </center>
             </h:form>
         </p:dialog>
+
+        <p:dialog header="Resim Ekle" widgetVar="resimEkle" id="resimDlg">
+            <h:form id="resimEkleForm" style="width: 350px;">
+                <p:messages id="msg" autoUpdate="true" closable="true"/>
+                <center>
+                    <p:panelGrid columns="2" id="upload">                       
+
+                        <p:fileUpload id="choose" label="Resim Seç" previewWidth="50"                                       
+                                      fileUploadListener="#{addProductMB.handleFileUpload}"				
+                                      multiple="false"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" auto="true"
+                                      update="resimEkleForm" required="true" mode="advanced"  process=""
+                                      requiredMessage="Lütfen resim yükleyiniz."/> 
+                    </p:panelGrid>
+                    <p:dataTable value="#{addProductMB.imageList}" var="img" id="imgTable" 
+                                 emptyMessage="Liste boştur.">
+                        <f:facet name="header">
+                            Resim Listesi             
+                        </f:facet>
+                        <p:column headerText="Resim" style="text-align: center; width: 100px">
+                            <img width="80" src="#{img.stringImage}"/>
+                        </p:column>
+                        <p:column>
+                            <center>                        
+                                <p:commandLink onclick="PF('resimSil').show();" id="sil">
+                                    <p:graphicImage value="/images/delete.png" />
+                                    <f:setPropertyActionListener value="#{img}" 
+                                                                 target="#{addProductMB.selectedImage}" />
+                                </p:commandLink>
+                                <p:tooltip id="toolTipSil" for="sil" value="Sil" trackMouse="true"/>
+                            </center>
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:commandButton id="ekleResimButon" value="Ekle" style="margin-left: 10px;"                                     
+                                     update="ekleForm:resimRow" oncomplete="PF('resimEkle').hide();"
+                                     process="@this"/>
+                </center>                
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Resim Sil Onay" widgetVar="resimSil" resizable="false">
+            <h:form id="resimSilForm">               
+                <p:outputLabel value="Resmi silmek istediğinize emin misiniz?" />                
+                <br/><br/>
+                <center>
+                    <p:commandButton update="resimEkleForm" value="Evet" oncomplete="PF('sil').hide();"
+                                     action="#{addProductMB.deleteImage}"/>
+                    <p:commandButton value="Hayır" style="margin-left: 10px;"
+                                     onclick="PF('resimSil').hide();"/> 
+                </center>
+            </h:form>
+        </p:dialog>
+
 
     </h:body>
 </html>

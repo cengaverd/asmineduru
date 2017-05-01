@@ -7,14 +7,64 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
-    <ui:composition template="template.xhtml">   
+    <ui:composition template="template.xhtml">  
+        <f:metadata>
+            <f:viewParam name="productId" value="#{productMB.productId}" required="true"/>
+            <f:viewAction action="#{productMB.loadData()}"/>
+        </f:metadata>
         <ui:define name="content">
-            <h:form>
-                <!-- Section -->
-                <section>
-                   
 
-                </section>
+            <!--            <link href="assets/zoomImageSlider/css/normalize.css" rel="stylesheet" type="text/css"/>-->
+            <link href="assets/zoomImageSlider/css/foundation.css" rel="stylesheet" type="text/css"/>
+            <!--            <link href="assets/zoomImageSlider/css/demo.css" rel="stylesheet" type="text/css"/>-->
+
+            <script src="assets/zoomImageSlider/js/vendor/modernizr.js" type="text/javascript"></script>
+            <script src="assets/zoomImageSlider/js/vendor/jquery.js" type="text/javascript"></script>
+
+            <!-- xzoom plugin here -->
+            <script src="assets/zoomImageSlider/js/xzoom.min.js" type="text/javascript"></script>
+            <link href="assets/zoomImageSlider/css/xzoom.css" rel="stylesheet" type="text/css"/>
+            <!-- hammer plugin here -->
+            <script src="assets/zoomImageSlider/hammer.js/1.0.5/hammer.min.js" type="text/javascript"></script>
+            <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+            <!--            <link href="assets/zoomImageSlider/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" media="all"/>-->
+            <link href="assets/zoomImageSlider/magnific-popup/css/magnific-popup.css" rel="stylesheet" type="text/css" media="all"/>
+            <!--            <script src="assets/zoomImageSlider/fancybox/source/jquery.fancybox.js" type="text/javascript"></script>-->
+            <script src="assets/zoomImageSlider/magnific-popup/js/magnific-popup.js" type="text/javascript"></script>
+            <h:form>
+                <!-- magnific start -->
+                <section id="magnific">
+                    <div class="row">
+                        <div class="large-12 column">
+                            <header class="major">
+                                <h2>#{productMB.selectedProduct.type.brand.brandName} (#{productMB.selectedProduct.type.typeName})</h2>
+                            </header>
+                        </div>
+                        <div class="large-5 column">
+                            <div class="xzoom-container">
+                                <img class="xzoom5" id="xzoom-magnific" src="#{productMB.selectedProduct.imageList.get(0).stringImage}" xoriginal="#{productMB.selectedProduct.imageList.get(0).stringOriginalImage}" />
+                                <div class="xzoom-thumbs">
+                                    <c:forEach var="image" items="#{productMB.selectedProduct.imageList}" >
+                                        <a href="#{image.stringOriginalImage}"><img class="xzoom-gallery5" width="80" src="#{image.stringImage}"   title="#{productMB.selectedProduct.productName}"/></a>
+                                    </c:forEach>
+                                </div>
+                            </div>        
+                        </div>
+                        <div class="large-7 column"> 
+                            <h3>#{productMB.selectedProduct.type.brand.brandName}</h3>
+                            <p>
+                                <h:outputText value="#{productMB.selectedProduct.type.typeName}           " />
+                                <h:outputText style="background-color: deeppink; color: white; font-weight: bold;" value="% #{productMB.selectedProduct.discount} İndirim " 
+                                              rendered="#{productMB.selectedProduct.discount gt 30}"/>
+                            </p>
+                            <p>
+                                <h:outputText style="text-decoration: line-through;" value="#{productMB.selectedProduct.productFirstPrice} TL" />
+                                <h:outputText style=" font-size: x-large; color: orange;" value="    #{productMB.selectedProduct.productPrice} TL" />
+                            </p></div>
+                    </div>
+                </section> 
+                <!--                <script src="assets/zoomImageSlider/js/foundation.min.js" type="text/javascript"></script>-->
+                <script src="assets/zoomImageSlider/js/setup.js" type="text/javascript"></script>
             </h:form>
         </ui:define>
     </ui:composition>

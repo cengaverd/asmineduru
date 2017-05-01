@@ -16,6 +16,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -42,22 +44,28 @@ public class Image implements Serializable {
     @Lob
     @Column(nullable = false)
     private byte[] image;
-    
+
     @Basic(optional = false)
     @Lob
     @Column(nullable = false)
     private byte[] originImage;
-    
+
     @Basic(optional = false)
     @Column(nullable = false)
     private int usageStatus;
-    
+
     @ManyToOne
     @JoinColumn(name = "product")
     private Product product;
-    
+
     @Transient
     private StreamedContent imageShow;
+
+    @Transient
+    private String stringImage;
+
+    @Transient
+    private String stringOriginalImage;
 
     public Image() {
     }
@@ -117,8 +125,30 @@ public class Image implements Serializable {
     public void setUsageStatus(int usageStatus) {
         this.usageStatus = usageStatus;
     }
-    
-    
+
+    public String getStringImage() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("data:image/png;base64,");
+        sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(image, false)));
+        stringImage = sb.toString();
+        return stringImage;
+    }
+
+    public void setStringImage(String stringImage) {
+        this.stringImage = stringImage;
+    }
+
+    public String getStringOriginalImage() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("data:image/png;base64,");
+        sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(originImage, false)));
+        stringOriginalImage = sb.toString();
+        return stringOriginalImage;
+    }
+
+    public void setStringOriginalImage(String stringOriginalImage) {
+        this.stringOriginalImage = stringOriginalImage;
+    }
 
     @Override
     public int hashCode() {
@@ -144,5 +174,5 @@ public class Image implements Serializable {
     public String toString() {
         return "com.asmineduru.model.Image[ imageId=" + imageId + " ]";
     }
-    
+
 }

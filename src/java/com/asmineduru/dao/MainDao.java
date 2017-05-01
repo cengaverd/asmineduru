@@ -106,12 +106,14 @@ public class MainDao extends Dao implements Serializable {
         return productList;
     }
     
-    public void saveProductAndImage(Product product, Image image) {
+    public void saveProductAndImageList(Product product) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
             session.save(product);
-            session.save(image);
+            for (Image image : product.getImageList()) {
+                session.save(image);
+            }            
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -121,12 +123,31 @@ public class MainDao extends Dao implements Serializable {
         }
     }
     
-    public void saveOrUpdateProductAndImage(Product product, Image image) {
+    public void saveOrUpdateProductAndImageList(Product product) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
             session.saveOrUpdate(product);
-            session.saveOrUpdate(image);
+            for (Image image : product.getImageList()) {
+                session.saveOrUpdate(image);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+    
+     public void deleteProductAndImageList(Product product) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.delete(product);
+            for (Image image : product.getImageList()) {
+                session.delete(image);
+            }            
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -149,5 +170,35 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
         return productList;
+    }
+    
+    public Type findTypeByTypeId(Integer typeId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Type type;
+        try {
+
+            type = (Type) session.getNamedQuery("Type.findByTypeId").setParameter("typeId", typeId).uniqueResult();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return type;
+    }
+    
+    public Product findProductByProductId(Integer productId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Product product;
+        try {
+
+            product = (Product) session.getNamedQuery("Product.findByProductId").setParameter("productId", productId).uniqueResult();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return product;
     }
 }

@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="tr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:composition template="template.xhtml"> 
+         <f:metadata>
+                <f:viewParam name="typeId" value="#{productsMB.typeId}" required="true"/>
+                <f:viewAction action="#{productsMB.loadData()}"/>
+            </f:metadata>
+        <ui:define name="content">
+           
+
+            <h:form>
+                <section>
+                    <header class="major">
+                        <h2>#{productsMB.selectedType.brand.brandName.toUpperCase()} (#{productsMB.selectedType.typeName})</h2>
+                    </header>
+                    <p:outputLabel value="Ürün bulunmamaktadır." rendered="#{productsMB.productList.size() eq 0}"/>
+                    <div class="posts">
+                        <c:forEach var="product" items="#{productsMB.productList}" >
+                            <article>
+                                <h:link id="ajax" outcome="product" class="image">
+                                    <f:param name="productId" value="#{product.productId}" />
+                                    <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" 
+                                                    alt="Resim bulunamadı.">
+                                        <f:param name="imageId" value="#{product.imageList.get(0).imageId}" />
+                                    </p:graphicImage>
+                                </h:link>
+                                <h3>#{product.type.brand.brandName}</h3>
+                                <p>
+                                    <h:outputText value="#{product.type.typeName}           " />
+                                    <h:outputText style="background-color: deeppink; color: white; font-weight: bold;" value="% #{product.discount} İndirim " 
+                                                  rendered="#{product.discount gt 30}"/>
+                                </p>
+                                <p>
+                                    <h:outputText style="text-decoration: line-through;" value="#{product.productFirstPrice} TL" />
+                                    <h:outputText style=" font-size: x-large; color: orange;" value="    #{product.productPrice} TL" />
+                                </p>
+                                <ul class="actions">
+                                    <li><a href="#" class="button">Detay</a></li>
+                                </ul>
+                            </article>
+                        </c:forEach>                                
+                    </div>
+                </section>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
