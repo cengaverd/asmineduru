@@ -57,7 +57,7 @@
                                     <li>
                                         <span class="opener">#{brand.brandName}</span>
                                         <ul>
-                                            <c:forEach var="type" items="#{brand.typeList}" >
+                                            <c:forEach var="type" items="#{brand.typeListForMenu}" >
                                                 <li>
 <!--                                                    <p:commandLink id="ajax" ajax="false" actionListener="#{mainPageMB.navigateProducts(type)}">
                                                         <h:outputText value="#{type.typeName}" />
@@ -77,7 +77,7 @@
                         <section>
                             <c:forEach var="product" items="#{mainPageMB.leftSideProductList}" >
                                 <header class="major">
-                                    <h2>#{product.type.brand.brandName.toUpperCase()}</h2>
+                                    <h2>#{product.type.brand.brandName}</h2>
                                 </header>
                                 <div class="mini-posts">
                                     <center>

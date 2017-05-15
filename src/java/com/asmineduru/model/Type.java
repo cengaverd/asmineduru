@@ -45,7 +45,7 @@ public class Type implements Serializable {
     private String typeName;
     @Basic(optional = false)
     @Column(nullable = false)
-    private int usageStatus;
+    private boolean usageStatus;
     @ManyToOne
     @JoinColumn(name = "brand")
     private Brand brand;
@@ -81,14 +81,14 @@ public class Type implements Serializable {
         this.typeName = typeName;
     }
 
-    public int getUsageStatus() {
+    public boolean isUsageStatus() {
         return usageStatus;
     }
 
-    public void setUsageStatus(int usageStatus) {
+    public void setUsageStatus(boolean usageStatus) {
         this.usageStatus = usageStatus;
     }
-
+   
     @Override
     public int hashCode() {
         int hash = 0;

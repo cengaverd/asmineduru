@@ -7,6 +7,9 @@ import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
 import com.asmineduru.util.MessagesController;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
@@ -45,19 +48,19 @@ public class AddProductMB implements Serializable {
     private List<Brand> brandList;
 
     private List<Product> productList;
-    private Product selectedProduct=new Product();
+    private Product selectedProduct = new Product();
     private boolean showUpdate;
-    
+
     private List<Image> imageList;
     private Image selectedImage;
-    
+
     @PostConstruct
     public void init() {
         try {
 
             brandList = mainDao.findAllBrandInUsage();
             productList = mainDao.findAllProduct();
-            imageList=new ArrayList<>();
+            imageList = new ArrayList<>();
 
         } catch (Exception e) {
         }
@@ -67,7 +70,11 @@ public class AddProductMB implements Serializable {
         uploadedFile = event.getFile();
         image = new Image();
         image.setImageShow(new DefaultStreamedContent(new ByteArrayInputStream(uploadedFile.getContents())));
-        image.setOriginImage(uploadedFile.getContents());
+        BufferedImage bi = ImageIO.read(new ByteArrayInputStream(uploadedFile.getContents()));
+        int width = bi.getWidth();
+        int height = bi.getHeight();        
+        byte[] original=scale(uploadedFile.getContents(), width, height);
+        image.setOriginImage(original);
         image.setImage(scale(uploadedFile.getContents(), 250, 320));
         image.setProduct(selectedProduct);
         image.setUsageStatus(1);
@@ -98,13 +105,13 @@ public class AddProductMB implements Serializable {
     public void findProductForUpdate() {
         try {
 
-            imageList=new ArrayList<>();
+            imageList = new ArrayList<>();
             showUpdate = true;
-            brand=selectedProduct.getType().getBrand();
+            brand = selectedProduct.getType().getBrand();
             typeList = mainDao.findAllTypeByBrand(brand);
-            type=selectedProduct.getType();
-            brand=type.getBrand();
-            image=selectedProduct.getImageList().get(0);
+            type = selectedProduct.getType();
+            brand = type.getBrand();
+            image = selectedProduct.getImageList().get(0);
             imageList.addAll(selectedProduct.getImageList());
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('dlg').show();");
@@ -117,7 +124,7 @@ public class AddProductMB implements Serializable {
 
     public void updateProduct() {
         try {
-            
+
             selectedProduct.setType(type);
             selectedProduct.getImageList().addAll(imageList);
             mainDao.saveOrUpdateProductAndImageList(selectedProduct);
@@ -154,8 +161,16 @@ public class AddProductMB implements Serializable {
             }
             java.awt.Image scaledImage = img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
             BufferedImage imageBuff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-            imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0, 0, 0), null);
-            imageBuff.getGraphics().drawString("Asmine Duru", 100, 310);
+            Graphics2D g2d = imageBuff.createGraphics();
+            g2d.drawImage(scaledImage, 0, 0, width, height, null);
+            Color color = new Color(0.9f, 1, 0.8f, 0.3f); 
+            g2d.setPaint(color);
+            g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
+            String s = "Asmine Duru";
+            int x = (width / 2) - 55;
+            int y = height / 2;
+            g2d.drawString(s, x, y);
+            g2d.dispose();
 
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
@@ -172,13 +187,13 @@ public class AddProductMB implements Serializable {
             showUpdate = false;
             product = new Product();
             image = new Image();
-            type=new Type();
+            type = new Type();
             brand = new Brand();
-            if (typeList!=null && !typeList.isEmpty()) {
+            if (typeList != null && !typeList.isEmpty()) {
                 typeList.clear();
-            }            
-            imageList.clear();    
-            selectedProduct=new Product();
+            }
+            imageList.clear();
+            selectedProduct = new Product();
 
         } catch (Exception e) {
             MessagesController.hataVer("Temizleme işleminde hata oluştu");
@@ -194,8 +209,8 @@ public class AddProductMB implements Serializable {
             MessagesController.hataVer("Ürün silme işleminde hata oluştu");
         }
     }
-    
-     public void deleteImage() {
+
+    public void deleteImage() {
         try {
             imageList.remove(selectedImage);
             RequestContext context = RequestContext.getCurrentInstance();

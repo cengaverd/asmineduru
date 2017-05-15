@@ -44,7 +44,7 @@
                             <div class="xzoom-container">
                                 <img class="xzoom5" id="xzoom-magnific" src="#{productMB.selectedProduct.imageList.get(0).stringImage}" xoriginal="#{productMB.selectedProduct.imageList.get(0).stringOriginalImage}" />
                                 <div class="xzoom-thumbs">
-                                    <c:forEach var="image" items="#{productMB.selectedProduct.imageList}" >
+                                    <c:forEach var="image" items="#{productMB.selectedProduct.imageList}" rendered="#{fn:length(productMB.selectedProduct.imageList) gt 1}">
                                         <a href="#{image.stringOriginalImage}"><img class="xzoom-gallery5" width="80" src="#{image.stringImage}"   title="#{productMB.selectedProduct.productName}"/></a>
                                     </c:forEach>
                                 </div>

@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Where;
 
 /**
  *
@@ -48,11 +49,16 @@ public class Brand implements Serializable {
     private String brandName;
     @Basic(optional = false)
     @Column(nullable = false)
-    private int usageStatus;
-    
+    private boolean usageStatus;
+
     @OneToMany(mappedBy = "brand", fetch = FetchType.EAGER)
-    @Fetch (FetchMode.SELECT)
-    private List<Type> typeList=new ArrayList<>();
+    @Fetch(FetchMode.SELECT)
+    private List<Type> typeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "brand", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    @Where(clause = "usageStatus=1")
+    private List<Type> typeListForMenu = new ArrayList<>();
 
     public Brand() {
     }
@@ -61,7 +67,7 @@ public class Brand implements Serializable {
         this.brandId = brandId;
     }
 
-    public Brand(Integer brandId, String brandName, int usageStatus) {
+    public Brand(Integer brandId, String brandName, boolean usageStatus) {
         this.brandId = brandId;
         this.brandName = brandName;
         this.usageStatus = usageStatus;
@@ -83,11 +89,11 @@ public class Brand implements Serializable {
         this.brandName = brandName;
     }
 
-    public int getUsageStatus() {
+    public boolean isUsageStatus() {
         return usageStatus;
     }
 
-    public void setUsageStatus(int usageStatus) {
+    public void setUsageStatus(boolean usageStatus) {
         this.usageStatus = usageStatus;
     }
 
@@ -98,6 +104,15 @@ public class Brand implements Serializable {
     public void setTypeList(List<Type> typeList) {
         this.typeList = typeList;
     }
+
+    public List<Type> getTypeListForMenu() {
+        return typeListForMenu;
+    }
+
+    public void setTypeListForMenu(List<Type> typeListForMenu) {
+        this.typeListForMenu = typeListForMenu;
+    }
+    
 
     @Override
     public int hashCode() {
@@ -123,5 +138,5 @@ public class Brand implements Serializable {
     public String toString() {
         return "com.asmineduru.model.Brand[ brandId=" + brandId + " ]";
     }
-    
+
 }

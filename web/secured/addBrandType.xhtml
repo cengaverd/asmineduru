@@ -1,0 +1,188 @@
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="msg" autoUpdate="true" closable="true"/>
+            <p:dataTable value="#{addBrandTypeMB.brandList}" var="brand" id="table" 
+                         emptyMessage="Liste boştur.">
+                <f:facet name="header" id="hee">
+                    <div style="text-align: center">  Marka Listesi</div>
+                    <div style="text-align: right">
+                        <p:commandButton value="Yeni Marka Ekle" icon="ui-icon-plusthick" 
+                                         action="#{addBrandTypeMB.clearAddBrand}"
+                                         oncomplete="PF('dlg').show();" update="ekleForm">
+                            <p:resetInput target="ekleForm" />
+                        </p:commandButton></div>                    
+                </f:facet>
+                <p:column headerText="Marka Adı" style="text-align: center; width: 250px">
+                    <p:outputLabel value="#{brand.brandName}" />
+                </p:column>
+
+                <p:column headerText="Aktif" style="text-align: center; width: 40px;">                   
+                    <p:selectBooleanCheckbox value="#{brand.usageStatus}" disabled="true"/>
+                </p:column>
+
+                <p:column headerText="Marka Tipleri" style="text-align: center">                   
+                    <p:dataTable value="#{brand.typeList}" var="type" id="type" 
+                                 emptyMessage="Marka Tipi yoktur." styleClass="noHeader">
+                        <p:column style="text-align: center">                   
+                            <p:outputLabel value="#{type.typeName}" />
+                        </p:column> 
+                        <p:column style="text-align: center">                   
+                            <p:selectBooleanCheckbox value="#{type.usageStatus}" disabled="true"/>
+                        </p:column> 
+                    </p:dataTable>
+                </p:column>
+
+                <p:column>
+                    <center>
+                        <p:commandLink action="#{addBrandTypeMB.findBrandForUpdate}" 
+                                       update="ekleForm" id="duzenle">
+                            <p:graphicImage value="/images/duzenle.png" />
+                            <f:setPropertyActionListener value="#{brand}" 
+                                                         target="#{addBrandTypeMB.selectedBrand}" />
+                            <p:resetInput target="ekleForm" />
+                        </p:commandLink>
+                        <p:tooltip id="toolTipDuzenle" for="duzenle" value="Düzenle" trackMouse="true"/>
+                        <p:spacer width="10" />
+                        <p:commandLink onclick="PF('sil').show();" id="sil">
+                            <p:graphicImage value="/images/delete.png" />
+                            <f:setPropertyActionListener value="#{brand}" 
+                                                         target="#{addBrandTypeMB.selectedBrand}" />
+                        </p:commandLink>
+                        <p:tooltip id="toolTipSil" for="sil" value="Sil" trackMouse="true"/>
+                    </center>
+                </p:column>
+                <f:facet name="footer">                    
+                    Toplam marka sayısı: #{fn:length(addBrandTypeMB.brandList)}
+                </f:facet>
+            </p:dataTable>
+            <center>
+
+
+            </center>
+            <br/>
+        </h:form>
+
+        <p:dialog header="Marka Ekle" widgetVar="dlg" id="dialog">
+            <h:form id="ekleForm">
+                <p:messages id="msg" autoUpdate="true" closable="true"/>
+                <center>
+                    <p:panelGrid id="upload">
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Marka Adı: " style="display: block; width: 200px;"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{addBrandTypeMB.selectedBrand.brandName}" required="true" 
+                                             requiredMessage="Lütfen marka adı giriniz."/>
+                            </p:column>
+                        </p:row>   
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Aktif: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox value="#{addBrandTypeMB.selectedBrand.usageStatus}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Marka Tipleri: " />
+                                <p:commandButton value="Yeni Marka Tipi Ekle" icon="ui-icon-plusthick" 
+                                         action="#{addBrandTypeMB.clearAddType}"
+                                         oncomplete="PF('addType').show();" update="addForm">
+                            <p:resetInput target="addForm" />
+                        </p:commandButton>
+                            </p:column>
+                            <p:column headerText="Marka Tipleri" style="text-align: center">                   
+                                <p:dataTable value="#{addBrandTypeMB.selectedBrand.typeList}" var="type" id="type1" 
+                                             emptyMessage="Marka Tipi yoktur." styleClass="noHeader" style="width: 300px;">
+                                    <p:column style="text-align: center;">     
+                                        <p:inputText value="#{type.typeName}" required="true" 
+                                             requiredMessage="Lütfen tip adı giriniz."/>
+                                    </p:column> 
+                                    <p:column style="text-align: center; width: 40px;">                   
+                                        <p:selectBooleanCheckbox value="#{type.usageStatus}"/>
+                                    </p:column> 
+                                </p:dataTable>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </center>
+                <br/>
+                <center>
+                    <p:commandButton id="kaydetButon" update="form:table, ekleForm" value="Kaydet" 
+                                     actionListener="#{addBrandTypeMB.saveBrand()}"
+                                     rendered="#{!addBrandTypeMB.showUpdate}"/>
+                    <p:commandButton id="guncelleButon" update="form:table, ekleForm" value="Güncelle" 
+                                     actionListener="#{addBrandTypeMB.updateBrand()}"
+                                     rendered="#{addBrandTypeMB.showUpdate}"/>
+                    <p:commandButton id="kapatButon" value="Kapat" style="margin-left: 10px;"
+                                     actionListener="#{addBrandTypeMB.clearAddBrand()}"
+                                     update="form:table, ekleForm" oncomplete="PF('dlg').hide();"
+                                     process="@this"/>
+                </center>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Marka Sil Onay" widgetVar="sil" resizable="false">
+            <h:form id="silForm">               
+                <p:outputLabel value="Markayı silmek istediğinize emin misiniz?" />                
+                <br/><br/>
+                <center>
+                    <p:commandButton update="form:table" value="Evet" oncomplete="PF('sil').hide();"
+                                     action="#{addBrandTypeMB.deleteBrand}"/>
+                    <p:commandButton value="Hayır" style="margin-left: 10px;"
+                                     onclick="PF('sil').hide();"/> 
+                </center>
+            </h:form>
+        </p:dialog>
+        
+        <p:dialog header="Marka Tipi Ekle" widgetVar="addType" id="typeDialog">
+            <h:form id="addForm">
+                <p:messages id="msg" autoUpdate="true" closable="true"/>
+                <center>
+                    <p:panelGrid id="upload">
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Tip Adı: " style="display: block; width: 200px;"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{addBrandTypeMB.type.typeName}" required="true" 
+                                             requiredMessage="Lütfen tip adı giriniz."/>
+                            </p:column>
+                        </p:row>   
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Aktif: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox value="#{addBrandTypeMB.type.usageStatus}" />
+                            </p:column>
+                        </p:row>
+                       
+                    </p:panelGrid>
+                </center>
+                <br/>
+                <center>
+                    <p:commandButton id="kaydetButon" update="form:table, ekleForm" value="Ekle" 
+                                     actionListener="#{addBrandTypeMB.addType()}"/>                    
+                    <p:commandButton id="kapatButon" value="Kapat" style="margin-left: 10px;"
+                                     actionListener="#{addBrandTypeMB.clearAddType()}"
+                                     update="form:table, ekleForm" oncomplete="PF('addType').hide();"
+                                     process="@this"/>
+                </center>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

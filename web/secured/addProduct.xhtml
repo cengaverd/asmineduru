@@ -1,16 +1,12 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<html 
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:p="http://primefaces.org/ui"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-    xmlns:c="http://java.sun.com/jsp/jstl/core">
-    <h:head>
-        <title>Asmine Duru</title>
-        <link href="../assets/css/style.css" rel="stylesheet" type="text/css"/>
-    </h:head>
-    <h:body>
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
         <h:form id="form">
             <p:messages id="msg" autoUpdate="true" closable="true"/>
             <p:dataTable value="#{addProductMB.productList}" var="product" id="table" 
@@ -63,7 +59,7 @@
                         <p:spacer width="10" />
                         <p:commandLink onclick="PF('sil').show();" id="sil">
                             <p:graphicImage value="/images/delete.png" />
-                            <f:setPropertyActionListener value="#{c}" 
+                            <f:setPropertyActionListener value="#{product}" 
                                                          target="#{addProductMB.selectedProduct}" />
                         </p:commandLink>
                         <p:tooltip id="toolTipSil" for="sil" value="Sil" trackMouse="true"/>
@@ -118,8 +114,7 @@
                             </p:column>
                             <p:column>
                                 <p:inputText value="#{addProductMB.selectedProduct.productName}" required="true" 
-                                             requiredMessage="Lütfen ürün adı giriniz."
-                                             style="text-transform: uppercase;"/>
+                                             requiredMessage="Lütfen ürün adı giriniz."/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -128,8 +123,7 @@
                             </p:column>
                             <p:column>
                                 <p:inputText value="#{addProductMB.selectedProduct.productPrice}" required="true" 
-                                             requiredMessage="Lütfen ürün fiyatı giriniz."
-                                             style="text-transform: uppercase;"/>
+                                             requiredMessage="Lütfen ürün fiyatı giriniz."/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -138,8 +132,7 @@
                             </p:column>
                             <p:column>
                                 <p:inputText value="#{addProductMB.selectedProduct.productFirstPrice}" required="true" 
-                                             requiredMessage="Lütfen ürün ilk fiyatı giriniz."
-                                             style="text-transform: uppercase;"/>  
+                                             requiredMessage="Lütfen ürün ilk fiyatı giriniz."/>  
                             </p:column>
                         </p:row>
                         <p:row id="resimRow">
@@ -244,6 +237,9 @@
                     <p:commandButton id="ekleResimButon" value="Ekle" style="margin-left: 10px;"                                     
                                      update="ekleForm:resimRow" oncomplete="PF('resimEkle').hide();"
                                      process="@this"/>
+                    <p:commandButton id="kapatButon" value="Kapat" style="margin-left: 10px;"
+                                     update="ekleForm:resimRow" oncomplete="PF('resimEkle').hide();"
+                                     process="@this"/>
                 </center>                
             </h:form>
         </p:dialog>
@@ -260,10 +256,5 @@
                 </center>
             </h:form>
         </p:dialog>
-
-
-    </h:body>
-</html>
-
-
-
+    </ui:define>
+</ui:composition>
