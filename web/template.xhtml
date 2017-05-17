@@ -35,7 +35,6 @@
                                 <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
                                 <li><a href="#" class="icon fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
                                 <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-                                <li><a href="#" class="icon fa-medium"><span class="label">Medium</span></a></li>
                             </ul>
                         </header> 
                         <ui:insert name="content"/>             
@@ -82,7 +81,7 @@
                                 <div class="mini-posts">
                                     <center>
                                         <article>
-                                            
+
                                             <h:link id="left" outcome="product" class="image">
                                                 <f:param name="productId" value="#{product.productId}" />
                                                 <p:graphicImage id="myImage" value="#{imageStreamerMB.image}" 
@@ -91,6 +90,10 @@
                                                 </p:graphicImage>
                                             </h:link>
                                         </article>
+                                        <p>
+                                            <h:outputText style="font-weight: bold; color: #3d4449;" value="Ürün Kodu : "/>
+                                            <h:outputText value="#{product.productCode}" />                                
+                                        </p>
                                         <p>
                                             <h:outputText value="#{product.type.typeName}           " />
                                             <h:outputText style="background-color: deeppink; color: white; font-weight: bold;" value="% #{product.discount} İndirim "

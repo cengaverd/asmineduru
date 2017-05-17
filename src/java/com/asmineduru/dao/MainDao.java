@@ -8,30 +8,32 @@ import com.asmineduru.model.Users;
 import com.asmineduru.util.HibernateUtil;
 import java.io.Serializable;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 
 /**
  *
  * @author Erhan
  */
 public class MainDao extends Dao implements Serializable {
-    
+
     public boolean loginControl(Users user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         boolean loginAccept = false;
         try {
             List<Users> objs = session.createCriteria(Users.class)
                     .list();
-            
+
             if ((objs != null) && (objs.size() > 0)) {
-                
+
                 for (Users veritabani : objs) {
                     loginAccept = veritabani.getUsername().equals(
                             user.getUsername())
                             && veritabani.getPassword().equals(
                                     user.getPassword());
-                    
+
                     if (loginAccept) {
                         return loginAccept;
                     }
@@ -59,7 +61,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return brandList;
     }
-    
+
     public List<Brand> findAllBrand() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Brand> brandList;
@@ -134,7 +136,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return productList;
     }
-    
+
     public List<Product> findMainPageProductInUsage() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Product> productList;
@@ -149,7 +151,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return productList;
     }
-    
+
     public void saveProductAndImageList(Product product) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -157,7 +159,7 @@ public class MainDao extends Dao implements Serializable {
             session.save(product);
             for (Image image : product.getImageList()) {
                 session.save(image);
-            }            
+            }
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -166,7 +168,7 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
     }
-    
+
     public void saveOrUpdateProductAndImageList(Product product) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -183,7 +185,7 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
     }
-    
+
     public void saveBrandAndTypeList(Brand brand) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -191,7 +193,7 @@ public class MainDao extends Dao implements Serializable {
             session.save(brand);
             for (Type type : brand.getTypeList()) {
                 session.save(type);
-            }            
+            }
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -200,7 +202,7 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
     }
-    
+
     public void saveOrUpdateBrandAndTypeList(Brand brand) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -217,15 +219,15 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
     }
-    
-     public void deleteProductAndImageList(Product product) {
+
+    public void deleteProductAndImageList(Product product) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
             session.delete(product);
             for (Image image : product.getImageList()) {
                 session.delete(image);
-            }            
+            }
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -234,15 +236,15 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
     }
-     
-      public void deleteBrandAndTypeList(Brand brand) {
+
+    public void deleteBrandAndTypeList(Brand brand) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
             session.delete(brand);
             for (Type type : brand.getTypeList()) {
                 session.delete(type);
-            }            
+            }
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -251,7 +253,7 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
     }
-    
+
     public List<Product> findProductByTypeIdInUsage(Integer typeId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Product> productList;
@@ -266,7 +268,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return productList;
     }
-    
+
     public Type findTypeByTypeId(Integer typeId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Type type;
@@ -281,7 +283,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return type;
     }
-    
+
     public Product findProductByProductId(Integer productId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Product product;
@@ -296,7 +298,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return product;
     }
-    
+
     public <T> T findObject(Class<T> c, String id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         T result;
@@ -309,7 +311,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return result;
     }
-    
+
     public List<Users> findAllUsers() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Users> userList;
@@ -325,4 +327,23 @@ public class MainDao extends Dao implements Serializable {
         }
         return userList;
     }
+
+    public Integer findProductMaxId() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Integer maxId;
+        try {
+
+            Criteria criteria = session
+                    .createCriteria(Product.class)
+                    .setProjection(Projections.max("productId"));
+            maxId = (Integer) criteria.uniqueResult();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return maxId;
+    }
+
 }

@@ -8,12 +8,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
     <ui:composition template="template.xhtml"> 
-         <f:metadata>
-                <f:viewParam name="typeId" value="#{productsMB.typeId}" required="true"/>
-                <f:viewAction action="#{productsMB.loadData()}"/>
-            </f:metadata>
+        <f:metadata>
+            <f:viewParam name="typeId" value="#{productsMB.typeId}" required="true"/>
+            <f:viewAction action="#{productsMB.loadData()}"/>
+        </f:metadata>
         <ui:define name="content">
-           
+
 
             <h:form>
                 <section>
@@ -32,6 +32,10 @@
                                     </p:graphicImage>
                                 </h:link>
                                 <h3>#{product.type.brand.brandName}</h3>
+                                <p>
+                                    <h:outputText style="font-weight: bold; color: #3d4449;" value="Ürün Kodu : "/>
+                                    <h:outputText value="#{product.productCode}" />                                
+                                </p>
                                 <p>
                                     <h:outputText value="#{product.type.typeName}           " />
                                     <h:outputText style="background-color: deeppink; color: white; font-weight: bold;" value="% #{product.discount} İndirim " 

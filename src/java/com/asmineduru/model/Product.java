@@ -65,6 +65,9 @@ public class Product implements Serializable {
     @Basic(optional = false)
     @Column
     private boolean showMainPage;
+    @Basic(optional = false)
+    @Column(length = 500)
+    private String description;
     
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @Fetch (FetchMode.SELECT)
@@ -170,6 +173,14 @@ public class Product implements Serializable {
 
     public void setDiscount(Integer discount) {
         this.discount = discount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

@@ -124,7 +124,7 @@
                         <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:1300px;height:500px;overflow:hidden;">
                             <div>
                                 <img data-u="image" src="images/purple.jpg" />
-                                <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">MICHAEL KORS</div>
+                                <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">Michael Kors</div>
                                 <div style="position:absolute;top:100px;left:30px;width:480px;height:120px;z-index:0;font-size:30px;color:#ffffff;line-height:38px;">CÜZDAN %76 İNDİRİMLİ </div>
                                 <div style="position:absolute;top:200px;left:30px;width:480px;height:120px;z-index:0;font-size:100px;color:#ffffff;line-height:38px;">130 TL</div>
                                 <div style="position:absolute;top:20px;left:650px;width:470px;height:220px;z-index:0;">
@@ -137,7 +137,7 @@
                             </div>
                             <div>
                                 <img data-u="image" src="images/red.jpg" />
-                                <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">MICHAEL KORS</div>
+                                <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">Michael Kors</div>
                                 <div style="position:absolute;top:100px;left:30px;width:480px;height:120px;z-index:0;font-size:30px;color:#ffffff;line-height:38px;">BABET %25 İNDİRİMLİ </div>
                                 <div style="position:absolute;top:200px;left:30px;width:480px;height:120px;z-index:0;font-size:100px;color:#ffffff;line-height:38px;">385 TL</div>
                                 <div style="position:absolute;top:20px;left:650px;width:320px;height:377px;z-index:0;">
@@ -146,7 +146,7 @@
                             </div>
                             <div>
                                 <img data-u="image" src="images/blue.jpg" />
-                                <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">GUESS</div>
+                                <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">Guess</div>
                                 <div style="position:absolute;top:100px;left:30px;width:480px;height:120px;z-index:0;font-size:30px;color:#ffffff;line-height:38px;">ÇANTA %56 İNDİRİMLİ </div>
                                 <div style="position:absolute;top:200px;left:30px;width:480px;height:120px;z-index:0;font-size:100px;color:#ffffff;line-height:38px;">250 TL</div>
                                 <div style="position:absolute;top:20px;left:650px;width:470px;height:377px;z-index:0;">
@@ -188,6 +188,10 @@
                                 </h:link>
                                 <h3>#{product.type.brand.brandName}</h3>
                                 <p>
+                                    <h:outputText style="font-weight: bold; color: #3d4449;" value="Ürün Kodu : "/>
+                                    <h:outputText value="#{product.productCode}" />                                
+                                </p>
+                                <p>
                                     <h:outputText value="#{product.type.typeName}           " />
                                     <h:outputText style="background-color: deeppink; color: white; font-weight: bold;" value="% #{product.discount} İndirim " 
                                                   rendered="#{product.discount gt 30}"/>
@@ -208,42 +212,7 @@
                         </c:forEach>                                
                     </div>
                 </section>
-            </h:form>
-            <h:form rendered="#{!mainPageMB.showMainPage}">
-                <!-- Section -->
-                <section>
-                    <header class="major">
-                        <h2>#{mainPageMB.selectedType.brand.brandName} (#{mainPageMB.selectedType.typeName})</h2>
-                    </header>
-                    <p:outputLabel value="Ürün bulunmamaktadır." rendered="#{mainPageMB.productList.size() eq 0}"/>
-                    <div class="posts">
-                        <c:forEach var="product" items="#{mainPageMB.productList}" >
-                            <article>
-                                <a href="#" class="image">
-                                    <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" 
-                                                    alt="Resim bulunamadı.">
-                                        <f:param name="imageId" value="#{product.imageList.get(0).imageId}" />
-                                    </p:graphicImage>
-                                </a>
-                                <h3>#{product.type.brand.brandName}</h3>
-                                <p>
-                                    <h:outputText value="#{product.type.typeName}           " />
-                                    <h:outputText style="background-color: red; color: white; font-weight: bold;" value="% #{product.discount} İndirim " 
-                                                  rendered="#{product.discount gt 30}"/>
-                                </p>
-                                <p>
-                                    <h:outputText style="text-decoration: line-through;" value="#{product.productFirstPrice} TL" />
-                                    <h:outputText style=" font-size: x-large; color: orange;" value="    #{product.productPrice} TL" />
-                                </p>
-                                <ul class="actions">
-                                    <li><a href="#" class="button">Detay</a></li>
-                                </ul>
-                            </article>
-                        </c:forEach>                                
-                    </div>
-                </section>
-
-            </h:form>
+            </h:form>            
         </ui:define>
     </ui:composition>    
 </html>

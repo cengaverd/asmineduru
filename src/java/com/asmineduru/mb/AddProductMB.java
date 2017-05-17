@@ -8,7 +8,6 @@ import com.asmineduru.model.Type;
 import com.asmineduru.util.MessagesController;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -72,8 +71,8 @@ public class AddProductMB implements Serializable {
         image.setImageShow(new DefaultStreamedContent(new ByteArrayInputStream(uploadedFile.getContents())));
         BufferedImage bi = ImageIO.read(new ByteArrayInputStream(uploadedFile.getContents()));
         int width = bi.getWidth();
-        int height = bi.getHeight();        
-        byte[] original=scale(uploadedFile.getContents(), width, height);
+        int height = bi.getHeight();
+        byte[] original = scale(uploadedFile.getContents(), width, height);
         image.setOriginImage(original);
         image.setImage(scale(uploadedFile.getContents(), 250, 320));
         image.setProduct(selectedProduct);
@@ -85,7 +84,17 @@ public class AddProductMB implements Serializable {
         try {
 
             selectedProduct.setType(type);
-            selectedProduct.setProductCode("MK-001");
+            String brandFirstChar = type.getBrand().getBrandName().substring(0, 1);
+            Integer maxId = mainDao.findProductMaxId();
+            String code;
+
+            if (maxId != null) {
+                code = brandFirstChar+"-" + String.format("%04d", maxId + 1);
+            } else {
+                code = brandFirstChar+"-" + String.format("%04d", 1);
+            }
+
+            selectedProduct.setProductCode(code);
             selectedProduct.setUsageStatus(true);
             selectedProduct.setImageList(imageList);
 
@@ -163,7 +172,7 @@ public class AddProductMB implements Serializable {
             BufferedImage imageBuff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2d = imageBuff.createGraphics();
             g2d.drawImage(scaledImage, 0, 0, width, height, null);
-            Color color = new Color(0.9f, 1, 0.8f, 0.3f); 
+            Color color = new Color(0.9f, 1, 0.8f, 0.3f);
             g2d.setPaint(color);
             g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
             String s = "Asmine Duru";
