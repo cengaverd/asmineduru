@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="tr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="template.xhtml">          
+        <ui:define name="content">
+            <h2>Giriş Yap</h2>
+
+            <h:form id="form">
+                <p:messages id="messages" closable="true" autoUpdate="true"/>
+                <div class="row uniform">
+                    <div class="6u 12u(xsmall)">
+                        <p:inputText value="#{memberSessionMB.email}" required="true" id="email" placeholder="E-posta adresiniz"
+                                     requiredMessage="Lütfen e-posta adresinizi giriniz." validator="emailValidator"/>
+                        <br/>
+                        <p:password id="pwd1" value="#{memberSessionMB.password}" feedback="true"
+                                    promptLabel="Lütfen şifrenizi giriniz." weakLabel="Zayıf" 
+                                    requiredMessage="Lütfen şifrenizi giriniz." placeholder="Şifreniz"
+                                    label="Şifre" required="true"/>
+                    </div>                   
+
+                    <div class="12u">
+                        <ul class="actions">
+                            <li><h:commandButton class="special" value="Giriş Yap" action="#{memberSessionMB.login()}"/> </li>
+                            <li><h:commandButton class="special" value="Şifremi Unuttum" action="#{memberSessionMB.forgetPassword()}">
+                                    <f:ajax execute="@this email" />
+                                </h:commandButton>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

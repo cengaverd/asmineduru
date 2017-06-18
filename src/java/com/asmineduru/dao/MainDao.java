@@ -1,7 +1,9 @@
 package com.asmineduru.dao;
 
 import com.asmineduru.model.Brand;
+import com.asmineduru.model.Cart;
 import com.asmineduru.model.Image;
+import com.asmineduru.model.Member;
 import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
 import com.asmineduru.model.Users;
@@ -10,6 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 
@@ -33,6 +36,34 @@ public class MainDao extends Dao implements Serializable {
                             user.getUsername())
                             && veritabani.getPassword().equals(
                                     user.getPassword());
+
+                    if (loginAccept) {
+                        return loginAccept;
+                    }
+                }
+            }
+        } catch (HibernateException e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return loginAccept;
+    }
+
+    public boolean loginControl(Member member) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        boolean loginAccept = false;
+        try {
+            List<Member> objs = session.createCriteria(Member.class)
+                    .list();
+
+            if ((objs != null) && (objs.size() > 0)) {
+
+                for (Member veritabani : objs) {
+                    loginAccept = veritabani.getEmail().equals(
+                            member.getEmail())
+                            && veritabani.getPassword().equals(
+                                    member.getPassword());
 
                     if (loginAccept) {
                         return loginAccept;
@@ -327,6 +358,22 @@ public class MainDao extends Dao implements Serializable {
         }
         return userList;
     }
+    
+    public List<Member> findAllMembers() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Member> memberList;
+        try {
+
+            String hql = "from Member";
+            memberList = session.createQuery(hql).list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return memberList;
+    }
 
     public Integer findProductMaxId() {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -344,6 +391,73 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
         return maxId;
+    }
+
+    public Member findMemberByEmail(String email) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Member member;
+        try {
+
+            String hql = "from Member m where m.email=:email";
+            member = (Member) session.createQuery(hql).setParameter("email", email).uniqueResult();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return member;
+    }
+
+    public Member findMemberByMemberIdAndToken(Integer memberId, String token) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Member member;
+        try {
+
+            String hql = "from Member m where m.memberId=:memberId and m.token=:token";
+            member = (Member) session.createQuery(hql)
+                    .setParameter("memberId", memberId)
+                    .setParameter("token", token)
+                    .uniqueResult();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return member;
+    }
+    
+    public List<Product> findProductListOrderByMaxDiscountInUsage() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Product> productList;
+        try {
+            String hql = "FROM Product p WHERE p.usageStatus =1 order by p.discount desc";
+            productList = session.createQuery(hql).list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return productList;
+    }
+    
+     public List<Cart> findCartListByMemberInUsage(Integer memberId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Cart> cartList;
+        try {
+            String hql = "FROM Cart c WHERE c.usageStatus =1 and c.member.memberId=:memberId";
+            cartList =  session.createQuery(hql)
+                        .setParameter("memberId", memberId)
+                        .list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return cartList;
     }
 
 }

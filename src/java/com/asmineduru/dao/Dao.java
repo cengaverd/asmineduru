@@ -23,6 +23,20 @@ public abstract class Dao {
             session.close();
         }
     }
+    
+    public void updateObject(Object object) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.update(object);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
 
     public void saveOrUpdateObject(Object object) {
         Session session = HibernateUtil.getSessionFactory().openSession();

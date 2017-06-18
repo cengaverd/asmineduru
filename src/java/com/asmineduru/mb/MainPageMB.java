@@ -29,6 +29,10 @@ public class MainPageMB implements Serializable {
     private List<Product> productList;
     private Type selectedType;
     
+    private Product productOne;
+    private Product productTwo;
+    private Product productThree;
+    
     @PostConstruct
     public void init() {
         try {
@@ -38,6 +42,20 @@ public class MainPageMB implements Serializable {
             brandList = mainDao.findAllBrandInUsage();
             showMainPage=true;
             productList=new ArrayList<>();
+            
+            List<Product> productMaxDiscountList=mainDao.findProductListOrderByMaxDiscountInUsage();
+            
+            if (productMaxDiscountList!=null && !productMaxDiscountList.isEmpty()) {
+                productOne=productMaxDiscountList.get(0);
+                if (productMaxDiscountList.size()>0) {
+                    productTwo=productMaxDiscountList.get(1);
+                }
+                
+                if (productMaxDiscountList.size()>1) {
+                    productThree=productMaxDiscountList.get(2);
+                }
+            }
+            
         } catch (Exception e) {
         }
     }
@@ -103,6 +121,30 @@ public class MainPageMB implements Serializable {
 
     public void setSelectedType(Type selectedType) {
         this.selectedType = selectedType;
+    }
+
+    public Product getProductOne() {
+        return productOne;
+    }
+
+    public void setProductOne(Product productOne) {
+        this.productOne = productOne;
+    }
+
+    public Product getProductTwo() {
+        return productTwo;
+    }
+
+    public void setProductTwo(Product productTwo) {
+        this.productTwo = productTwo;
+    }
+
+    public Product getProductThree() {
+        return productThree;
+    }
+
+    public void setProductThree(Product productThree) {
+        this.productThree = productThree;
     }
 
 }

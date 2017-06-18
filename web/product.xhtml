@@ -68,6 +68,17 @@
                             <p>
                                 <h:outputText value="#{productMB.selectedProduct.description}" />
                             </p>
+                            <br/>
+                            <p>
+                                <p:spinner id="minMax" value="#{productMB.quantity}" min="1" max="100" size="3"/>
+                                <h:outputText value="    Adet" />
+                            </p>
+                            <br/>
+                            <ul class="actions">
+                                <li>
+                                    <h:commandButton value="Sepete Ekle" action="#{productMB.goCart()}"/>                                       
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </section> 

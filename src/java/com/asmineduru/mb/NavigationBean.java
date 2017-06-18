@@ -36,4 +36,7 @@ public class NavigationBean implements Serializable {
     public static String redirectToAddUser() {
         return "/secured/userOperations.xhtml?faces-redirect=true";
     }
+    public static String redirectToMemberLogin() {
+        return "/login.xhtml?faces-redirect=true";
+    }
 }

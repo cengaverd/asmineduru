@@ -12,6 +12,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
         <link rel="stylesheet" href="assets/css/main.css" />
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <link href="assets/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
         <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
     </h:head>
@@ -31,10 +33,25 @@
                                 <li class="fa-phone" style="font-size: large;">(545) 905 3421</li>                            
                             </ul>
                             <ul class="icons">
-                                <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                                <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                                <li><a href="#" class="icon fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
-                                <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+                                <h:panelGroup rendered="#{!memberSessionMB.loggedIn}">
+                                    <li><h:link id="giris" outcome="login" value="Giriş Yap" style="border-bottom: 0;"/></li>
+                                    <li><h:link id="uye" outcome="registration" value="Üye Ol" style="border-bottom: 0;"/></li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{memberSessionMB.loggedIn}">
+                                    <li><h:link id="sepet" outcome="cart" style="border-bottom: 0;"><i data-count="#{productMB.cartList.size()}" class="fa fa-shopping-cart fa-2x badge"></i></h:link></li>
+                                    <li><div class="dropdown">
+                                            <a class="btn btn-primary" href="#" style="border-bottom: 0;"><i class="fa fa-user fa-2x"></i> #{memberSessionMB.member.username}</a>
+                                            <div class="dropdown-content">
+                                                <h:link id="settings" outcome="settings" style="border-bottom: 0;">
+                                                    Ayarlar <i class="fa fa-cog fa-2x"></i>
+                                                </h:link>
+                                                <p:commandLink id="cikis" action="#{memberSessionMB.quit()}" style="border-bottom: 0;" process="@this">
+                                                    Güvenli Çıkış <i class="fa fa-sign-out fa-2x"></i>
+                                                </p:commandLink>
+                                            </div> 
+                                        </div>
+                                    </li>
+                                </h:panelGroup>
                             </ul>
                         </header> 
                         <ui:insert name="content"/>             
@@ -116,6 +133,12 @@
                             <ul class="contact">
                                 <li class="fa-envelope-o"><a href="#">asmineduru@gmail.com</a></li>
                                 <li class="fa-phone">(545) 905 3421</li>                            
+                            </ul>
+                            <ul class="icons">
+                                <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                                <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                                <li><a href="#" class="icon fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
+                                <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
                             </ul>
                         </section>
 

@@ -46,7 +46,12 @@
                                     <h:outputText style=" font-size: x-large; color: orange;" value="    #{product.productPrice} TL" />
                                 </p>
                                 <ul class="actions">
-                                    <li><a href="#" class="button">Detay</a></li>
+                                    <li>
+                                        <h:link id="detay" outcome="product" class="button">
+                                            <f:param name="productId" value="#{product.productId}" />
+                                            Detay
+                                        </h:link>
+                                    </li>
                                 </ul>
                             </article>
                         </c:forEach>                                

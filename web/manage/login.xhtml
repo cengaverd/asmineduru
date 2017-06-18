@@ -18,12 +18,12 @@
                                 <td><h:outputLabel for="username" value="Kullanıcı Adı:" /></td>
                                 <td>
                                     <p:inputText id="username"
-                                                 value="#{sessionMB.user.username}"/>
+                                                 value="#{sessionMB.user.username}" required="true" requiredMessage="Kullanıcı adı boş bırakılamaz."/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><h:outputLabel for="password" value="Şifre:" /></td>
-                                <td><p:password id="password" value="#{sessionMB.user.password}" /></td>
+                                <td><p:password id="password" value="#{sessionMB.user.password}" required="true" requiredMessage="Şifre boş bırakılamaz." /></td>
                             </tr>
                             <tr>
                                 <td align="center" colspan="2">

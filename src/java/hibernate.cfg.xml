@@ -4,8 +4,8 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://IP:3306/asmine_main?user=USER&amp;password=PASS</property>
-        
+        <property name="hibernate.connection.url">jdbc:mysql://198.38.82.203:3306/asmine_main?user=USERNAME&amp;password=PASSWORD</property>
+
         <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
         <property name="connection.autoReconnect">true</property>
         <property name="connection.autoReconnectForPools">true</property>
@@ -15,10 +15,15 @@
         <property name="c3p0.idle_test_period">120</property> <!-- seconds --> 
         <property name="c3p0.timeout">180</property> <!-- seconds -->
         <property name="c3p0.preferredTestQuery">select 1;</property>
+        
+<!--        <property name="hibernate.hbm2ddl.auto">create</property>-->
    
         <mapping class="com.asmineduru.model.Brand"></mapping>
         <mapping class="com.asmineduru.model.Type"></mapping>
         <mapping class="com.asmineduru.model.Product"></mapping>
         <mapping class="com.asmineduru.model.Image"></mapping>
+        <mapping class="com.asmineduru.model.Users"></mapping>
+        <mapping class="com.asmineduru.model.Member"></mapping>
+        <mapping class="com.asmineduru.model.Cart"></mapping>
     </session-factory>
 </hibernate-configuration>

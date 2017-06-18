@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="tr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="template.xhtml">          
+        <ui:define name="content">
+            <h2>Hesap Oluştur</h2>
+
+            <h:form id="form">
+                <p:messages id="messages" closable="true" autoUpdate="true"/>
+                <div class="row uniform">
+                    <div class="6u 12u(xsmall)">
+                        <p:inputText value="#{registrationMB.member.username}" required="true" 
+                                     requiredMessage="Lütfen kullanıcı adınızı giriniz." placeholder="Kullanıcı Adınız"/>
+                    </div>
+                    <div class="6u 12u(xsmall)">
+                        <p:inputText value="#{registrationMB.member.email}" required="true"  placeholder="E-posta"
+                                     requiredMessage="Lütfen mail adresinizi giriniz." validator="emailValidator"/>
+                    </div>
+                    <div class="6u 12u(xsmall)">
+                        <p:inputText value="#{registrationMB.member.name}" required="true" 
+                                     requiredMessage="Lütfen adınızı giriniz." placeholder="Adınız"/>
+                    </div>
+                    <div class="6u 12u(xsmall)">
+                        <p:inputText value="#{registrationMB.member.surname}" required="true" 
+                                     requiredMessage="Lütfen soyadınızı giriniz." placeholder="Soyadınız"/>
+                    </div>                         
+                    <div class="6u 12u(xsmall)">
+                        <p:password id="pwd1" value="#{registrationMB.password}" feedback="true"
+                                    inline="true" validator="passwordValidator"
+                                    promptLabel="Lütfen şifrenizi giriniz." weakLabel="Zayıf" 
+                                    requiredMessage="Lütfen şifrenizi giriniz." placeholder="Şifre"
+                                    goodLabel="Orta seviye" strongLabel="Güçlü" label="Şifre"
+                                    required="true" />
+                    </div>
+                    <div class="6u 12u(xsmall)">
+                        <p:password id="pwd2" value="#{registrationMB.password2}" feedback="true"
+                                    inline="true" 
+                                    validator="confirmPasswordValidator"
+                                    promptLabel="Lütfen şifreyi tekrar giriniz." weakLabel="Zayıf" 
+                                    requiredMessage="Lütfen şifreyi tekrar giriniz." placeholder="Şifre Tekrar"
+                                    goodLabel="Orta seviye" strongLabel="Güçlü" required="true" label="Şifre Tekrar" />
+                    </div>
+                    <!-- Break -->
+                    <div class="12u">
+                        <ul class="actions">
+                            <li><h:commandButton class="special" value="Hesabımı Oluştur" action="#{registrationMB.saveMember()}"/> </li>
+                        </ul>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

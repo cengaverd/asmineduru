@@ -123,39 +123,76 @@
                         </div>
                         <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:1300px;height:500px;overflow:hidden;">
                             <div>
-                                <img data-u="image" src="images/purple.jpg" />
-                                <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">Michael Kors</div>
-                                <div style="position:absolute;top:100px;left:30px;width:480px;height:120px;z-index:0;font-size:30px;color:#ffffff;line-height:38px;">CÜZDAN %76 İNDİRİMLİ </div>
-                                <div style="position:absolute;top:200px;left:30px;width:480px;height:120px;z-index:0;font-size:100px;color:#ffffff;line-height:38px;">130 TL</div>
-                                <div style="position:absolute;top:20px;left:650px;width:470px;height:220px;z-index:0;">
-                                    <div style="position:absolute;top:4px;left:45px;width:320px;height:426px;z-index:0; overflow:hidden;">
-                                        <img data-u="caption" data-t="0" style="position:absolute;top:0px;left:0px;width:320px;height:426px;z-index:0;" src="images/small/6.JPG" />
-                                        <img data-u="caption" data-t="1" style="position:absolute;top:0px;left:379px;width:320px;height:426px;z-index:0;" src="images/small/6A.JPG" />
-                                    </div>
-                                    <img data-u="caption" data-t="2" style="position:absolute;top:476px;left:454px;width:63px;height:77px;z-index:0;" src="images/hand.png" />
-                                </div>
+                                <h:link id="detay1" outcome="product" class="button">
+                                    <f:param name="productId" value="#{mainPageMB.productOne.productId}" />
+
+                                    <img data-u="image" src="images/purple.jpg" />
+                                    <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">#{mainPageMB.productOne.type.brand.brandName}</div>
+                                    <div style="position:absolute;top:100px;left:30px;width:480px;height:120px;z-index:0;font-size:30px;color:#ffffff;line-height:38px;">#{mainPageMB.productOne.type.typeName} %#{mainPageMB.productOne.discount} İNDİRİMLİ </div>
+                                    <div style="position:absolute;top:200px;left:30px;width:480px;height:120px;z-index:0;font-size:100px;color:#ffffff;line-height:38px;">#{mainPageMB.productOne.productPrice} TL</div>
+                                    <ui:fragment rendered="#{mainPageMB.productOne.imageList.size() gt 1}">
+                                        <div style="position:absolute;top:20px;left:650px;width:470px;height:220px;z-index:0;">
+                                            <div style="position:absolute;top:4px;left:45px;width:320px;height:426px;z-index:0; overflow:hidden;">
+                                                <img data-u="caption" data-t="0" style="position:absolute;top:0px;left:0px;width:320px;height:426px;z-index:0; border-radius: 0.375em;" src="#{mainPageMB.productOne.imageList.get(0).stringImage}" />
+                                                <img data-u="caption" data-t="1" style="position:absolute;top:0px;left:379px;width:320px;height:426px;z-index:0; border-radius: 0.375em;" src="#{mainPageMB.productOne.imageList.get(1).stringImage}" />
+                                            </div>
+                                            <img data-u="caption" data-t="2" style="position:absolute;top:476px;left:454px;width:63px;height:77px;z-index:0;" src="images/hand.png" />
+                                        </div>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{mainPageMB.productOne.imageList.size() eq 1}">
+                                        <div style="position:absolute;top:20px;left:650px;width:470px;height:220px;z-index:0;">
+                                            <img style="position:absolute;top:0px;left:0px;width:320px;height:377px;z-index:0; border-radius: 0.375em;" src="#{mainPageMB.productOne.imageList.get(0).stringImage}" />
+                                        </div>
+                                    </ui:fragment>
+                                </h:link>
                             </div>
                             <div>
-                                <img data-u="image" src="images/red.jpg" />
-                                <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">Michael Kors</div>
-                                <div style="position:absolute;top:100px;left:30px;width:480px;height:120px;z-index:0;font-size:30px;color:#ffffff;line-height:38px;">BABET %25 İNDİRİMLİ </div>
-                                <div style="position:absolute;top:200px;left:30px;width:480px;height:120px;z-index:0;font-size:100px;color:#ffffff;line-height:38px;">385 TL</div>
-                                <div style="position:absolute;top:20px;left:650px;width:320px;height:377px;z-index:0;">
-                                    <img style="position:absolute;top:0px;left:0px;width:320px;height:377px;z-index:0;" src="images/small/2.JPG" />
-                                </div>
+                                <h:link id="detay2" outcome="product" class="button">
+                                    <f:param name="productId" value="#{mainPageMB.productTwo.productId}" />
+
+                                    <img data-u="image" src="images/red.jpg" />
+                                    <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">#{mainPageMB.productTwo.type.brand.brandName}</div>
+                                    <div style="position:absolute;top:100px;left:30px;width:480px;height:120px;z-index:0;font-size:30px;color:#ffffff;line-height:38px;">#{mainPageMB.productTwo.type.typeName} %#{mainPageMB.productTwo.discount} İNDİRİMLİ </div>
+                                    <div style="position:absolute;top:200px;left:30px;width:480px;height:120px;z-index:0;font-size:100px;color:#ffffff;line-height:38px;">#{mainPageMB.productTwo.productPrice} TL</div>
+                                    <ui:fragment rendered="#{mainPageMB.productTwo.imageList.size() gt 1}">
+                                        <div style="position:absolute;top:20px;left:650px;width:470px;height:220px;z-index:0;">
+                                            <div style="position:absolute;top:4px;left:45px;width:320px;height:426px;z-index:0; overflow:hidden;">
+                                                <img data-u="caption" data-t="0" style="position:absolute;top:0px;left:0px;width:320px;height:426px;z-index:0; border-radius: 0.375em;" src="#{mainPageMB.productTwo.imageList.get(0).stringImage}" />
+                                                <img data-u="caption" data-t="1" style="position:absolute;top:0px;left:379px;width:320px;height:426px;z-index:0; border-radius: 0.375em;" src="#{mainPageMB.productTwo.imageList.get(1).stringImage}" />
+                                            </div>
+                                            <img data-u="caption" data-t="2" style="position:absolute;top:476px;left:454px;width:63px;height:77px;z-index:0;" src="images/hand.png" />
+                                        </div>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{mainPageMB.productTwo.imageList.size() eq 1}">
+                                        <div style="position:absolute;top:20px;left:650px;width:470px;height:220px;z-index:0;">
+                                            <img style="position:absolute;top:0px;left:0px;width:320px;height:377px;z-index:0; border-radius: 0.375em;" src="#{mainPageMB.productTwo.imageList.get(0).stringImage}" />
+                                        </div>
+                                    </ui:fragment>
+                                </h:link>
                             </div>
                             <div>
-                                <img data-u="image" src="images/blue.jpg" />
-                                <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">Guess</div>
-                                <div style="position:absolute;top:100px;left:30px;width:480px;height:120px;z-index:0;font-size:30px;color:#ffffff;line-height:38px;">ÇANTA %56 İNDİRİMLİ </div>
-                                <div style="position:absolute;top:200px;left:30px;width:480px;height:120px;z-index:0;font-size:100px;color:#ffffff;line-height:38px;">250 TL</div>
-                                <div style="position:absolute;top:20px;left:650px;width:470px;height:377px;z-index:0;">
-                                    <div style="position:absolute;top:4px;left:45px;width:320px;height:426px;z-index:0; overflow:hidden;">
-                                        <img data-u="caption" data-t="0" style="position:absolute;top:0px;left:0px;width:320px;height:326px;z-index:0;" src="images/small/3.JPG" />
-                                        <img data-u="caption" data-t="1" style="position:absolute;top:0px;left:379px;width:320px;height:426px;z-index:0;" src="images/small/3A.JPG" />
-                                    </div>
-                                    <img data-u="caption" data-t="2" style="position:absolute;top:476px;left:454px;width:63px;height:77px;z-index:0;" src="images/hand.png" />
-                                </div>
+                                <h:link id="detay3" outcome="product" class="button">
+                                    <f:param name="productId" value="#{mainPageMB.productThree.productId}" />
+
+                                    <img data-u="image" src="images/blue.jpg" />
+                                    <div style="position:absolute;top:30px;left:30px;width:480px;height:120px;z-index:0;font-size:50px;color:#ffffff;line-height:60px;">#{mainPageMB.productThree.type.brand.brandName}</div>
+                                    <div style="position:absolute;top:100px;left:30px;width:480px;height:120px;z-index:0;font-size:30px;color:#ffffff;line-height:38px;">#{mainPageMB.productThree.type.typeName} %#{mainPageMB.productThree.discount} İNDİRİMLİ </div>
+                                    <div style="position:absolute;top:200px;left:30px;width:480px;height:120px;z-index:0;font-size:100px;color:#ffffff;line-height:38px;">#{mainPageMB.productThree.productPrice} TL</div>
+                                    <ui:fragment rendered="#{mainPageMB.productThree.imageList.size() gt 1}">
+                                        <div style="position:absolute;top:20px;left:650px;width:470px;height:220px;z-index:0;">
+                                            <div style="position:absolute;top:4px;left:45px;width:320px;height:426px;z-index:0; overflow:hidden;">
+                                                <img data-u="caption" data-t="0" style="position:absolute;top:0px;left:0px;width:320px;height:426px;z-index:0; border-radius: 0.375em;" src="#{mainPageMB.productThree.imageList.get(0).stringImage}" />
+                                                <img data-u="caption" data-t="1" style="position:absolute;top:0px;left:379px;width:320px;height:426px;z-index:0; border-radius: 0.375em;" src="#{mainPageMB.productThree.imageList.get(1).stringImage}" />
+                                            </div>
+                                            <img data-u="caption" data-t="2" style="position:absolute;top:476px;left:454px;width:63px;height:77px;z-index:0;" src="images/hand.png" />
+                                        </div>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{mainPageMB.productThree.imageList.size() eq 1}">
+                                        <div style="position:absolute;top:20px;left:650px;width:470px;height:220px;z-index:0;">
+                                            <img style="position:absolute;top:0px;left:0px;width:320px;height:377px;z-index:0; border-radius: 0.375em;" src="#{mainPageMB.productThree.imageList.get(0).stringImage}" />
+                                        </div>
+                                    </ui:fragment>
+                                </h:link>
                             </div>
                         </div>
                         <!-- Bullet Navigator -->

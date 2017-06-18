@@ -2,19 +2,29 @@ package com.asmineduru.model;
 
 import com.asmineduru.util.MD5;
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(catalog = "asmine_main", schema = "")
 @XmlRootElement
-public class Users implements Serializable {
+public class Member implements Serializable {
 
     @Id
+    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer memberId;
+    @Column(name = "email", nullable = false)
+    private String email;
     @Column(name = "username", nullable = false, length = 45)
     private String username;
     @Column(name = "name", nullable = false, length = 45)
@@ -23,8 +33,13 @@ public class Users implements Serializable {
     private String surname;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "EMAIL", nullable = false)
-    private String email;
+    @Column(name = "active", nullable = false)
+    private boolean active;
+    @Column(name = "token")
+    private String token;
+    @Column(name = "expiryDate")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date expiryDate;
 
     public String getUsername() {
         return username;
@@ -55,11 +70,7 @@ public class Users implements Serializable {
     }
 
     public void setPassword(String password) {
-        if (!username.equals("asmineduru")) {
-            this.password = MD5.crypt(password);
-        } else {
-            this.password = password;
-        }
+        this.password = MD5.crypt(password);
     }
 
     public String getEmail() {
@@ -68,6 +79,38 @@ public class Users implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Integer getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
 }

@@ -10,7 +10,7 @@
         <h:form id="form">
             <p:messages id="msg" autoUpdate="true" closable="true"/>
             <p:dataTable value="#{addBrandTypeMB.brandList}" var="brand" id="table" 
-                         emptyMessage="Liste boştur.">
+                         emptyMessage="Liste boştur." reflow="true">
                 <f:facet name="header" id="hee">
                     <div style="text-align: center">  Marka Listesi</div>
                     <div style="text-align: right">

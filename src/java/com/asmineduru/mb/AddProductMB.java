@@ -222,6 +222,7 @@ public class AddProductMB implements Serializable {
     public void deleteImage() {
         try {
             imageList.remove(selectedImage);
+            mainDao.deleteObject(selectedImage);
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('resimSil').hide();");
         } catch (Exception e) {

@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="tr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="template.xhtml">  
+        <ui:define name="content">            
+            <h:form id="form">
+                <br/>
+                <p:dataTable var="cart" value="#{productMB.cartList}" reflow="true" styleClass="cart"
+                             id="dtable" emptyMessage="Sepetinizde ürün bulunmamaktdır.">                   
+                    <p:column headerText="Ürün" style="text-align: left;">
+                        <center>
+                        <div style="text-align: left; width: 70%">
+                            <div style="display: inline-block; vertical-align: top; margin-right: 10px;">
+                                <h:link id="ajax" outcome="product" class="image">
+                                    <f:param name="productId" value="#{cart.product.productId}" />
+                                    <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" 
+                                                    alt="Resim bulunamadı." width="80" height="100">
+                                        <f:param name="imageId" value="#{cart.product.imageList.get(0).imageId}" />
+                                    </p:graphicImage>
+                                </h:link>
+                            </div>
+                            <div style="display: inline-block; vertical-align: top;">
+                                <br/>
+                                <h:outputText value="   #{cart.product.type.brand.brandName}"/><br/>
+                                <h:outputText value="#{cart.product.productCode}"/><br/>
+                                <h:outputText value="#{cart.product.type.typeName}"/>
+                            </div>
+                        </div>
+                            </center>
+                    </p:column>
+
+                    <p:column headerText="Adet" style="vertical-align: middle; text-align: left;">
+                        <h:commandButton class="button special small" value="-" action="#{productMB.decrease(cart)}">
+                            <f:ajax execute="dtable" render="dtable" />
+                        </h:commandButton>
+                        <h:outputText value="  #{cart.quantity} Adet  " style="font-size: large;"/>
+                        <h:commandButton class="button special small" value="+" action="#{productMB.increase(cart)}">
+                            <f:ajax execute="dtable" render="dtable" />
+                        </h:commandButton>
+                    </p:column>
+
+                    <p:column headerText="Fiyat" style="vertical-align: middle; text-align: left;">
+                        <h:outputText value="#{cart.product.productPrice.multiply(cart.quantity)} TL" />
+                        <h:outputText value="  (#{cart.quantity} X #{cart.product.productPrice} TL)" rendered="#{cart.quantity gt 1}"/>
+                    </p:column>
+
+                    <p:column style="vertical-align: middle; font-size: large;">
+                        <h:commandButton value="Sil" action="#{productMB.delete()}" class="button small">
+                            <f:setPropertyActionListener value="#{cart}" 
+                                                         target="#{productMB.selectedCart}" />
+
+                        </h:commandButton>
+                    </p:column>
+                    <f:facet name="footer">
+                        <h:outputText value="Genel Toplam: " style="font-size: large;"/>
+                        <h:outputText value="#{productMB.totalPrice} TL" style="font-weight: bold; font-size: large;"/>
+                    </f:facet>
+
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
