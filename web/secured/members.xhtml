@@ -1,0 +1,57 @@
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="msg" autoUpdate="true" closable="true"/>
+            <p:dataTable value="#{membersMB.memberList}" var="member" id="table" 
+                         emptyMessage="Liste boştur.">
+                <f:facet name="header" id="hee">
+                    <div style="text-align: center">  Üye Listesi</div>                                       
+                </f:facet>
+                <p:column headerText="Üye Adı" style="text-align: center; width: 250px">
+                    <p:outputLabel value="#{member.username}" />
+                </p:column>
+                <p:column headerText="Adı ve Soyadı" style="text-align: center; width: 250px">
+                    <p:outputLabel value="#{member.name} #{member.surname}" />
+                </p:column>
+
+                <p:column headerText="E-Mail" style="text-align: center; width: 250px;">                   
+                    <p:outputLabel value="#{member.email}" />
+                </p:column>  
+                <p:column>
+                    <center>
+                        <p:commandLink onclick="PF('sil').show();" id="sil">
+                            <p:graphicImage value="/images/delete.png" />
+                            <f:setPropertyActionListener value="#{member}" 
+                                                         target="#{membersMB.selectedMember}" />
+                        </p:commandLink>
+                        <p:tooltip id="toolTipSil" for="sil" value="Sil" trackMouse="true"/>
+                    </center>
+                </p:column>
+                <f:facet name="footer">                    
+                    Toplam üye sayısı: #{fn:length(membersMB.memberList)}
+                </f:facet>
+            </p:dataTable>            
+            <br/>
+        </h:form>   
+        
+        <p:dialog header="Üye Sil Onay" widgetVar="sil" resizable="false">
+            <h:form id="silForm">               
+                <p:outputLabel value="Üyeyi silmek istediğinize emin misiniz?" />                
+                <br/><br/>
+                <center>
+                    <p:commandButton update="form:table" value="Evet" oncomplete="PF('sil').hide();"
+                                     action="#{membersMB.deleteMember()}"/>
+                    <p:commandButton value="Hayır" style="margin-left: 10px;"
+                                     onclick="PF('sil').hide();"/> 
+                </center>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
