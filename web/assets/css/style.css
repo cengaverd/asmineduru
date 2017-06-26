@@ -96,14 +96,14 @@ i {
 }
 
 .ui-datatable.cart .ui-datatable-footer {
-   background: #f56a6a !important;
- }
- 
-.ui-datatable.cart table {
-   table-layout: auto;
- }
+    background: #f56a6a !important;
+}
 
- 
+.ui-datatable.cart table {
+    table-layout: auto;
+}
+
+
 
 
 .dropdown-content {
@@ -117,7 +117,7 @@ i {
 }
 
 .dropdown-content a {
-    padding: 2px 6px;
+    padding: 3px 6px;
     text-decoration: none;
     display: block;
 }
@@ -128,3 +128,50 @@ i {
     display: block;
 }
 
+.likeText{
+
+    padding:0 15px 0 15px; 
+    border-right: thin solid #cccccc; 
+    font-family: 'Open Sans'; 
+    color: black; 
+    font-size: medium; 
+    font-weight: bold; 
+    vertical-align: central;
+}
+
+.commentText{
+    
+    padding:0 15px 0 15px; 
+    font-family: 'Open Sans'; 
+    color: black; 
+    font-size: medium; 
+    font-weight: bold;
+    vertical-align: central;
+}
+
+/*.ui-growl {
+position:fixed;
+bottom: 30% !important;
+left: 50%;
+z-index:9999;
+}*/
+
+.icerik {
+	width: 100%;
+}
+
+.sol {
+	width: 50%;
+	height: 100%;
+	float: left;
+}
+
+
+.sag {
+	width: 45%;
+	height: 100%;
+	float: right;
+        text-align: left;
+	position: relative;
+        
+}

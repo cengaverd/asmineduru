@@ -8,16 +8,16 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
     <ui:composition template="template.xhtml"> 
-
+        
         <ui:define name="content">
-            <h:form id="formProducts">
+            <h:form id="formFavorite">
                 <section>
                     <header class="major">
-                        <h2>#{productMB.selectedType.brand.brandName} (#{productMB.selectedType.typeName})</h2>
+                        <h2>Favorilerim</h2>
                     </header>
-                    <p:outputLabel value="Ürün bulunmamaktadır." rendered="#{productMB.productList.size() eq 0}"/>
+                    <p:outputLabel value="Ürün bulunmamaktadır." rendered="#{favoriteMB.favoriteProductList.size() eq 0}"/>
                     <div class="posts">
-                        <ui:repeat var="product" value="#{productMB.productList}" id="repeat" varStatus="val">    
+                        <ui:repeat var="product" value="#{favoriteMB.favoriteProductList}" id="repeat" varStatus="val">    
                             <article>
                                 <p:commandLink id="ajax" actionListener="#{productMB.loadData(product)}" action="/product.xhtml?faces-redirect=true" class="image">
                                     <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" 
@@ -41,23 +41,14 @@
                                 </p>
                                 <ul class="actions" style="text-align: center;">
                                     <li>
-                                        <h:panelGroup id="group">
-                                            <p:commandLink id="like" action="#{productMB.like(product)}" style="border-bottom: 0;" 
-                                                           update="group" rendered="#{!product.memberFavorite}">
-                                                <i class="fa fa-heart-o fa-2x" style="color: #f45c5c;">
-                                                    <h:outputText value="#{product.likeCount}" styleClass="likeText"/>
-                                                </i>
-                                            </p:commandLink>
-
-                                            <p:commandLink id="disLike" action="#{productMB.disLike(product)}" style="border-bottom: 0;" 
-                                                           update="group" rendered="#{product.memberFavorite}">
-                                                <i class="fa fa-heart fa-2x" style="color: #f45c5c;">
-                                                    <h:outputText value="#{product.likeCount}" styleClass="likeText"/>
-                                                </i>
-                                            </p:commandLink>
-                                        </h:panelGroup>
+                                        <p:commandLink id="disLike" action="#{favoriteMB.disLike(product)}" style="border-bottom: 0;" 
+                                                       update="form" rendered="#{product.memberFavorite}">
+                                            <i class="fa fa-heart fa-2x" style="color: #f45c5c;">
+                                                <h:outputText value="#{product.likeCount}" styleClass="likeText"/>
+                                            </i>
+                                        </p:commandLink>
                                         <p:spacer width="20"/>
-                                        <p:commandLink id="comment"  style="border-bottom: 0; padding-left: 15px;" update="@this">
+                                        <p:commandLink id="comment"  style="border-bottom: 0; padding-left: 15px;" update="@parent">
                                             <i class="fa fa-commenting-o fa-2x">
                                                 <h:outputText value="0" styleClass="commentText"/>
                                             </i>

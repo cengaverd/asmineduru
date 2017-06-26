@@ -4,7 +4,8 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://198.38.82.203:3306/asmine_main?user=USERNAME&amp;password=PASSWORD</property>
+        <property name="hibernate.connection.url">jdbc:mysql://198.38.82.203:3306/asmine_main?user=USER&amp;password=PASS</property>
+<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/asmine_main?user=root&amp;password=1234</property>-->
 
         <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
         <property name="connection.autoReconnect">true</property>
@@ -25,5 +26,6 @@
         <mapping class="com.asmineduru.model.Users"></mapping>
         <mapping class="com.asmineduru.model.Member"></mapping>
         <mapping class="com.asmineduru.model.Cart"></mapping>
+        <mapping class="com.asmineduru.model.Likes"></mapping>
     </session-factory>
 </hibernate-configuration>

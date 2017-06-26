@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -79,6 +80,12 @@ public class Product implements Serializable {
     
     @Formula("((productFirstPrice-productPrice)*100)/productFirstPrice")
     private Integer discount;
+    
+    @Formula("(select count(*) from Likes l where l.productId=productId)")
+    private Integer likeCount;
+    
+    @Transient
+    private boolean memberFavorite;
 
     public Product() {
     }
@@ -182,6 +189,24 @@ public class Product implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public boolean isMemberFavorite() {
+        return memberFavorite;
+    }
+
+    public void setMemberFavorite(boolean memberFavorite) {
+        this.memberFavorite = memberFavorite;
+    }
+    
+    
 
     @Override
     public int hashCode() {

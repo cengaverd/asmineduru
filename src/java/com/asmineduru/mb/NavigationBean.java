@@ -13,6 +13,12 @@ public class NavigationBean implements Serializable {
     public static String redirectToWebSite() {
         return "/index.xhtml?faces-redirect=true";
     }
+    public static String redirectToProduct() {
+        return "/product.xhtml?faces-redirect=true";
+    }   
+    public static String redirectToProducts() {
+        return "/products.xhtml?faces-redirect=true";
+    }
 
     public static String redirectToLogin() {
         return "/manage/login.xhtml?faces-redirect=true";

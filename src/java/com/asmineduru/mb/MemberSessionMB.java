@@ -38,16 +38,22 @@ public class MemberSessionMB implements Serializable {
         String result = null;
         try {
 
-            member=new Member();
+            FacesContext context = FacesContext.getCurrentInstance();
+            ProductMB productMB = context.getApplication().evaluateExpressionGet(context, "#{productMB}", ProductMB.class);
+
+            member = new Member();
             member.setEmail(email);
             member.setPassword(password);
-            
+
             if (mainDao.loginControl(member)) {
-                
+
                 member = mainDao.findMemberByEmail(email);
 
                 if (member.isActive()) {
                     loggedIn = true;
+                    if (productMB!=null) {
+                        productMB.findCartList();
+                    }
                     result = NavigationBean.redirectToWebSite();
                 } else {
                     MessagesController.uyariVer("E-posta adresinizdeki linke tıklayarak şifrenizi değiştirmelisiniz!");

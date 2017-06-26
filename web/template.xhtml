@@ -9,7 +9,6 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>Asmine Duru</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
         <link rel="stylesheet" href="assets/css/main.css" />
         <link rel="stylesheet" href="assets/css/style.css" />
@@ -30,7 +29,7 @@
                         <header id="header">
                             <a href="index.xhtml" class="logo"><strong><p:outputLabel value="ASMİNE DURU"/></strong> </a>
                             <ul class="contact">
-                                <li class="fa-phone" style="font-size: large;">(545) 905 3421</li>                            
+                                <li class="fa-phone" style="font-size: large;">(0545) 905 3421</li>                            
                             </ul>
                             <ul class="icons">
                                 <h:panelGroup rendered="#{!memberSessionMB.loggedIn}">
@@ -43,10 +42,13 @@
                                             <a class="btn btn-primary" href="#" style="border-bottom: 0;"><i class="fa fa-user fa-2x"></i> #{memberSessionMB.member.username}</a>
                                             <div class="dropdown-content">
                                                 <h:link id="settings" outcome="settings" style="border-bottom: 0;">
-                                                    Ayarlar <i class="fa fa-cog fa-2x"></i>
+                                                    Ayarlar <i class="fa fa-cog"></i>
+                                                </h:link>
+                                                 <h:link id="favorite" outcome="favorite" style="border-bottom: 0;">
+                                                    Favorilerim <i class="fa fa-heart"></i>
                                                 </h:link>
                                                 <p:commandLink id="cikis" action="#{memberSessionMB.quit()}" style="border-bottom: 0;" process="@this">
-                                                    Güvenli Çıkış <i class="fa fa-sign-out fa-2x"></i>
+                                                    Güvenli Çıkış <i class="fa fa-sign-out"></i>
                                                 </p:commandLink>
                                             </div> 
                                         </div>
@@ -69,29 +71,25 @@
                             </header>
                             <ul>
                                 <li><a href="index.xhtml">Ana Sayfa</a></li>
-                                <c:forEach var="brand" items="#{mainPageMB.brandList}" >
+                                <ui:repeat var="brand" value="#{mainPageMB.brandList}"> 
                                     <li>
                                         <span class="opener">#{brand.brandName}</span>
                                         <ul>
-                                            <c:forEach var="type" items="#{brand.typeListForMenu}" >
+                                            <ui:repeat var="type" value="#{brand.typeListForMenu}">
                                                 <li>
-<!--                                                    <p:commandLink id="ajax" ajax="false" actionListener="#{mainPageMB.navigateProducts(type)}">
-                                                        <h:outputText value="#{type.typeName}" />
-                                                    </p:commandLink>-->
-                                                    <h:link id="ajax" outcome="products" value="#{type.typeName}">
-                                                        <f:param name="typeId" value="#{type.typeId}" />
-                                                    </h:link>
+                                                    <p:commandLink id="ajax" action="#{productMB.goProducts(type)}" style="border-bottom: 0;" 
+                                                                   update="@all" value="#{type.typeName}"/>
                                                 </li>                                        
-                                            </c:forEach>
+                                            </ui:repeat>
                                         </ul>
                                     </li>
-                                </c:forEach>
+                                </ui:repeat>
                             </ul>
                         </nav>
 
                         <!-- Section -->
                         <section>
-                            <c:forEach var="product" items="#{mainPageMB.leftSideProductList}" >
+                            <ui:repeat var="product" value="#{mainPageMB.leftSideProductList}"> 
                                 <header class="major">
                                     <h2>#{product.type.brand.brandName}</h2>
                                 </header>
@@ -99,13 +97,12 @@
                                     <center>
                                         <article>
 
-                                            <h:link id="left" outcome="product" class="image">
-                                                <f:param name="productId" value="#{product.productId}" />
+                                            <p:commandLink id="left" actionListener="#{productMB.loadData(product)}" action="#{navigationBean.redirectToProduct}" class="image">
                                                 <p:graphicImage id="myImage" value="#{imageStreamerMB.image}" 
                                                                 alt="Resim bulunamadı.">
                                                     <f:param name="imageId" value="#{product.imageList.get(0).imageId}" />
                                                 </p:graphicImage>
-                                            </h:link>
+                                            </p:commandLink>
                                         </article>
                                         <p>
                                             <h:outputText style="font-weight: bold; color: #3d4449;" value="Ürün Kodu : "/>
@@ -122,7 +119,7 @@
                                         </p>                                        
                                     </center>                        
                                 </div>  
-                            </c:forEach>
+                            </ui:repeat>
                         </section>
 
                         <!-- Section -->

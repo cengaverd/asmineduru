@@ -2,9 +2,13 @@ package com.asmineduru.mb;
 
 import com.asmineduru.dao.MainDao;
 import com.asmineduru.model.Cart;
+import com.asmineduru.model.Likes;
 import com.asmineduru.model.Product;
+import com.asmineduru.model.Type;
+import com.asmineduru.util.MessagesController;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -35,40 +39,79 @@ public class ProductMB implements Serializable {
     private List<Cart> cartList;
     private Cart selectedCart;
     private BigInteger totalPrice;
+    
+    private List<Product> productList;
+    private Type selectedType;
+    private Integer typeId;
 
     @PostConstruct
     public void init() {
         try {
 
+            productList = new ArrayList<>();
             findCartList();
 
         } catch (Exception e) {
         }
     }
-    
-    public void findCartList(){
-         try {
+
+    public void findCartList() {
+        try {
 
             totalPrice = BigInteger.ZERO;
-            
+
             if (memberSessionMB.getMember() != null) {
                 cartList = mainDao.findCartListByMemberInUsage(memberSessionMB.getMember().getMemberId());
-                
+
                 if (cartList != null && !cartList.isEmpty()) {
-                for (Cart cart : cartList) {
-                    totalPrice = totalPrice.add(cart.getProduct().getProductPrice().multiply(cart.getQuantity()));
+                    for (Cart cart : cartList) {
+                        totalPrice = totalPrice.add(cart.getProduct().getProductPrice().multiply(cart.getQuantity()));
+                    }
                 }
-            }
             }
 
         } catch (Exception e) {
-        }        
+        }
     }
-
-    public void loadData() {
+       
+    public String goProducts(Type type) {
         try {
 
-            selectedProduct = mainDao.findProductByProductId(productId);
+            selectedType = type;
+            productList = mainDao.findProductByTypeIdInUsage(selectedType.getTypeId());
+            if (memberSessionMB.getMember() != null) {
+                List<Likes> likes = mainDao.findLikeByMember(memberSessionMB.getMember().getMemberId());
+                
+                if (likes!=null && !likes.isEmpty()) {
+                    
+                    if (productList!=null && !productList.isEmpty()) {
+                        
+                        for (Product product : productList) {
+                            
+                            for (Likes like : likes) {
+                                
+                                if (product.getProductId().equals(like.getProductId())) {
+                                    
+                                    product.setMemberFavorite(true);
+                                    
+                                }
+                            }                            
+                        }
+                    }                    
+                }                
+            }
+            return NavigationBean.redirectToProducts();
+
+        } catch (Exception e) {
+
+        }
+        return NavigationBean.redirectToProducts();
+    }
+
+    public void loadData(Product product) {
+        try {
+
+            selectedProduct = product;
 
             quantity = BigInteger.ONE;
 
@@ -167,12 +210,12 @@ public class ProductMB implements Serializable {
     public void decrease(Cart cart) {
         try {
             if (cart.getQuantity().intValue() > 1) {
-                
-                totalPrice=BigInteger.ZERO;
+
+                totalPrice = BigInteger.ZERO;
 
                 cart.setQuantity(cart.getQuantity().subtract(BigInteger.ONE));
                 mainDao.updateObject(cart);
-                
+
                 if (cartList != null && !cartList.isEmpty()) {
                     for (Cart crt : cartList) {
                         totalPrice = totalPrice.add(crt.getProduct().getProductPrice().multiply(crt.getQuantity()));
@@ -186,8 +229,8 @@ public class ProductMB implements Serializable {
     }
 
     public void increase(Cart cart) {
-        try {            
-            totalPrice=BigInteger.ZERO;
+        try {
+            totalPrice = BigInteger.ZERO;
             cart.setQuantity(cart.getQuantity().add(BigInteger.ONE));
             mainDao.updateObject(cart);
             if (cartList != null && !cartList.isEmpty()) {
@@ -199,6 +242,54 @@ public class ProductMB implements Serializable {
         } catch (Exception e) {
         }
 
+    }
+
+    public String like(Product product) {
+        try {
+            if (memberSessionMB.getMember() != null) {
+
+                Likes like = mainDao.findLikeByMemberAndProduct(memberSessionMB.getMember().getMemberId(), product.getProductId());
+
+                if (like == null) {
+                    like = new Likes();
+                    like.setProductId(product.getProductId());
+                    like.setMemberId(memberSessionMB.getMember().getMemberId());
+                    mainDao.saveObject(like);
+                    product.setLikeCount(product.getLikeCount()+1);
+                    product.setMemberFavorite(true);
+                    MessagesController.bilgiVer("Ürün favorilerinize eklendi.");
+                }
+
+            } else {
+                return NavigationBean.redirectToMemberLogin();
+            }
+
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    public String disLike(Product product) {
+        try {
+            if (memberSessionMB.getMember() != null) {
+
+                Likes like = mainDao.findLikeByMemberAndProduct(memberSessionMB.getMember().getMemberId(), product.getProductId());
+
+                if (like != null) {
+                    
+                    mainDao.deleteObject(like);
+                    product.setLikeCount(product.getLikeCount()-1);
+                    product.setMemberFavorite(false);
+                    MessagesController.bilgiVer("Ürün favorilerinizden çıkarıldı.");
+                }
+
+            } else {
+                return NavigationBean.redirectToMemberLogin();
+            }
+
+        } catch (Exception e) {
+        }
+        return null;
     }
 
 ///////////////////// Getter ve Setter ////////////////////////////////////////
@@ -272,6 +363,30 @@ public class ProductMB implements Serializable {
 
     public void setTotalPrice(BigInteger totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }
+
+    public Type getSelectedType() {
+        return selectedType;
+    }
+
+    public void setSelectedType(Type selectedType) {
+        this.selectedType = selectedType;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 
 }

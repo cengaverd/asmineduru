@@ -3,6 +3,7 @@ package com.asmineduru.dao;
 import com.asmineduru.model.Brand;
 import com.asmineduru.model.Cart;
 import com.asmineduru.model.Image;
+import com.asmineduru.model.Likes;
 import com.asmineduru.model.Member;
 import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
@@ -358,7 +359,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return userList;
     }
-    
+
     public List<Member> findAllMembers() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Member> memberList;
@@ -427,7 +428,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return member;
     }
-    
+
     public List<Product> findProductListOrderByMaxDiscountInUsage() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Product> productList;
@@ -442,15 +443,15 @@ public class MainDao extends Dao implements Serializable {
         }
         return productList;
     }
-    
-     public List<Cart> findCartListByMemberInUsage(Integer memberId) {
+
+    public List<Cart> findCartListByMemberInUsage(Integer memberId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Cart> cartList;
         try {
             String hql = "FROM Cart c WHERE c.usageStatus =1 and c.member.memberId=:memberId";
-            cartList =  session.createQuery(hql)
-                        .setParameter("memberId", memberId)
-                        .list();
+            cartList = session.createQuery(hql)
+                    .setParameter("memberId", memberId)
+                    .list();
 
         } catch (Exception e) {
             throw e;
@@ -458,6 +459,40 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
         return cartList;
+    }
+
+    public Likes findLikeByMemberAndProduct(Integer memberId, Integer productId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Likes like;
+        try {
+            String hql = "FROM Likes l WHERE l.memberId=:memberId and l.productId=:productId";
+            like = (Likes) session.createQuery(hql)
+                    .setParameter("memberId", memberId)
+                    .setParameter("productId", productId)
+                    .uniqueResult();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return like;
+    }
+    
+    public List<Likes> findLikeByMember(Integer memberId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Likes> likes;
+        try {
+            String hql = "FROM Likes l WHERE l.memberId=:memberId";
+            likes = session.createQuery(hql)
+                    .setParameter("memberId", memberId).list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return likes;
     }
 
 }

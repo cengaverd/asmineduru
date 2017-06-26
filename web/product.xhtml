@@ -8,10 +8,6 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
     <ui:composition template="template.xhtml">  
-        <f:metadata>
-            <f:viewParam name="productId" value="#{productMB.productId}" required="true"/>
-            <f:viewAction action="#{productMB.loadData()}"/>
-        </f:metadata>
         <ui:define name="content">
 
             <!--            <link href="assets/zoomImageSlider/css/normalize.css" rel="stylesheet" type="text/css"/>-->
@@ -51,7 +47,32 @@
                             </div>        
                         </div>
                         <div class="large-7 column"> 
-                            <h3>#{productMB.selectedProduct.type.brand.brandName}</h3>
+                            <h3>
+                                <div class="icerik">
+                                    <div class="sol">
+                                        #{productMB.selectedProduct.type.brand.brandName}
+                                    </div>
+                                    <div class="sag">
+                                        <h:panelGroup id="group">
+                                            <p:commandLink id="like" action="#{productMB.like(productMB.selectedProduct)}" style="border-bottom: 0;"
+                                                           update="group" rendered="#{!productMB.selectedProduct.memberFavorite}">
+                                                <i class="fa fa-heart-o" style="color: #f45c5c; display: inline;">
+                                                    <h:outputText value=" Favorilerime Ekle" style="font-size: medium;"/>
+                                                </i>
+                                            </p:commandLink>
+                                            <p:commandLink id="disLike" action="#{productMB.disLike(productMB.selectedProduct)}" style="border-bottom: 0;" 
+                                                           update="group" rendered="#{productMB.selectedProduct.memberFavorite}">
+                                                <i class="fa fa-heart" style="color: #f45c5c; display: inline;">
+                                                    <h:outputText value=" Favorilerimden Çıkar" style="font-size: medium;"/>
+                                                </i>
+                                            </p:commandLink>
+                                        </h:panelGroup>
+                                    </div>                                    
+                                </div>
+
+
+                            </h3>
+
                             <p>
                                 <h:outputText style="font-weight: bold; color: #3d4449; font-size: large;" value="Ürün Kodu : "/>
                                 <h:outputText style="font-size: large;" value="#{productMB.selectedProduct.productCode}" />                                
