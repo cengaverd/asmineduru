@@ -258,9 +258,9 @@
                                         </h:panelGroup>
 
                                         <p:spacer width="20"/>
-                                        <p:commandLink id="comment"  style="border-bottom: 0; padding-left: 15px;" update="@this">
+                                        <p:commandLink id="comment" actionListener="#{productMB.loadData(product)}" action="#{navigationBean.redirectToProduct}" style="border-bottom: 0; padding-left: 15px;" update="@this">
                                             <i class="fa fa-commenting-o fa-2x">
-                                                <h:outputText value="0" styleClass="commentText"/>
+                                                <h:outputText value="#{product.commentCount}" styleClass="commentText"/>
                                             </i>
                                         </p:commandLink>
                                     </li>
@@ -269,6 +269,11 @@
                         </ui:repeat>                                
                     </div>
                 </section>
+                <script>
+                    function focusing() {
+                        document.getElementById('form:prdForm:cmt').focus();
+                    }
+                </script>
             </h:form>            
         </ui:define>
     </ui:composition>    

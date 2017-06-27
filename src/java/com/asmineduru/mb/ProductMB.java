@@ -2,6 +2,7 @@ package com.asmineduru.mb;
 
 import com.asmineduru.dao.MainDao;
 import com.asmineduru.model.Cart;
+import com.asmineduru.model.Comment;
 import com.asmineduru.model.Likes;
 import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
@@ -9,6 +10,7 @@ import com.asmineduru.util.MessagesController;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -39,10 +41,15 @@ public class ProductMB implements Serializable {
     private List<Cart> cartList;
     private Cart selectedCart;
     private BigInteger totalPrice;
-    
+
     private List<Product> productList;
     private Type selectedType;
     private Integer typeId;
+
+    private List<Comment> commentList;
+    private Comment comment;
+    private String inputComment;
+    private boolean adminAnswer;
 
     @PostConstruct
     public void init() {
@@ -73,7 +80,7 @@ public class ProductMB implements Serializable {
         } catch (Exception e) {
         }
     }
-       
+
     public String goProducts(Type type) {
         try {
 
@@ -81,24 +88,24 @@ public class ProductMB implements Serializable {
             productList = mainDao.findProductByTypeIdInUsage(selectedType.getTypeId());
             if (memberSessionMB.getMember() != null) {
                 List<Likes> likes = mainDao.findLikeByMember(memberSessionMB.getMember().getMemberId());
-                
-                if (likes!=null && !likes.isEmpty()) {
-                    
-                    if (productList!=null && !productList.isEmpty()) {
-                        
+
+                if (likes != null && !likes.isEmpty()) {
+
+                    if (productList != null && !productList.isEmpty()) {
+
                         for (Product product : productList) {
-                            
+
                             for (Likes like : likes) {
-                                
+
                                 if (product.getProductId().equals(like.getProductId())) {
-                                    
+
                                     product.setMemberFavorite(true);
-                                    
+
                                 }
-                            }                            
+                            }
                         }
-                    }                    
-                }                
+                    }
+                }
             }
             return NavigationBean.redirectToProducts();
 
@@ -119,6 +126,63 @@ public class ProductMB implements Serializable {
             sb.append("data:image/png;base64,");
             sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(selectedProduct.getImageList().get(0).getImage(), false)));
             contourChart = sb.toString();
+
+            comment = new Comment();
+            commentList = new ArrayList<>();
+            commentList = mainDao.findCommentListByProduct(selectedProduct.getProductId());
+            adminAnswer = false;
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    public String addComment() {
+        try {
+
+            if (memberSessionMB.getMember() != null) {
+
+                if (inputComment != null && !inputComment.equals("")) {
+
+                    if (adminAnswer) {
+
+                        comment.setAdminAnswer(inputComment);
+                        comment.setAdminAnswerDate(new Date());
+                        mainDao.updateObject(comment);
+                        commentList = mainDao.findCommentListByProduct(selectedProduct.getProductId());
+                        comment = new Comment();
+                        inputComment=null;
+                    } else {
+
+                        comment.setComment(inputComment);
+                        comment.setMember(memberSessionMB.getMember());
+                        comment.setProductId(selectedProduct.getProductId());
+                        comment.setUsageStatus(true);
+                        comment.setCommentDate(new Date());
+                        mainDao.saveObject(comment);
+                        commentList = mainDao.findCommentListByProduct(selectedProduct.getProductId());
+                        comment = new Comment();
+                        inputComment=null;
+                    }
+                } else {
+                    MessagesController.uyariVer("Yorum girmelisiniz.");
+                }
+
+            } else {
+                return NavigationBean.redirectToMemberLogin();
+            }
+
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    public void adminAnswer(Comment comment) {
+        try {
+
+            adminAnswer = true;
+            this.comment = comment;
 
         } catch (Exception e) {
 
@@ -255,7 +319,7 @@ public class ProductMB implements Serializable {
                     like.setProductId(product.getProductId());
                     like.setMemberId(memberSessionMB.getMember().getMemberId());
                     mainDao.saveObject(like);
-                    product.setLikeCount(product.getLikeCount()+1);
+                    product.setLikeCount(product.getLikeCount() + 1);
                     product.setMemberFavorite(true);
                     MessagesController.bilgiVer("Ürün favorilerinize eklendi.");
                 }
@@ -268,7 +332,7 @@ public class ProductMB implements Serializable {
         }
         return null;
     }
-    
+
     public String disLike(Product product) {
         try {
             if (memberSessionMB.getMember() != null) {
@@ -276,9 +340,9 @@ public class ProductMB implements Serializable {
                 Likes like = mainDao.findLikeByMemberAndProduct(memberSessionMB.getMember().getMemberId(), product.getProductId());
 
                 if (like != null) {
-                    
+
                     mainDao.deleteObject(like);
-                    product.setLikeCount(product.getLikeCount()-1);
+                    product.setLikeCount(product.getLikeCount() - 1);
                     product.setMemberFavorite(false);
                     MessagesController.bilgiVer("Ürün favorilerinizden çıkarıldı.");
                 }
@@ -387,6 +451,38 @@ public class ProductMB implements Serializable {
 
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public String getInputComment() {
+        return inputComment;
+    }
+
+    public void setInputComment(String inputComment) {
+        this.inputComment = inputComment;
+    }
+
+    public boolean isAdminAnswer() {
+        return adminAnswer;
+    }
+
+    public void setAdminAnswer(boolean adminAnswer) {
+        this.adminAnswer = adminAnswer;
     }
 
 }

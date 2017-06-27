@@ -84,6 +84,9 @@ public class Product implements Serializable {
     @Formula("(select count(*) from Likes l where l.productId=productId)")
     private Integer likeCount;
     
+    @Formula("(select count(*) from Comment c where c.productId=productId)")
+    private Integer commentCount;
+    
     @Transient
     private boolean memberFavorite;
 
@@ -204,6 +207,14 @@ public class Product implements Serializable {
 
     public void setMemberFavorite(boolean memberFavorite) {
         this.memberFavorite = memberFavorite;
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
     }
     
     

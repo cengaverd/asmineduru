@@ -83,27 +83,31 @@ public class AddProductMB implements Serializable {
     public void saveProduct() {
         try {
 
-            selectedProduct.setType(type);
-            String brandFirstChar = type.getBrand().getBrandName().substring(0, 1);
-            Integer maxId = mainDao.findProductMaxId();
-            String code;
+            if (imageList != null && !imageList.isEmpty()) {
+                selectedProduct.setType(type);
+                String brandFirstChar = type.getBrand().getBrandName().substring(0, 1);
+                Integer maxId = mainDao.findProductMaxId();
+                String code;
 
-            if (maxId != null) {
-                code = brandFirstChar+"-" + String.format("%04d", maxId + 1);
-            } else {
-                code = brandFirstChar+"-" + String.format("%04d", 1);
+                if (maxId != null) {
+                    code = brandFirstChar + "-" + String.format("%04d", maxId + 1);
+                } else {
+                    code = brandFirstChar + "-" + String.format("%04d", 1);
+                }
+
+                selectedProduct.setProductCode(code);
+                selectedProduct.setUsageStatus(true);
+                selectedProduct.setImageList(imageList);
+
+                mainDao.saveProductAndImageList(selectedProduct);
+                productList = mainDao.findAllProduct();
+                clearAddProduct();
+                MessagesController.bilgiVer("Kaydetme işlemi yapıldı.");
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('dlg').hide();");
+            }else{
+                MessagesController.uyariVer("Resim eklemelisiniz.");
             }
-
-            selectedProduct.setProductCode(code);
-            selectedProduct.setUsageStatus(true);
-            selectedProduct.setImageList(imageList);
-
-            mainDao.saveProductAndImageList(selectedProduct);
-            productList = mainDao.findAllProduct();
-            clearAddProduct();
-            MessagesController.bilgiVer("Kaydetme işlemi yapıldı.");
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("PF('dlg').hide();");
 
         } catch (Exception e) {
 

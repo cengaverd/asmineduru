@@ -2,6 +2,7 @@ package com.asmineduru.dao;
 
 import com.asmineduru.model.Brand;
 import com.asmineduru.model.Cart;
+import com.asmineduru.model.Comment;
 import com.asmineduru.model.Image;
 import com.asmineduru.model.Likes;
 import com.asmineduru.model.Member;
@@ -493,6 +494,22 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
         return likes;
+    }
+    
+    public List<Comment> findCommentListByProduct(Integer productId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Comment> commentList;
+        try {
+            String hql = "FROM Comment c WHERE c.productId=:productId and c.usageStatus=1 order by c.commentId desc";
+            commentList = session.createQuery(hql)
+                    .setParameter("productId", productId).list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return commentList;
     }
 
 }

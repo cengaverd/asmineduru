@@ -18,6 +18,8 @@
         <property name="c3p0.preferredTestQuery">select 1;</property>
         
 <!--        <property name="hibernate.hbm2ddl.auto">create</property>-->
+<!--        <property name="hibernate.hbm2ddl.auto">update</property>-->
+
    
         <mapping class="com.asmineduru.model.Brand"></mapping>
         <mapping class="com.asmineduru.model.Type"></mapping>
@@ -27,5 +29,6 @@
         <mapping class="com.asmineduru.model.Member"></mapping>
         <mapping class="com.asmineduru.model.Cart"></mapping>
         <mapping class="com.asmineduru.model.Likes"></mapping>
+        <mapping class="com.asmineduru.model.Comment"></mapping>
     </session-factory>
 </hibernate-configuration>
