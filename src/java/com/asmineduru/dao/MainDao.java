@@ -6,6 +6,8 @@ import com.asmineduru.model.Comment;
 import com.asmineduru.model.Image;
 import com.asmineduru.model.Likes;
 import com.asmineduru.model.Member;
+import com.asmineduru.model.OrderProduct;
+import com.asmineduru.model.Orders;
 import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
 import com.asmineduru.model.Users;
@@ -394,6 +396,24 @@ public class MainDao extends Dao implements Serializable {
         }
         return maxId;
     }
+    
+    public Integer findOrderMaxId() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Integer maxId;
+        try {
+
+            Criteria criteria = session
+                    .createCriteria(Orders.class)
+                    .setProjection(Projections.max("orderId"));
+            maxId = (Integer) criteria.uniqueResult();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return maxId;
+    }
 
     public Member findMemberByEmail(String email) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -512,4 +532,66 @@ public class MainDao extends Dao implements Serializable {
         return commentList;
     }
 
+    public void saveOrUpdateOrderList(Orders order) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.saveOrUpdate(order);
+            for (OrderProduct orderProduct : order.getOrderProducts()) {
+                session.saveOrUpdate(orderProduct);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+    
+     public void updateCartList(List<Cart> cartList) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            for (Cart cart : cartList) {
+                session.update(cart);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+     
+     public List<Orders> findOrders() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Orders> orders;
+        try {
+            String hql = "from Orders";
+            orders = session.createQuery(hql).list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return orders;
+    }
+     
+     public List<Orders> findMemberOrderList(Integer memberId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Orders> orders;
+        try {
+            String hql = "from Orders o where o.member.memberId=:memberId and o.usageStatus=1";
+            orders = session.createQuery(hql).setParameter("memberId", memberId).list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return orders;
+    }
 }

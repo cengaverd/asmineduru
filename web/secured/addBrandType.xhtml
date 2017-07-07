@@ -20,11 +20,11 @@
                             <p:resetInput target="ekleForm" />
                         </p:commandButton></div>                    
                 </f:facet>
-                <p:column headerText="Marka Adı" style="text-align: center; width: 250px">
+                <p:column headerText="Marka Adı" style="text-align: center;">
                     <p:outputLabel value="#{brand.brandName}" />
                 </p:column>
 
-                <p:column headerText="Aktif" style="text-align: center; width: 40px;">                   
+                <p:column headerText="Aktif" style="text-align: center; ">                   
                     <p:selectBooleanCheckbox value="#{brand.usageStatus}" disabled="true"/>
                 </p:column>
 
@@ -74,47 +74,35 @@
             <h:form id="ekleForm">
                 <p:messages id="msg" autoUpdate="true" closable="true"/>
                 <center>
-                    <p:panelGrid id="upload">
+                    <p:panelGrid id="upload" columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel value="Marka Adı: " style="display: block; width: 200px;"/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText value="#{addBrandTypeMB.selectedBrand.brandName}" required="true" 
-                                             requiredMessage="Lütfen marka adı giriniz."/>
-                            </p:column>
-                        </p:row>   
-                        <p:row>
-                            <p:column>
-                                <h:outputText value="Aktif: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectBooleanCheckbox value="#{addBrandTypeMB.selectedBrand.usageStatus}" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputText value="Marka Tipleri: " />
-                                <p:commandButton value="Yeni Marka Tipi Ekle" icon="ui-icon-plusthick" 
+
+                        <p:outputLabel value="Marka Adı: " style="display: block; width: 200px;"/>                           
+                        <p:inputText value="#{addBrandTypeMB.selectedBrand.brandName}" required="true" 
+                                     requiredMessage="Lütfen marka adı giriniz."/>
+
+                        <h:outputText value="Aktif: " />                           
+                        <p:selectBooleanCheckbox value="#{addBrandTypeMB.selectedBrand.usageStatus}" />
+
+                        <h:outputText value="Marka Tipleri: " />
+                        <p:commandButton value="Yeni Marka Tipi Ekle" icon="ui-icon-plusthick" 
                                          action="#{addBrandTypeMB.clearAddType}"
                                          oncomplete="PF('addType').show();" update="addForm">
                             <p:resetInput target="addForm" />
                         </p:commandButton>
-                            </p:column>
-                            <p:column headerText="Marka Tipleri" style="text-align: center">                   
-                                <p:dataTable value="#{addBrandTypeMB.selectedBrand.typeList}" var="type" id="type1" 
-                                             emptyMessage="Marka Tipi yoktur." styleClass="noHeader" style="width: 300px;">
-                                    <p:column style="text-align: center;">     
-                                        <p:inputText value="#{type.typeName}" required="true" 
-                                             requiredMessage="Lütfen tip adı giriniz."/>
-                                    </p:column> 
-                                    <p:column style="text-align: center; width: 40px;">                   
-                                        <p:selectBooleanCheckbox value="#{type.usageStatus}"/>
-                                    </p:column> 
-                                </p:dataTable>
-                            </p:column>
-                        </p:row>
+
+                        <p:outputPanel>                   
+                            <p:dataTable value="#{addBrandTypeMB.selectedBrand.typeList}" var="type" id="type1" 
+                                         emptyMessage="Marka Tipi yoktur." styleClass="noHeader" style="width: 300px;">
+                                <p:column style="text-align: center;">     
+                                    <p:inputText value="#{type.typeName}" required="true" 
+                                                 requiredMessage="Lütfen tip adı giriniz."/>
+                                </p:column> 
+                                <p:column style="text-align: center; width: 40px;">                   
+                                    <p:selectBooleanCheckbox value="#{type.usageStatus}"/>
+                                </p:column> 
+                            </p:dataTable>
+                        </p:outputPanel>                        
                     </p:panelGrid>
                 </center>
                 <br/>
@@ -145,31 +133,20 @@
                 </center>
             </h:form>
         </p:dialog>
-        
+
         <p:dialog header="Marka Tipi Ekle" widgetVar="addType" id="typeDialog">
             <h:form id="addForm">
                 <p:messages id="msg" autoUpdate="true" closable="true"/>
                 <center>
-                    <p:panelGrid id="upload">
+                    <p:panelGrid id="upload" columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel value="Tip Adı: " style="display: block; width: 200px;"/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText value="#{addBrandTypeMB.type.typeName}" required="true" 
-                                             requiredMessage="Lütfen tip adı giriniz."/>
-                            </p:column>
-                        </p:row>   
-                        <p:row>
-                            <p:column>
-                                <h:outputText value="Aktif: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectBooleanCheckbox value="#{addBrandTypeMB.type.usageStatus}" />
-                            </p:column>
-                        </p:row>
-                       
+                        <p:outputLabel value="Tip Adı: " style="display: block; width: 200px;"/>                           
+                        <p:inputText value="#{addBrandTypeMB.type.typeName}" required="true" 
+                                     requiredMessage="Lütfen tip adı giriniz."/>
+
+                        <h:outputText value="Aktif: " />                            
+                        <p:selectBooleanCheckbox value="#{addBrandTypeMB.type.usageStatus}" />
+
                     </p:panelGrid>
                 </center>
                 <br/>

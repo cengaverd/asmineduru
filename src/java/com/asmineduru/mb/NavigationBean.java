@@ -9,13 +9,15 @@ import javax.faces.bean.SessionScoped;
 public class NavigationBean implements Serializable {
 
     private static final long serialVersionUID = 1520318172495977648L;
-    
+
     public static String redirectToWebSite() {
         return "/index.xhtml?faces-redirect=true";
     }
+
     public static String redirectToProduct() {
         return "/product.xhtml?faces-redirect=true";
-    }   
+    }
+
     public static String redirectToProducts() {
         return "/products.xhtml?faces-redirect=true";
     }
@@ -39,13 +41,25 @@ public class NavigationBean implements Serializable {
     public static String redirectToAddBrandAndType() {
         return "/secured/addBrandType.xhtml?faces-redirect=true";
     }
+
     public static String redirectToAddUser() {
         return "/secured/userOperations.xhtml?faces-redirect=true";
     }
+
     public static String redirectToMemberLogin() {
         return "/login.xhtml?faces-redirect=true";
     }
-     public static String redirectToMembers() {
+
+    public static String redirectToMembers() {
         return "/secured/members.xhtml?faces-redirect=true";
     }
+
+    public static String redirectToOrders() {
+        return "/secured/orders.xhtml?faces-redirect=true";
+    }
+    
+    public static String redirectToMemberOrders() {
+        return "/memberOrders.xhtml?faces-redirect=true";
+    }
+
 }

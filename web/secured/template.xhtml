@@ -16,34 +16,21 @@
                 <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
                 <h:form>
                     <p:toolbarGroup>
-                        <div class="ui-toolbar-group-left">ASMİNE DURU</div>
-                        <div class="ui-toolbar-group-right">
-                            <center>
-
-                                <p:outputLabel value="Hoşgeldiniz #{sessionMB.user.name} #{sessionMB.user.surname}" >
-
-                                </p:outputLabel>                                
-                                <br/>
-                                <p:commandButton id="cikisButon"  value="Çıkış" 
-                                                 action="#{sessionMB.quit}" 
-                                                 ajax="false" icon="ui-icon-extlink"/>
-                            </center>
+                        <div style="margin: 0 auto;width: 99%; text-align: center;">
+                                <p:menubar>
+                                    <p:menuitem value="Siteye Dön" action="#{navigationBean.redirectToWebSite}" icon="ui-icon-home"/>
+                                    <p:menuitem value="Kullanıcı İşlemleri" action="#{navigationBean.redirectToAddUser}" icon="ui-icon ui-icon-arrowthick-1-e"/>
+                                    <p:menuitem value="Ürün Ekle" action="#{navigationBean.redirectToAddProduct}" icon="ui-icon ui-icon-arrowthick-1-e"/>
+                                    <p:menuitem value="Marka Ekle" action="#{navigationBean.redirectToAddBrandAndType}" icon="ui-icon ui-icon-arrowthick-1-e"/>
+                                    <p:menuitem value="Üye İşlemleri" action="#{navigationBean.redirectToMembers}" icon="ui-icon ui-icon-arrowthick-1-e"/>
+                                    <p:menuitem value="Siparişler" action="#{navigationBean.redirectToOrders}" icon="ui-icon ui-icon-arrowthick-1-e"/>
+                                    <p:menuitem value="Çıkış" action="#{sessionMB.quit}" icon="ui-icon ui-icon-arrowthick-1-e"/>
+                                </p:menubar>
                         </div>
-<!--                        <div style="margin: 0 auto;width: 60%;"><center>ASMİNE DURU</center></div>-->
                     </p:toolbarGroup>
                 </h:form>
             </p:layoutUnit>
-            <p:layoutUnit position="west" size="200" header="Menü" collapsible="true">
-                <h:form>
-                    <p:menu style="width: 95%; height: 23px;">
-                        <p:menuitem value="Siteye Dön" action="#{navigationBean.redirectToWebSite}" icon="ui-icon-home"/>
-                        <p:menuitem value="Kullanıcı İşlemleri" action="#{navigationBean.redirectToAddUser}" icon="ui-icon ui-icon-arrowthick-1-e"/>
-                        <p:menuitem value="Ürün Ekle" action="#{navigationBean.redirectToAddProduct}" icon="ui-icon ui-icon-arrowthick-1-e"/>
-                        <p:menuitem value="Marka Ekle" action="#{navigationBean.redirectToAddBrandAndType}" icon="ui-icon ui-icon-arrowthick-1-e"/>
-                        <p:menuitem value="Üye İşlemleri" action="#{navigationBean.redirectToMembers}" icon="ui-icon ui-icon-arrowthick-1-e"/>
-                    </p:menu>
-                </h:form>
-            </p:layoutUnit>
+
             <p:layoutUnit position="center">
                 <ui:insert name="content"/>
             </p:layoutUnit>            

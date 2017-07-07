@@ -10,6 +10,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 
 /**
@@ -17,7 +18,7 @@ import javax.faces.bean.ViewScoped;
  *
  */
 @ManagedBean
-@ViewScoped
+@RequestScoped
 public class FavoriteMB implements Serializable {
 
     private final MainDao mainDao = new MainDao();

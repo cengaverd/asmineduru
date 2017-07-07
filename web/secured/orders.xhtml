@@ -1,0 +1,51 @@
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="msg" autoUpdate="true" closable="true"/>
+            <p:dataTable value="#{ordersMB.orderList}" var="order" id="table" 
+                         emptyMessage="Liste boştur." reflow="true">
+                <f:facet name="header" id="hee">
+                    <div style="text-align: center">  Sipariş Listesi</div>                                       
+                </f:facet>
+                <p:column headerText="Sipariş Numarası">
+                    <p:outputLabel value="#{order.orderNumber}" />
+                </p:column>
+                <p:column headerText="Adı ve Soyadı">
+                    <p:outputLabel value="#{order.member.name} #{order.member.surname}" />
+                </p:column>
+
+                <p:column headerText="Adres">                   
+                    <p:outputLabel value="#{order.member.address}" />
+                </p:column> 
+
+                <p:column headerText="Telefon">                   
+                    <p:outputLabel id="phone" value="#{order.member.phone}" />    
+                </p:column> 
+                <p:column headerText="Ürünler" style="text-align: center;">                   
+                    <p:dataTable value="#{order.orderProducts}" var="product" 
+                                 emptyMessage="Ürün yoktur." styleClass="noHeader">
+                        <p:column style="text-align: center">                   
+                            <p:outputLabel value="#{product.product.type.brand.brandName} (#{product.product.productCode})"/> 
+                            <br/>
+                            <p:outputLabel value="#{product.productPrice},00 TL (Ürün id:#{product.product.productId})"/>
+                        </p:column> 
+                    </p:dataTable>    
+                </p:column>
+                <p:column headerText="Kargo Durumu" style="text-align: center;">
+                     <p:messages id="messages" closable="true" autoUpdate="true"/>
+                    <p:inputTextarea value="#{order.cargoStatus}" />
+                    <p:commandButton action="#{ordersMB.saveCargoStatus(order)}" value="Güncelle"/>
+                </p:column>                
+            </p:dataTable>            
+            <br/>
+        </h:form>  
+
+    </ui:define>
+</ui:composition>

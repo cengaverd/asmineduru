@@ -4,6 +4,8 @@ import com.asmineduru.dao.MainDao;
 import com.asmineduru.model.Cart;
 import com.asmineduru.model.Comment;
 import com.asmineduru.model.Likes;
+import com.asmineduru.model.OrderProduct;
+import com.asmineduru.model.Orders;
 import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
 import com.asmineduru.util.MessagesController;
@@ -51,6 +53,14 @@ public class ProductMB implements Serializable {
     private String inputComment;
     private boolean adminAnswer;
 
+    private boolean cartView;
+    private boolean communicationView;
+    private boolean completeView;
+    
+    private Orders order;
+    
+    private List<Orders> memberOrderList;
+
     @PostConstruct
     public void init() {
         try {
@@ -66,6 +76,10 @@ public class ProductMB implements Serializable {
         try {
 
             totalPrice = BigInteger.ZERO;
+            
+            cartView = true;
+            communicationView = false;
+            completeView = false;
 
             if (memberSessionMB.getMember() != null) {
                 cartList = mainDao.findCartListByMemberInUsage(memberSessionMB.getMember().getMemberId());
@@ -79,6 +93,104 @@ public class ProductMB implements Serializable {
 
         } catch (Exception e) {
         }
+    }
+
+    public void next() {
+        try {
+
+            if (cartView) {
+                communicationView = true;
+                cartView = false;
+                completeView = false;
+            } else if (communicationView) {
+                mainDao.updateObject(memberSessionMB.getMember());
+                communicationView = false;
+                cartView = false;
+                completeView = true;                
+            }
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void back() {
+        try {
+
+            if (communicationView) {
+                communicationView = false;
+                cartView = true;
+                completeView = false;
+            } else if (completeView) {
+
+                communicationView = true;
+                cartView = false;
+                completeView = false;
+            }
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void completeOrder() {
+        try {
+
+            order = new Orders();
+            
+            String orderChar="SPRS";
+            Integer maxId = mainDao.findOrderMaxId();
+            String orderNumber;
+
+            if (maxId != null) {
+                orderNumber = orderChar + "-" + String.format("%04d", maxId + 1);
+            } else {
+                orderNumber = orderChar + "-" + String.format("%04d", 1);
+            }
+            
+            order.setOrderNumber(orderNumber);
+            order.setMember(memberSessionMB.getMember());
+            order.setTotalPrice(totalPrice);
+            order.setCargoStatus("Kargolama yapılmadı.");
+            order.setPayStatus(false);
+            order.setUsageStatus(true);
+           
+            for (Cart cart : cartList) {
+                
+                OrderProduct orderProduct=new OrderProduct();
+                orderProduct.setOrders(order);
+                orderProduct.setProduct(cart.getProduct());
+                orderProduct.setProductPrice(cart.getProduct().getProductPrice());
+                orderProduct.setQuantity(cart.getQuantity());
+                order.getOrderProducts().add(orderProduct); 
+                
+                cart.setUsageStatus(false);
+            }
+            
+            mainDao.saveOrUpdateOrderList(order);
+
+            mainDao.updateCartList(cartList);            
+            
+            findCartList();
+            
+            communicationView = false;
+            cartView = false;
+            completeView = false;
+
+        } catch (Exception e) {
+
+        }
+    }
+    
+    public String goMemberOrderList() {
+        try {
+
+            memberOrderList=mainDao.findMemberOrderList(memberSessionMB.getMember().getMemberId());
+
+        } catch (Exception e) {
+
+        }
+        return NavigationBean.redirectToMemberOrders();
     }
 
     public String goProducts(Type type) {
@@ -128,6 +240,7 @@ public class ProductMB implements Serializable {
             contourChart = sb.toString();
 
             comment = new Comment();
+            inputComment = null;
             commentList = new ArrayList<>();
             commentList = mainDao.findCommentListByProduct(selectedProduct.getProductId());
             adminAnswer = false;
@@ -151,7 +264,7 @@ public class ProductMB implements Serializable {
                         mainDao.updateObject(comment);
                         commentList = mainDao.findCommentListByProduct(selectedProduct.getProductId());
                         comment = new Comment();
-                        inputComment=null;
+                        inputComment = null;
                     } else {
 
                         comment.setComment(inputComment);
@@ -162,7 +275,7 @@ public class ProductMB implements Serializable {
                         mainDao.saveObject(comment);
                         commentList = mainDao.findCommentListByProduct(selectedProduct.getProductId());
                         comment = new Comment();
-                        inputComment=null;
+                        inputComment = null;
                     }
                 } else {
                     MessagesController.uyariVer("Yorum girmelisiniz.");
@@ -240,11 +353,25 @@ public class ProductMB implements Serializable {
                     }
                 }
 
-                return "cart.xhtml";
+                return "cart.xhtml?faces-redirect=true";
             } else {
 
-                return "login.xhtml";
+                return "login.xhtml?faces-redirect=true";
             }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public String goCartList() {
+
+        try {
+            order = new Orders();
+            cartView = true;
+            communicationView = false;
+            completeView = false;
+            return "cart.xhtml?faces-redirect=true";
+
         } catch (Exception e) {
         }
         return null;
@@ -483,6 +610,46 @@ public class ProductMB implements Serializable {
 
     public void setAdminAnswer(boolean adminAnswer) {
         this.adminAnswer = adminAnswer;
+    }
+
+    public boolean isCartView() {
+        return cartView;
+    }
+
+    public void setCartView(boolean cartView) {
+        this.cartView = cartView;
+    }
+
+    public boolean isCommunicationView() {
+        return communicationView;
+    }
+
+    public void setCommunicationView(boolean communicationView) {
+        this.communicationView = communicationView;
+    }
+
+    public boolean isCompleteView() {
+        return completeView;
+    }
+
+    public void setCompleteView(boolean completeView) {
+        this.completeView = completeView;
+    }
+
+    public Orders getOrder() {
+        return order;
+    }
+
+    public void setOrder(Orders order) {
+        this.order = order;
+    }
+
+    public List<Orders> getMemberOrderList() {
+        return memberOrderList;
+    }
+
+    public void setMemberOrderList(List<Orders> memberOrderList) {
+        this.memberOrderList = memberOrderList;
     }
 
 }

@@ -30,5 +30,7 @@
         <mapping class="com.asmineduru.model.Cart"></mapping>
         <mapping class="com.asmineduru.model.Likes"></mapping>
         <mapping class="com.asmineduru.model.Comment"></mapping>
+        <mapping class="com.asmineduru.model.Orders"></mapping>
+        <mapping class="com.asmineduru.model.OrderProduct"></mapping>
     </session-factory>
 </hibernate-configuration>

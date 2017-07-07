@@ -37,7 +37,7 @@
                                     <li><h:link id="uye" outcome="registration" value="Üye Ol" style="border-bottom: 0;"/></li>
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{memberSessionMB.loggedIn}">
-                                    <li><h:link id="sepet" outcome="cart" style="border-bottom: 0;"><i data-count="#{productMB.cartList.size()}" class="fa fa-shopping-cart fa-2x badge"></i></h:link></li>
+                                    <li><p:commandLink id="cart" action="#{productMB.goCartList()}" style="border-bottom: 0;"><i data-count="#{productMB.cartList.size()}" class="fa fa-shopping-cart fa-2x badge"></i></p:commandLink></li>
                                     <li><div class="dropdown">
                                             <a class="btn btn-primary" href="#" style="border-bottom: 0;"><i class="fa fa-user fa-2x"></i> #{memberSessionMB.member.username}</a>
                                             <div class="dropdown-content">
@@ -47,7 +47,10 @@
                                                  <h:link id="favorite" outcome="favorite" style="border-bottom: 0;">
                                                     Favorilerim <i class="fa fa-heart"></i>
                                                 </h:link>
-                                                <p:commandLink id="cikis" action="#{memberSessionMB.quit()}" style="border-bottom: 0;" process="@this">
+                                                <p:commandLink id="order" action="#{productMB.goMemberOrderList()}" style="border-bottom: 0;">
+                                                    Siparişlerim<i class="fa fa-shopping-cart"></i>
+                                                </p:commandLink>
+                                                <p:commandLink id="quit" action="#{memberSessionMB.quit()}" style="border-bottom: 0;" process="@this">
                                                     Güvenli Çıkış <i class="fa fa-sign-out"></i>
                                                 </p:commandLink>
                                             </div> 

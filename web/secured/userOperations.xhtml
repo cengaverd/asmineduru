@@ -10,7 +10,7 @@
         <h:form id="form">
             <p:messages id="msg" autoUpdate="true" closable="true"/>
             <p:dataTable value="#{userOperationsMB.userList}" var="user" id="table" 
-                         emptyMessage="Liste boştur.">
+                         emptyMessage="Liste boştur." reflow="true">
                 <f:facet name="header" id="hee">
                     <div style="text-align: center">  Kullanıcı Listesi</div>
                     <div style="text-align: right">
@@ -65,67 +65,37 @@
             <h:form id="ekleForm">
                 <p:messages id="msg" autoUpdate="true" closable="true"/>
                 <center>
-                    <p:panelGrid id="upload">
+                    <p:panelGrid id="upload" columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel value="Kullanıcı Adı: " style="display: block; width: 200px;"/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText value="#{userOperationsMB.selectedUser.username}" required="true" 
-                                             requiredMessage="Lütfen kullanıcı adı giriniz."/>
-                            </p:column>
-                        </p:row>   
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel value="Adı: " style="display: block; width: 200px;"/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText value="#{userOperationsMB.selectedUser.name}" required="true" 
-                                             requiredMessage="Lütfen adı giriniz."/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel value="Soyadı: " style="display: block; width: 200px;"/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText value="#{userOperationsMB.selectedUser.surname}" required="true" 
-                                             requiredMessage="Lütfen soyadı giriniz."/>
-                            </p:column>
-                        </p:row>                        
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel value="E-Mail : " style="display: block; width: 200px;"/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText value="#{userOperationsMB.selectedUser.email}" required="true" 
-                                             requiredMessage="Lütfen mail adresinizi giriniz." validator="emailValidator"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputText value="Şifre: " />
-                            </p:column>
-                            <p:column>
-                                <p:password id="pwd1" value="#{userOperationsMB.password}" feedback="true"
-                                            promptLabel="Lütfen şifre giriniz." weakLabel="Zayıf" 
-                                            requiredMessage="Lütfen şifre giriniz."
-                                            goodLabel="Orta seviye" strongLabel="Güçlü" match="pwd2" label="Şifre"
-                                            required="true" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputText value="Şifre Tekrar: " />
-                            </p:column>
-                            <p:column>
-                                <p:password id="pwd2" value="#{userOperationsMB.password2}" feedback="true"
-                                            promptLabel="Lütfen şifreyi tekrar giriniz." weakLabel="Zayıf" 
-                                            requiredMessage="Lütfen şifreyi tekrar giriniz."
-                                            goodLabel="Orta seviye" strongLabel="Güçlü" required="true" label="Şifre Tekrar" />
-                            </p:column>
-                        </p:row>
+                        <p:outputLabel value="Kullanıcı Adı: " style="display: block; width: 200px;"/>                          
+                        <p:inputText value="#{userOperationsMB.selectedUser.username}" required="true" 
+                                     requiredMessage="Lütfen kullanıcı adı giriniz."/>
+
+                        <p:outputLabel value="Adı: " style="display: block; width: 200px;"/>                           
+                        <p:inputText value="#{userOperationsMB.selectedUser.name}" required="true" 
+                                     requiredMessage="Lütfen adı giriniz."/>
+
+                        <p:outputLabel value="Soyadı: " style="display: block; width: 200px;"/>                            
+                        <p:inputText value="#{userOperationsMB.selectedUser.surname}" required="true" 
+                                     requiredMessage="Lütfen soyadı giriniz."/>
+
+                        <p:outputLabel value="E-Mail : " style="display: block; width: 200px;"/>                            
+                        <p:inputText value="#{userOperationsMB.selectedUser.email}" required="true" 
+                                     requiredMessage="Lütfen mail adresinizi giriniz." validator="emailValidator"/>
+
+                        <h:outputText value="Şifre: " />                            
+                        <p:password id="pwd1" value="#{userOperationsMB.password}" feedback="true"
+                                    promptLabel="Lütfen şifre giriniz." weakLabel="Zayıf" 
+                                    requiredMessage="Lütfen şifre giriniz."
+                                    goodLabel="Orta seviye" strongLabel="Güçlü" match="pwd2" label="Şifre"
+                                    required="true" />
+
+                        <h:outputText value="Şifre Tekrar: " />                            
+                        <p:password id="pwd2" value="#{userOperationsMB.password2}" feedback="true"
+                                    promptLabel="Lütfen şifreyi tekrar giriniz." weakLabel="Zayıf" 
+                                    requiredMessage="Lütfen şifreyi tekrar giriniz."
+                                    goodLabel="Orta seviye" strongLabel="Güçlü" required="true" label="Şifre Tekrar" />
+
                     </p:panelGrid>
                 </center>
                 <br/>
