@@ -584,7 +584,7 @@ public class MainDao extends Dao implements Serializable {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Orders> orders;
         try {
-            String hql = "from Orders o where o.member.memberId=:memberId and o.usageStatus=1";
+            String hql = "from Orders o where o.member.memberId=:memberId order by o.orderId desc, o.usageStatus desc";
             orders = session.createQuery(hql).setParameter("memberId", memberId).list();
 
         } catch (Exception e) {

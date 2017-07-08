@@ -36,6 +36,7 @@ public class OrdersMB implements Serializable {
             
             if (order!=null && order.getCargoStatus()!=null) {
                 
+                order.setCargoStatus(order.getCargoStatus()+" kargo takip numarası ile takip edebilirisiniz."); 
                 mainDao.updateObject(order);
                 MessagesController.bilgiVer("Kargo Durumu kaydedildi.");
             }

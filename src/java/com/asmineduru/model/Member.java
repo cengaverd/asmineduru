@@ -41,9 +41,9 @@ public class Member implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date expiryDate;
 
-    @Column(name = "address", nullable = false, length = 500)
+    @Column(name = "address", length = 500)
     private String address;
-    @Column(name = "phone", nullable = false, length = 45)
+    @Column(name = "phone", length = 45)
     private String phone;
     
     public String getUsername() {

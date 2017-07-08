@@ -1,16 +1,14 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="tr"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="template.xhtml">  
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"> 
         <ui:define name="content">            
             <h:form id="form">
                 <br/>
-                <p:focus context="form"/>
                 <p:dataTable var="order" value="#{productMB.memberOrderList}" reflow="true" styleClass="cart"
                              id="dtable" emptyMessage="Siparişiniz bulunmamaktdır.">     
                     <f:facet name="header">
@@ -48,9 +46,26 @@
                     </p:column>
                     <p:column headerText="Kargo Durumu" style="text-align: center; vertical-align: middle;">
                         <p:outputLabel value="#{order.cargoStatus}" />
-                    </p:column> 
+                    </p:column>                     
+                    <p:column headerText="Sipariş Durumu" style="text-align: center; vertical-align: middle;">
+                        <p:commandLink value="İptal Et" onclick="PF('sip').show()" class="button small" rendered="#{order.usageStatus eq true}">
+                            <f:setPropertyActionListener value="#{order}" 
+                                                         target="#{productMB.selectedOrder}" />
+
+                        </p:commandLink>
+                        <p:outputLabel value="İptal edildi." rendered="#{order.usageStatus eq false}"/>
+                    </p:column>
                 </p:dataTable>               
             </h:form>
+            
+            <p:dialog header="Sipariş İptal Onay" widgetVar="sip" resizable="false">
+                <p:outputLabel value="Siparişi iptal etmek istediğinize emin misiniz?" />  
+                <center>
+                    <p:commandButton  value="Evet" update="form:form:dtable"
+                                     action="#{productMB.cancelOrder()}"/>
+                    <p:commandButton value="Hayır" style="margin-left: 10px;"
+                                     onclick="PF('sip').hide();"/> 
+                </center>
+        </p:dialog>
         </ui:define>
     </ui:composition>
-</html>

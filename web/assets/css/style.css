@@ -179,3 +179,8 @@ z-index:9999;
 	position: relative;
         
 }
+
+.ui-draggable .ui-dialog-titlebar{
+    background: #f56a6a;
+    cursor: move;
+}
