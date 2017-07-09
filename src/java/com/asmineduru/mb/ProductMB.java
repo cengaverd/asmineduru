@@ -20,6 +20,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.codec.binary.StringUtils;
+import org.primefaces.context.RequestContext;
 
 /**
  * @author ERHAN
@@ -56,9 +57,9 @@ public class ProductMB implements Serializable {
     private boolean cartView;
     private boolean communicationView;
     private boolean completeView;
-    
+
     private Orders order;
-    
+    private Orders selectedOrder;
     private List<Orders> memberOrderList;
 
     @PostConstruct
@@ -76,7 +77,7 @@ public class ProductMB implements Serializable {
         try {
 
             totalPrice = BigInteger.ZERO;
-            
+
             cartView = true;
             communicationView = false;
             completeView = false;
@@ -103,10 +104,24 @@ public class ProductMB implements Serializable {
                 cartView = false;
                 completeView = false;
             } else if (communicationView) {
-                mainDao.updateObject(memberSessionMB.getMember());
-                communicationView = false;
-                cartView = false;
-                completeView = true;                
+
+                if (!memberSessionMB.getMember().getAddress().equals("") && !memberSessionMB.getMember().getPhone().equals("")) {
+
+                    mainDao.updateObject(memberSessionMB.getMember());
+                    communicationView = false;
+                    cartView = false;
+                    completeView = true;
+                } else {
+                    if (memberSessionMB.getMember().getAddress().equals("")) {
+
+                        MessagesController.uyariVer("Teslimat adresi boş bırakılamaz.");
+
+                    } else if (memberSessionMB.getMember().getPhone().equals("")) {
+
+                        MessagesController.uyariVer("Telefon numarası boş bırakılamaz.");
+
+                    }
+                }
             }
 
         } catch (Exception e) {
@@ -137,8 +152,8 @@ public class ProductMB implements Serializable {
         try {
 
             order = new Orders();
-            
-            String orderChar="SPRS";
+
+            String orderChar = "SPRS";
             Integer maxId = mainDao.findOrderMaxId();
             String orderNumber;
 
@@ -147,32 +162,32 @@ public class ProductMB implements Serializable {
             } else {
                 orderNumber = orderChar + "-" + String.format("%04d", 1);
             }
-            
+
             order.setOrderNumber(orderNumber);
             order.setMember(memberSessionMB.getMember());
             order.setTotalPrice(totalPrice);
             order.setCargoStatus("Kargolama yapılmadı.");
             order.setPayStatus(false);
             order.setUsageStatus(true);
-           
+
             for (Cart cart : cartList) {
-                
-                OrderProduct orderProduct=new OrderProduct();
+
+                OrderProduct orderProduct = new OrderProduct();
                 orderProduct.setOrders(order);
                 orderProduct.setProduct(cart.getProduct());
                 orderProduct.setProductPrice(cart.getProduct().getProductPrice());
                 orderProduct.setQuantity(cart.getQuantity());
-                order.getOrderProducts().add(orderProduct); 
-                
+                order.getOrderProducts().add(orderProduct);
+
                 cart.setUsageStatus(false);
             }
-            
+
             mainDao.saveOrUpdateOrderList(order);
 
-            mainDao.updateCartList(cartList);            
-            
+            mainDao.updateCartList(cartList);
+
             findCartList();
-            
+
             communicationView = false;
             cartView = false;
             completeView = false;
@@ -182,10 +197,26 @@ public class ProductMB implements Serializable {
         }
     }
     
+     public void cancelOrder() {
+        try {
+
+            selectedOrder.setUsageStatus(false);
+            mainDao.updateObject(selectedOrder);
+            
+            RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('sip').hide();");
+            goMemberOrderList();
+            
+
+        } catch (Exception e) {
+
+        }
+    }
+
     public String goMemberOrderList() {
         try {
 
-            memberOrderList=mainDao.findMemberOrderList(memberSessionMB.getMember().getMemberId());
+            memberOrderList = mainDao.findMemberOrderList(memberSessionMB.getMember().getMemberId());
 
         } catch (Exception e) {
 
@@ -352,6 +383,11 @@ public class ProductMB implements Serializable {
                         totalPrice = totalPrice.add(cart.getProduct().getProductPrice().multiply(cart.getQuantity()));
                     }
                 }
+
+                order = new Orders();
+                cartView = true;
+                communicationView = false;
+                completeView = false;
 
                 return "cart.xhtml?faces-redirect=true";
             } else {
@@ -650,6 +686,14 @@ public class ProductMB implements Serializable {
 
     public void setMemberOrderList(List<Orders> memberOrderList) {
         this.memberOrderList = memberOrderList;
+    }
+
+    public Orders getSelectedOrder() {
+        return selectedOrder;
+    }
+
+    public void setSelectedOrder(Orders selectedOrder) {
+        this.selectedOrder = selectedOrder;
     }
 
 }

@@ -78,6 +78,8 @@ public class AddProductMB implements Serializable {
         image.setProduct(selectedProduct);
         image.setUsageStatus(1);
         imageList.add(image);
+        bi.flush();
+        System.gc();
     }
 
     public void saveProduct() {
@@ -105,7 +107,7 @@ public class AddProductMB implements Serializable {
                 MessagesController.bilgiVer("Kaydetme işlemi yapıldı.");
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("PF('dlg').hide();");
-            }else{
+            } else {
                 MessagesController.uyariVer("Resim eklemelisiniz.");
             }
 
@@ -188,6 +190,9 @@ public class AddProductMB implements Serializable {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
             ImageIO.write(imageBuff, "jpg", buffer);
+            img.flush();
+            imageBuff.flush();
+            System.gc();
 
             return buffer.toByteArray();
         } catch (IOException e) {

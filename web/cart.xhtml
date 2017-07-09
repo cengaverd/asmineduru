@@ -9,6 +9,7 @@
     <ui:composition template="template.xhtml">  
         <ui:define name="content">            
             <h:form id="form">
+                <p:messages id="messages" closable="true" autoUpdate="true"/>
                 <br/>
                 <p:dataTable var="cart" value="#{productMB.cartList}" reflow="true" styleClass="cart"
                              id="dtable" emptyMessage="Sepetinizde ürün bulunmamaktdır."
@@ -71,9 +72,13 @@
                         <h:outputText value="İletişim Bilgileri" style="font-size:  x-large; color: #f56a6a"/>
                     </f:facet>
                     <div class="row uniform">
-                        <div class="12u">
-                            <h:outputText value="Ad Soyad : " style="font-size: large;"/>
-                            <h:outputText value="#{memberSessionMB.member.name} #{memberSessionMB.member.surname}" style="font-size: large;"/>
+                        <div class="6u 12u(xsmall)">
+                            <h:outputText value="Adınız: " style="font-size: large;"/>
+                            <p:inputText value="#{memberSessionMB.member.name}" placeholder="Adınız"/>
+                        </div>
+                        <div class="6u 12u(xsmall)">
+                            <h:outputText value="Soyadınız: " style="font-size: large;"/>
+                            <p:inputText value="#{memberSessionMB.member.surname}" placeholder="Soyadınız"/>
                         </div>
                         <div class="6u 12u(xsmall)">
                             <h:outputText value="Teslimat Adresi" style="font-size: large;"/>
@@ -81,7 +86,8 @@
                         </div>
                         <div class="6u 12u(xsmall)">
                             <h:outputText value="Telefon Numarası" style="font-size: large;"/>
-                            <p:inputMask id="phone" value="#{memberSessionMB.member.phone}" mask="(999) 999-9999" placeholder="Telefon Numaranızı Giriniz."/>    
+                            <p:inputMask id="phone" value="#{memberSessionMB.member.phone}" mask="(999) 999-9999" placeholder="Telefon Numaranızı Giriniz."
+                                         />    
                         </div>
                     </div>
                 </p:panelGrid>
@@ -162,8 +168,46 @@
                     <div class="row uniform">
                         <div class="12u">
                             <h:outputText value="Sipariş Numarası : " style="font-size: large;"/>
-                            <h:outputText value="#{productMB.order.orderNumber}" style="font-size: x-large;"/>
-                        </div>                        
+                            <h:outputText value="#{productMB.order.orderNumber}" style="font-size: x-large; font-weight:bold;"/>
+                        </div>
+                        <div class="12u">
+                            <h:outputText value="Siparişinizin kargolanabilmesi için" style="font-size: large; color:#f56a6a"/>
+                            <h:outputText value=" #{productMB.order.totalPrice},00 TL" style="font-size: large; font-weight:bold;"/>
+                            <h:outputText value="'nin aşağıda belirtilen hesaba havale/EFT yapılması gerekmektedir." style="font-size: large; color:#f56a6a"/>
+                        </div>
+                    </div>
+
+                    <div class="row uniform">
+                        <div class="12u">
+                            <hr/>
+                            <img src="images/isbank_logo.png" alt=""/><br/>
+                            <h:outputText value="IBAN : TR33000640000124002818341" style="font-size: x-large; color:#f56a6a"/><br/>
+                            <h:outputText value="İş Bankası, Kocaeli Umuttepe Şube, Şube Kodu: 2400 Hesap No: 2818341" style="font-size: large;"/>
+                            <hr/>
+                        </div> 
+                        <h:outputText value="Havale/EFT yaparken dikkat edilmesi gerekenler:" style="font-size: large; color:#f56a6a"/>
+                        <ul>
+                            <li>
+                                Siparişinizin iptal olmaması için havale/EFT ödemenizi 3 iş günü içerisinde gerçekleştirmelisiniz. Ödemesi tarafımıza ulaşmayan siparişler, 3 iş günü sonunda otomatik olarak iptal edilir.
+                            </li>
+                            <li>
+                                Siparişinizin havale/EFT ödemesinin işleme alınması için ödeme esnasında dekontun açıklama kısmına 
+                                <h:outputText value="8 haneli sipariş numaranızı" style="font-size: large; color:#f56a6a"/>
+                                mutlaka belirtmelisiniz.
+                            </li>
+                            <li>
+                                Açıklama bölümüne 8 haneli sipariş numarınız dışında bir metin yazmamalısınız.
+                            </li>
+                            <li>
+                                Havale/EFT ödeme işlemlerinde alıcı adına Cengiz DÖNEGEL yazmalısınız.
+                            </li>
+                            <li>
+                                8 haneli sipariş numaranızı, siparişinizi tamamladıktan sonra "Siparişlerim" sayfasından görüntüleyebilirsiniz.
+                            </li>
+                            <li>
+                                Detaylı bilgi için (0545) 905 3421 telefon numarasından irtabat kurabilirsiniz.                           
+                            </li>
+                        </ul>
                     </div>
                 </p:panelGrid>
             </h:form>
