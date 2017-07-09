@@ -165,7 +165,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="Resim Ekle" widgetVar="resimEkle" id="resimDlg">
+        <p:dialog header="Resim Ekle" widgetVar="resimEkle" id="resimDlg" width="300">
             <h:form id="resimEkleForm" >
                 <p:messages id="msg" autoUpdate="true" closable="true"/>
                 <center>
@@ -173,7 +173,7 @@
 
                         <p:fileUpload id="choose" label="Resim Seç" previewWidth="50"                                       
                                       fileUploadListener="#{addProductMB.handleFileUpload}"				
-                                      multiple="false"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" auto="true"
+                                      multiple="false"  allowTypes="/(\.|\/)(gif|jpg|jpe?g|png)$/" auto="true"
                                       update="resimEkleForm" required="true" mode="advanced"  process=""
                                       requiredMessage="Lütfen resim yükleyiniz."/> 
                     </p:panelGrid>
