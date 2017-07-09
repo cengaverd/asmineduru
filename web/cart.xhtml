@@ -1,216 +1,212 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="tr"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="template.xhtml">  
-        <ui:define name="content">            
-            <h:form id="form">
-                <p:messages id="messages" closable="true" autoUpdate="true"/>
-                <br/>
-                <p:dataTable var="cart" value="#{productMB.cartList}" reflow="true" styleClass="cart"
-                             id="dtable" emptyMessage="Sepetinizde ürün bulunmamaktdır."
-                             rendered="#{productMB.cartView}">     
-                    <f:facet name="header">
-                        <h:outputText value="Sepetim" style="font-size: large;"/>
-                    </f:facet>
-                    <p:column headerText="Ürün" style="text-align: left;">
-                        <center>
-                            <div style="text-align: left; width: 70%">
-                                <div style="display: inline-block; vertical-align: top; margin-right: 10px;">
-                                    <p:commandLink id="ajax" actionListener="#{productMB.loadData(cart.product)}" action="/product.xhtml?faces-redirect=true" class="image">
-                                        <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" 
-                                                        alt="Resim bulunamadı." width="80" height="100">
-                                            <f:param name="imageId" value="#{cart.product.imageList.get(0).imageId}" />
-                                        </p:graphicImage>
-                                    </p:commandLink>
-                                </div>
-                                <div style="display: inline-block; vertical-align: top;">
-                                    <br/>
-                                    <h:outputText value="   #{cart.product.type.brand.brandName}"/><br/>
-                                    <h:outputText value="#{cart.product.productCode}"/><br/>
-                                    <h:outputText value="#{cart.product.type.typeName}"/>
-                                </div>
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"> 
+    <ui:define name="content">            
+        <h:form id="form">
+            <p:messages id="messages" closable="true" autoUpdate="true"/>
+            <br/>
+            <p:dataTable var="cart" value="#{productMB.cartList}" reflow="true" styleClass="cart"
+                         id="dtable" emptyMessage="Sepetinizde ürün bulunmamaktdır."
+                         rendered="#{productMB.cartView}">     
+                <f:facet name="header">
+                    <h:outputText value="Sepetim" style="font-size: large;"/>
+                </f:facet>
+                <p:column headerText="Ürün" style="text-align: left;">
+                    <center>
+                        <div style="text-align: left; width: 70%">
+                            <div style="display: inline-block; vertical-align: top; margin-right: 10px;">
+                                <p:commandLink id="ajax" actionListener="#{productMB.loadData(cart.product)}" action="/product.xhtml?faces-redirect=true" class="image">
+                                    <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" 
+                                                    alt="Resim bulunamadı." width="80" height="100">
+                                        <f:param name="imageId" value="#{cart.product.imageList.get(0).imageId}" />
+                                    </p:graphicImage>
+                                </p:commandLink>
                             </div>
-                        </center>
-                    </p:column>
-
-                    <p:column headerText="Adet" style="vertical-align: middle; text-align: left;">
-                        <h:commandButton class="button special small" value="-" action="#{productMB.decrease(cart)}">
-                            <f:ajax execute="dtable" render="dtable" />
-                        </h:commandButton>
-                        <h:outputText value="  #{cart.quantity} Adet  " style="font-size: large;"/>
-                        <h:commandButton class="button special small" value="+" action="#{productMB.increase(cart)}">
-                            <f:ajax execute="dtable" render="dtable" />
-                        </h:commandButton>
-                    </p:column>
-
-                    <p:column headerText="Fiyat" style="vertical-align: middle; text-align: left;">
-                        <h:outputText value="#{cart.product.productPrice.multiply(cart.quantity)},00 TL" />
-                        <h:outputText value="  (#{cart.quantity} X #{cart.product.productPrice},00 TL)" rendered="#{cart.quantity gt 1}"/>
-                    </p:column>
-
-                    <p:column style="vertical-align: middle; font-size: large;">
-                        <h:commandButton value="Sil" action="#{productMB.delete()}" class="button small">
-                            <f:setPropertyActionListener value="#{cart}" 
-                                                         target="#{productMB.selectedCart}" />
-
-                        </h:commandButton>
-                    </p:column>
-                    <f:facet name="footer">
-                        <h:outputText value="Genel Toplam: " style="font-size: large;" rendered="#{productMB.cartList.size() gt 0}"/>
-                        <h:outputText value="#{productMB.totalPrice},00 TL (Kargo Dahil)" style="font-weight: bold; font-size: large;"
-                                      rendered="#{productMB.cartList.size() gt 0}"/>
-                    </f:facet>
-
-                </p:dataTable>
-                <p:panelGrid rendered="#{productMB.communicationView}">
-                    <f:facet name="header">
-                        <h:outputText value="İletişim Bilgileri" style="font-size:  x-large; color: #f56a6a"/>
-                    </f:facet>
-                    <div class="row uniform">
-                        <div class="6u 12u(xsmall)">
-                            <h:outputText value="Adınız: " style="font-size: large;"/>
-                            <p:inputText value="#{memberSessionMB.member.name}" placeholder="Adınız"/>
+                            <div style="display: inline-block; vertical-align: top;">
+                                <br/>
+                                <h:outputText value="   #{cart.product.type.brand.brandName}"/><br/>
+                                <h:outputText value="#{cart.product.productCode}"/><br/>
+                                <h:outputText value="#{cart.product.type.typeName}"/>
+                            </div>
                         </div>
-                        <div class="6u 12u(xsmall)">
-                            <h:outputText value="Soyadınız: " style="font-size: large;"/>
-                            <p:inputText value="#{memberSessionMB.member.surname}" placeholder="Soyadınız"/>
-                        </div>
-                        <div class="6u 12u(xsmall)">
-                            <h:outputText value="Teslimat Adresi" style="font-size: large;"/>
-                            <p:inputTextarea  placeholder="Adresinizi Giriniz." rows="5" value="#{memberSessionMB.member.address}"></p:inputTextarea>
-                        </div>
-                        <div class="6u 12u(xsmall)">
-                            <h:outputText value="Telefon Numarası" style="font-size: large;"/>
-                            <p:inputMask id="phone" value="#{memberSessionMB.member.phone}" mask="(999) 999-9999" placeholder="Telefon Numaranızı Giriniz."
-                                         />    
-                        </div>
+                    </center>
+                </p:column>
+
+                <p:column headerText="Adet" style="vertical-align: middle; text-align: left;">
+                    <h:commandButton class="button special small" value="-" action="#{productMB.decrease(cart)}">
+                        <f:ajax execute="dtable" render="dtable" />
+                    </h:commandButton>
+                    <h:outputText value="  #{cart.quantity} Adet  " style="font-size: large;"/>
+                    <h:commandButton class="button special small" value="+" action="#{productMB.increase(cart)}">
+                        <f:ajax execute="dtable" render="dtable" />
+                    </h:commandButton>
+                </p:column>
+
+                <p:column headerText="Fiyat" style="vertical-align: middle; text-align: left;">
+                    <h:outputText value="#{cart.product.productPrice.multiply(cart.quantity)},00 TL" />
+                    <h:outputText value="  (#{cart.quantity} X #{cart.product.productPrice},00 TL)" rendered="#{cart.quantity gt 1}"/>
+                </p:column>
+
+                <p:column style="vertical-align: middle; font-size: large;">
+                    <h:commandButton value="Sil" action="#{productMB.delete()}" class="button small">
+                        <f:setPropertyActionListener value="#{cart}" 
+                                                     target="#{productMB.selectedCart}" />
+
+                    </h:commandButton>
+                </p:column>
+                <f:facet name="footer">
+                    <h:outputText value="Genel Toplam: " style="font-size: large;" rendered="#{productMB.cartList.size() gt 0}"/>
+                    <h:outputText value="#{productMB.totalPrice},00 TL (Kargo Dahil)" style="font-weight: bold; font-size: large;"
+                                  rendered="#{productMB.cartList.size() gt 0}"/>
+                </f:facet>
+
+            </p:dataTable>
+            <p:panelGrid rendered="#{productMB.communicationView}">
+                <f:facet name="header">
+                    <h:outputText value="İletişim Bilgileri" style="font-size:  x-large; color: #f56a6a"/>
+                </f:facet>
+                <div class="row uniform">
+                    <div class="6u 12u(xsmall)">
+                        <h:outputText value="Adınız: " style="font-size: large;"/>
+                        <p:inputText value="#{memberSessionMB.member.name}" placeholder="Adınız"/>
                     </div>
-                </p:panelGrid>
-                <p:panelGrid rendered="#{productMB.completeView}">
-                    <f:facet name="header">
-                        <h:outputText value="Sipariş Özeti" style="font-size:  x-large; color: #f56a6a"/>
-                    </f:facet>
+                    <div class="6u 12u(xsmall)">
+                        <h:outputText value="Soyadınız: " style="font-size: large;"/>
+                        <p:inputText value="#{memberSessionMB.member.surname}" placeholder="Soyadınız"/>
+                    </div>
+                    <div class="6u 12u(xsmall)">
+                        <h:outputText value="Teslimat Adresi" style="font-size: large;"/>
+                        <p:inputTextarea  placeholder="Adresinizi Giriniz." rows="5" value="#{memberSessionMB.member.address}"></p:inputTextarea>
+                    </div>
+                    <div class="6u 12u(xsmall)">
+                        <h:outputText value="Telefon Numarası" style="font-size: large;"/>
+                        <p:inputMask id="phone" value="#{memberSessionMB.member.phone}" mask="(999) 999-9999" placeholder="Telefon Numaranızı Giriniz."
+                                     />    
+                    </div>
+                </div>
+            </p:panelGrid>
+            <p:panelGrid rendered="#{productMB.completeView}">
+                <f:facet name="header">
+                    <h:outputText value="Sipariş Özeti" style="font-size:  x-large; color: #f56a6a"/>
+                </f:facet>
 
-                    <table id="ttt">
-                        <thead>
+                <table id="ttt">
+                    <thead>
+                        <tr>
+                            <th>Ürün</th>
+                            <th>Adet</th>
+                            <th>Fiyat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat var="crt" value="#{productMB.cartList}" id="repeat"> 
                             <tr>
-                                <th>Ürün</th>
-                                <th>Adet</th>
-                                <th>Fiyat</th>
+                                <td><h:outputText value="   #{crt.product.type.brand.brandName} (#{crt.product.type.typeName})"/><br/>
+                                    <h:outputText value="#{crt.product.productCode}"/><br/>
+                                </td>
+                                <td>#{crt.quantity}</td>
+                                <td>#{crt.product.productPrice.multiply(crt.quantity)},00 TL</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <ui:repeat var="crt" value="#{productMB.cartList}" id="repeat"> 
-                                <tr>
-                                    <td><h:outputText value="   #{crt.product.type.brand.brandName} (#{crt.product.type.typeName})"/><br/>
-                                        <h:outputText value="#{crt.product.productCode}"/><br/>
-                                    </td>
-                                    <td>#{crt.quantity}</td>
-                                    <td>#{crt.product.productPrice.multiply(crt.quantity)},00 TL</td>
-                                </tr>
-                            </ui:repeat>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="2"></td>
-                                <td>#{productMB.totalPrice},00 TL (Kargo Dahil)</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    <hr/>
-                    <div class="row uniform">
-                        <div class="12u">
-                            <h:outputText value="Ad Soyad : " style="font-size: large;"/>
-                            <h:outputText value="#{memberSessionMB.member.name} #{memberSessionMB.member.surname}" style="font-size: large;"/>
-                        </div>
-                        <div class="6u 12u(xsmall)">
-                            <h:outputText value="Teslimat Adresi" style="font-size: large;"/>
-                            <div class="box">
-                                <p>#{memberSessionMB.member.address}</p>
-                            </div>
-                        </div>
-                        <div class="6u 12u(xsmall)">
-                            <h:outputText value="Telefon Numarası" style="font-size: large;"/>
-                            <div class="box">
-                                <p>#{memberSessionMB.member.phone}</p>
-                            </div>
+                        </ui:repeat>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>#{productMB.totalPrice},00 TL (Kargo Dahil)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <hr/>
+                <div class="row uniform">
+                    <div class="12u">
+                        <h:outputText value="Ad Soyad : " style="font-size: large;"/>
+                        <h:outputText value="#{memberSessionMB.member.name} #{memberSessionMB.member.surname}" style="font-size: large;"/>
+                    </div>
+                    <div class="6u 12u(xsmall)">
+                        <h:outputText value="Teslimat Adresi" style="font-size: large;"/>
+                        <div class="box">
+                            <p>#{memberSessionMB.member.address}</p>
                         </div>
                     </div>
-                </p:panelGrid>
-                <br/>
-                <div class="icerik">
-                    <div class="sol">
-                        <p:commandButton value="Geri" icon="fa fa-arrow-left" action="#{productMB.back}" class="button" 
-                                         rendered="#{productMB.communicationView or productMB.completeView}"
-                                         update="@all">
-                        </p:commandButton>
-                    </div>
-                    <div class="sag" style="text-align: right;">
-                        <p:commandButton value="Devam Et" icon="fa fa-arrow-right" action="#{productMB.next}" class="button" 
-                                         rendered="#{(productMB.cartView or productMB.communicationView) and productMB.cartList.size() gt 0}"
-                                         update="@all">
-                        </p:commandButton>
-                        <p:commandButton value="Siparişi Tamamla" icon="fa fa-arrow-right" action="#{productMB.completeOrder}" class="button" 
-                                         rendered="#{productMB.completeView}"
-                                         update="@all">
-                        </p:commandButton>
-                    </div>
-                </div>               
-                <p:panelGrid rendered="#{productMB.order.orderNumber ne null}">
-                    <f:facet name="header">
-                        <h:outputText value="Şipariş Bilgileri" style="font-size:  x-large; color: #f56a6a"/>
-                    </f:facet>
-                    <div class="row uniform">
-                        <div class="12u">
-                            <h:outputText value="Sipariş Numarası : " style="font-size: large;"/>
-                            <h:outputText value="#{productMB.order.orderNumber}" style="font-size: x-large; font-weight:bold;"/>
-                        </div>
-                        <div class="12u">
-                            <h:outputText value="Siparişinizin kargolanabilmesi için" style="font-size: large; color:#f56a6a"/>
-                            <h:outputText value=" #{productMB.order.totalPrice},00 TL" style="font-size: large; font-weight:bold;"/>
-                            <h:outputText value="'nin aşağıda belirtilen hesaba havale/EFT yapılması gerekmektedir." style="font-size: large; color:#f56a6a"/>
+                    <div class="6u 12u(xsmall)">
+                        <h:outputText value="Telefon Numarası" style="font-size: large;"/>
+                        <div class="box">
+                            <p>#{memberSessionMB.member.phone}</p>
                         </div>
                     </div>
+                </div>
+            </p:panelGrid>
+            <br/>
+            <div class="icerik">
+                <div class="sol">
+                    <p:commandButton value="Geri" icon="fa fa-arrow-left" action="#{productMB.back}" class="button" 
+                                     rendered="#{productMB.communicationView or productMB.completeView}"
+                                     update="@all">
+                    </p:commandButton>
+                </div>
+                <div class="sag" style="text-align: right;">
+                    <p:commandButton value="Devam Et" icon="fa fa-arrow-right" action="#{productMB.next}" class="button" 
+                                     rendered="#{(productMB.cartView or productMB.communicationView) and productMB.cartList.size() gt 0}"
+                                     update="@all">
+                    </p:commandButton>
+                    <p:commandButton value="Siparişi Tamamla" icon="fa fa-arrow-right" action="#{productMB.completeOrder}" class="button" 
+                                     rendered="#{productMB.completeView}"
+                                     update="@all">
+                    </p:commandButton>
+                </div>
+            </div>               
+            <p:panelGrid rendered="#{productMB.order.orderNumber ne null}">
+                <f:facet name="header">
+                    <h:outputText value="Şipariş Bilgileri" style="font-size:  x-large; color: #f56a6a"/>
+                </f:facet>
+                <div class="row uniform">
+                    <div class="12u">
+                        <h:outputText value="Sipariş Numarası : " style="font-size: large;"/>
+                        <h:outputText value="#{productMB.order.orderNumber}" style="font-size: x-large; font-weight:bold;"/>
+                    </div>
+                    <div class="12u">
+                        <h:outputText value="Siparişinizin kargolanabilmesi için" style="font-size: large; color:#f56a6a"/>
+                        <h:outputText value=" #{productMB.order.totalPrice},00 TL" style="font-size: large; font-weight:bold;"/>
+                        <h:outputText value="'nin aşağıda belirtilen hesaba havale/EFT yapılması gerekmektedir." style="font-size: large; color:#f56a6a"/>
+                    </div>
+                </div>
 
-                    <div class="row uniform">
-                        <div class="12u">
-                            <hr/>
-                            <img src="images/isbank_logo.png" alt=""/><br/>
-                            <h:outputText value="IBAN : TR33000640000124002818341" style="font-size: x-large; color:#f56a6a"/><br/>
-                            <h:outputText value="İş Bankası, Kocaeli Umuttepe Şube, Şube Kodu: 2400 Hesap No: 2818341" style="font-size: large;"/>
-                            <hr/>
-                        </div> 
-                        <h:outputText value="Havale/EFT yaparken dikkat edilmesi gerekenler:" style="font-size: large; color:#f56a6a"/>
-                        <ul>
-                            <li>
-                                Siparişinizin iptal olmaması için havale/EFT ödemenizi 3 iş günü içerisinde gerçekleştirmelisiniz. Ödemesi tarafımıza ulaşmayan siparişler, 3 iş günü sonunda otomatik olarak iptal edilir.
-                            </li>
-                            <li>
-                                Siparişinizin havale/EFT ödemesinin işleme alınması için ödeme esnasında dekontun açıklama kısmına 
-                                <h:outputText value="8 haneli sipariş numaranızı" style="font-size: large; color:#f56a6a"/>
-                                mutlaka belirtmelisiniz.
-                            </li>
-                            <li>
-                                Açıklama bölümüne 8 haneli sipariş numarınız dışında bir metin yazmamalısınız.
-                            </li>
-                            <li>
-                                Havale/EFT ödeme işlemlerinde alıcı adına Cengiz DÖNEGEL yazmalısınız.
-                            </li>
-                            <li>
-                                8 haneli sipariş numaranızı, siparişinizi tamamladıktan sonra "Siparişlerim" sayfasından görüntüleyebilirsiniz.
-                            </li>
-                            <li>
-                                Detaylı bilgi için (0545) 905 3421 telefon numarasından irtabat kurabilirsiniz.                           
-                            </li>
-                        </ul>
-                    </div>
-                </p:panelGrid>
-            </h:form>
-        </ui:define>
-    </ui:composition>
-</html>
+                <div class="row uniform">
+                    <div class="12u">
+                        <hr/>
+                        <img src="images/isbank_logo.png" alt=""/><br/>
+                        <h:outputText value="IBAN : TR33000640000124002818341" style="font-size: x-large; color:#f56a6a"/><br/>
+                        <h:outputText value="İş Bankası, Kocaeli Umuttepe Şube, Şube Kodu: 2400 Hesap No: 2818341" style="font-size: large;"/>
+                        <hr/>
+                    </div> 
+                    <h:outputText value="Havale/EFT yaparken dikkat edilmesi gerekenler:" style="font-size: large; color:#f56a6a"/>
+                    <ul>
+                        <li>
+                            Siparişinizin iptal olmaması için havale/EFT ödemenizi 3 iş günü içerisinde gerçekleştirmelisiniz. Ödemesi tarafımıza ulaşmayan siparişler, 3 iş günü sonunda otomatik olarak iptal edilir.
+                        </li>
+                        <li>
+                            Siparişinizin havale/EFT ödemesinin işleme alınması için ödeme esnasında dekontun açıklama kısmına 
+                            <h:outputText value="8 haneli sipariş numaranızı" style="font-size: large; color:#f56a6a"/>
+                            mutlaka belirtmelisiniz.
+                        </li>
+                        <li>
+                            Açıklama bölümüne 8 haneli sipariş numarınız dışında bir metin yazmamalısınız.
+                        </li>
+                        <li>
+                            Havale/EFT ödeme işlemlerinde alıcı adına Cengiz DÖNEGEL yazmalısınız.
+                        </li>
+                        <li>
+                            8 haneli sipariş numaranızı, siparişinizi tamamladıktan sonra "Siparişlerim" sayfasından görüntüleyebilirsiniz.
+                        </li>
+                        <li>
+                            Detaylı bilgi için (0545) 905 3421 telefon numarasından irtabat kurabilirsiniz.                           
+                        </li>
+                    </ul>
+                </div>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

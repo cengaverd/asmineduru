@@ -1,179 +1,175 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="tr"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
-    <ui:composition template="template.xhtml">  
-        <ui:define name="content">
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
 
-            <!--            <link href="assets/zoomImageSlider/css/normalize.css" rel="stylesheet" type="text/css"/>-->
-            <link href="assets/zoomImageSlider/css/foundation.css" rel="stylesheet" type="text/css"/>
-            <!--            <link href="assets/zoomImageSlider/css/demo.css" rel="stylesheet" type="text/css"/>-->
+        <!--            <link href="assets/zoomImageSlider/css/normalize.css" rel="stylesheet" type="text/css"/>-->
+        <link href="assets/zoomImageSlider/css/foundation.css" rel="stylesheet" type="text/css"/>
+        <!--            <link href="assets/zoomImageSlider/css/demo.css" rel="stylesheet" type="text/css"/>-->
 
-            <script src="assets/zoomImageSlider/js/vendor/modernizr.js" type="text/javascript"></script>
-            <script src="assets/zoomImageSlider/js/vendor/jquery.js" type="text/javascript"></script>
+        <script src="assets/zoomImageSlider/js/vendor/modernizr.js" type="text/javascript"></script>
+        <script src="assets/zoomImageSlider/js/vendor/jquery.js" type="text/javascript"></script>
 
-            <!-- xzoom plugin here -->
-            <script src="assets/zoomImageSlider/js/xzoom.min.js" type="text/javascript"></script>
-            <link href="assets/zoomImageSlider/css/xzoom.css" rel="stylesheet" type="text/css"/>
-            <!-- hammer plugin here -->
-            <script src="assets/zoomImageSlider/hammer.js/1.0.5/hammer.min.js" type="text/javascript"></script>
-            <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-            <!--            <link href="assets/zoomImageSlider/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" media="all"/>-->
-            <link href="assets/zoomImageSlider/magnific-popup/css/magnific-popup.css" rel="stylesheet" type="text/css" media="all"/>
-            <!--            <script src="assets/zoomImageSlider/fancybox/source/jquery.fancybox.js" type="text/javascript"></script>-->
-            <script src="assets/zoomImageSlider/magnific-popup/js/magnific-popup.js" type="text/javascript"></script>
-            <h:form id="prdForm">
-                <!-- magnific start -->
-                <section id="magnific">
-                    <div class="row">
-                        <div class="large-12 column">
-                            <header class="major">
-                                <h2>#{productMB.selectedProduct.type.brand.brandName} (#{productMB.selectedProduct.type.typeName})</h2>
-                            </header>
-                        </div>
-                        <div class="large-5 column">
-                            <div class="xzoom-container">
-                                <img class="xzoom5" id="xzoom-magnific" src="#{productMB.selectedProduct.imageList.get(0).stringImage}" xoriginal="#{productMB.selectedProduct.imageList.get(0).stringOriginalImage}" />
-                                <div class="xzoom-thumbs">
-                                    <c:forEach var="image" items="#{productMB.selectedProduct.imageList}" rendered="#{fn:length(productMB.selectedProduct.imageList) gt 1}">
-                                        <a href="#{image.stringOriginalImage}"><img class="xzoom-gallery5" width="80" src="#{image.stringImage}"   title="#{productMB.selectedProduct.productName}"/></a>
-                                    </c:forEach>
-                                </div>
-                            </div> 
-                            <p:messages id="messages" closable="true" autoUpdate="true"/>
-                            <h:panelGrid id="comments">                                 
-                                <h:panelGrid style="text-align: right;">
-                                    <p:inputTextarea id="cmt" value="#{productMB.inputComment}" placeholder="Yorum Giriniz." maxlength="500" autoResize="false" />
-                                    <p:commandButton type="button small" value="Gönder" action="#{productMB.addComment}" update="comments">
-                                    </p:commandButton>
-                                </h:panelGrid>
+        <!-- xzoom plugin here -->
+        <script src="assets/zoomImageSlider/js/xzoom.min.js" type="text/javascript"></script>
+        <link href="assets/zoomImageSlider/css/xzoom.css" rel="stylesheet" type="text/css"/>
+        <!-- hammer plugin here -->
+        <script src="assets/zoomImageSlider/hammer.js/1.0.5/hammer.min.js" type="text/javascript"></script>
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        <!--            <link href="assets/zoomImageSlider/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" media="all"/>-->
+        <link href="assets/zoomImageSlider/magnific-popup/css/magnific-popup.css" rel="stylesheet" type="text/css" media="all"/>
+        <!--            <script src="assets/zoomImageSlider/fancybox/source/jquery.fancybox.js" type="text/javascript"></script>-->
+        <script src="assets/zoomImageSlider/magnific-popup/js/magnific-popup.js" type="text/javascript"></script>
+        <h:form id="prdForm">
+            <!-- magnific start -->
+            <section id="magnific">
+                <div class="row">
+                    <div class="large-12 column">
+                        <header class="major">
+                            <h2>#{productMB.selectedProduct.type.brand.brandName} (#{productMB.selectedProduct.type.typeName})</h2>
+                        </header>
+                    </div>
+                    <div class="large-5 column">
+                        <div class="xzoom-container">
+                            <img class="xzoom5" id="xzoom-magnific" src="#{productMB.selectedProduct.imageList.get(0).stringImage}" xoriginal="#{productMB.selectedProduct.imageList.get(0).stringOriginalImage}" />
+                            <div class="xzoom-thumbs">
+                                <ui:repeat var="image" value="#{productMB.selectedProduct.imageList}" rendered="#{fn:length(productMB.selectedProduct.imageList) gt 1}">
+                                    <a href="#{image.stringOriginalImage}"><img class="xzoom-gallery5" width="80" src="#{image.stringImage}"   title="#{productMB.selectedProduct.productName}"/></a>
+                                </ui:repeat>
+                            </div>
+                        </div> 
+                        <p:messages id="messages" closable="true" autoUpdate="true"/>
+                        <h:panelGrid id="comments">                                 
+                            <h:panelGrid style="text-align: right;">
+                                <p:inputTextarea id="cmt" value="#{productMB.inputComment}" placeholder="Yorum Giriniz." maxlength="500" autoResize="false" />
+                                <p:commandButton type="button small" value="Gönder" action="#{productMB.addComment}" update="comments">
+                                </p:commandButton>
+                            </h:panelGrid>
 
-                                <p:dataScroller value="#{productMB.commentList}" var="comment" chunkSize="3"
-                                                rendered="#{productMB.commentList.size()>0}">
+                            <p:dataScroller value="#{productMB.commentList}" var="comment" chunkSize="3"
+                                            rendered="#{productMB.commentList.size()>0}">
 
-                                    <f:facet name="loader">
-                                        <p:commandButton type="button" value="Önceki Yorumları Göster" icon="ui-icon-circle-triangle-s" 
-                                                         rendered="#{productMB.commentList.size()>3}"/>
-                                    </f:facet>
+                                <f:facet name="loader">
+                                    <p:commandButton type="button" value="Önceki Yorumları Göster" icon="ui-icon-circle-triangle-s" 
+                                                     rendered="#{productMB.commentList.size()>3}"/>
+                                </f:facet>
 
 
-                                    <div class="icerik">
+                                <div class="icerik">
+                                    <div class="sol">
+                                        <h:outputText value="# #{comment.member.username}" style="font-weight: bold; color: #f56a6a"/>
+                                    </div>
+                                    <div class="sag" style="text-align: right;">
+                                        <h:outputText value="#{comment.commentDate}">
+                                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                                        </h:outputText>
+                                    </div>
+                                </div>                                    
+                                <h:outputText value="#{comment.comment}" style="font-weight: bold"/>
+
+                                <p:panelGrid columns="1" rendered="#{comment.adminAnswer eq null and memberSessionMB.getMember().username eq 'asmineduru'}" styleClass="companyHeaderGrid" style="text-align: right;">
+
+                                    <p:commandLink id="answer" style="border-bottom: 0; text-align: right;" oncomplete="return focusing();" action="#{productMB.adminAnswer(comment)}">                                                
+                                        <h:outputText value=" Yanıtla" style="font-size: small; color: red;"/>                                                
+                                    </p:commandLink>
+
+                                </p:panelGrid>   
+
+                                <h:panelGroup rendered="#{comment.adminAnswer ne null}" style="margin-left: 15px;">
+
+                                    <div class="icerik" style="margin-left: 15px;">
+                                        <br/>
                                         <div class="sol">
-                                            <h:outputText value="# #{comment.member.username}" style="font-weight: bold; color: #f56a6a"/>
+                                            <h:outputText value="# asmineduru" style="font-weight: bold; color: #f56a6a"/>
                                         </div>
-                                        <div class="sag" style="text-align: right;">
-                                            <h:outputText value="#{comment.commentDate}">
+                                        <div class="sag" style="text-align: center;">
+                                            <h:outputText value="#{comment.adminAnswerDate}">
                                                 <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
                                             </h:outputText>
                                         </div>
-                                    </div>                                    
-                                    <h:outputText value="#{comment.comment}" style="font-weight: bold"/>
-
-                                    <p:panelGrid columns="1" rendered="#{comment.adminAnswer eq null and memberSessionMB.getMember().username eq 'asmineduru'}" styleClass="companyHeaderGrid" style="text-align: right;">
-
-                                        <p:commandLink id="answer" style="border-bottom: 0; text-align: right;" oncomplete="return focusing();" action="#{productMB.adminAnswer(comment)}">                                                
-                                            <h:outputText value=" Yanıtla" style="font-size: small; color: red;"/>                                                
-                                        </p:commandLink>
-
-                                    </p:panelGrid>   
-
-                                    <h:panelGroup rendered="#{comment.adminAnswer ne null}" style="margin-left: 15px;">
-
-                                        <div class="icerik" style="margin-left: 15px;">
-                                            <br/>
-                                            <div class="sol">
-                                                <h:outputText value="# asmineduru" style="font-weight: bold; color: #f56a6a"/>
-                                            </div>
-                                            <div class="sag" style="text-align: center;">
-                                                <h:outputText value="#{comment.adminAnswerDate}">
-                                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-                                                </h:outputText>
-                                            </div>
-                                        </div>
-                                        <br/>
-                                        <h:outputText value="#{comment.adminAnswer}" style="font-weight: bold; margin-left: 15px;"/>
-                                    </h:panelGroup>
-                                    <p:separator/>
-
-                                </p:dataScroller>
-                            </h:panelGrid>
-                            <br/>
-                        </div>
-                        <div class="large-7 column"> 
-                            <h3>
-                                <div class="icerik">
-                                    <div class="sol">
-                                        #{productMB.selectedProduct.type.brand.brandName}
                                     </div>
-                                    <div class="sag">
-                                        <h:panelGroup id="group">
-                                            <p:commandLink id="like" action="#{productMB.like(productMB.selectedProduct)}" style="border-bottom: 0;"
-                                                           update="group" rendered="#{!productMB.selectedProduct.memberFavorite}">
-                                                <i class="fa fa-heart-o" style="color: #f45c5c; display: inline;">
-                                                    <h:outputText value=" Favorilerime Ekle" style="font-size: medium;"/>
-                                                </i>
-                                            </p:commandLink>
-                                            <p:commandLink id="disLike" action="#{productMB.disLike(productMB.selectedProduct)}" style="border-bottom: 0;" 
-                                                           update="group" rendered="#{productMB.selectedProduct.memberFavorite}">
-                                                <i class="fa fa-heart" style="color: #f45c5c; display: inline;">
-                                                    <h:outputText value=" Favorilerimden Çıkar" style="font-size: medium;"/>
-                                                </i>
-                                            </p:commandLink>
-                                        </h:panelGroup>
-                                    </div>                                    
-                                </div>
+                                    <br/>
+                                    <h:outputText value="#{comment.adminAnswer}" style="font-weight: bold; margin-left: 15px;"/>
+                                </h:panelGroup>
+                                <p:separator/>
 
-
-                            </h3>
-
-                            <p>
-                                <h:outputText style="font-weight: bold; color: #3d4449; font-size: large;" value="Ürün Kodu : "/>
-                                <h:outputText style="font-size: large;" value="#{productMB.selectedProduct.productCode}" />                                
-                            </p>
-                            <p>
-                                <h:outputText value="#{productMB.selectedProduct.type.typeName}           " />
-                                <h:outputText style="background-color: deeppink; color: white; font-weight: bold;" value="% #{productMB.selectedProduct.discount} İndirim " 
-                                              rendered="#{productMB.selectedProduct.discount gt 30}"/>
-                            </p>
-                            <p>
-                                <h:outputText style="text-decoration: line-through;" value="#{productMB.selectedProduct.productFirstPrice} TL" />
-                                <h:outputText style=" font-size: x-large; color: orange;" value="    #{productMB.selectedProduct.productPrice} TL" />
-                            </p>
-                            <p>
-                                <i class="fa fa-truck fa-rotate-90" style="color: #4CD964; display: inline;">
-                                    <h:outputText value=" Ücretsiz Kargo" style="font-size: medium; color: #4CD964;"/>
-                                </i>
-                            </p>
-                            <p>
-                                <h:outputText value="#{productMB.selectedProduct.description}" />
-                            </p>
-                            <br/>
-                            <p>
-                                <p:spinner id="minMax" value="#{productMB.quantity}" min="1" max="100" size="3"/>
-                                <h:outputText value="    Adet" />
-                            </p>
-                            <br/>
-                            <ul class="actions">
-                                <li>
-                                    <h:commandButton value="Sepete Ekle" action="#{productMB.goCart()}"/>                                       
-                                </li>
-                            </ul>
-                        </div>
+                            </p:dataScroller>
+                        </h:panelGrid>
+                        <br/>
                     </div>
-                </section> 
-                <!--                <script src="assets/zoomImageSlider/js/foundation.min.js" type="text/javascript"></script>-->
-                <script src="assets/zoomImageSlider/js/setup.js" type="text/javascript"></script>
-                <script>
-                    function focusing() {
-                        document.getElementById('form:prdForm:cmt').focus();
-                    }
-                </script>
-            </h:form>
-        </ui:define>
-    </ui:composition>
-</html>
+                    <div class="large-7 column"> 
+                        <h3>
+                            <div class="icerik">
+                                <div class="sol">
+                                    #{productMB.selectedProduct.type.brand.brandName}
+                                </div>
+                                <div class="sag">
+                                    <h:panelGroup id="group">
+                                        <p:commandLink id="like" action="#{productMB.like(productMB.selectedProduct)}" style="border-bottom: 0;"
+                                                       update="group" rendered="#{!productMB.selectedProduct.memberFavorite}">
+                                            <i class="fa fa-heart-o" style="color: #f45c5c; display: inline;">
+                                                <h:outputText value=" Favorilerime Ekle" style="font-size: medium;"/>
+                                            </i>
+                                        </p:commandLink>
+                                        <p:commandLink id="disLike" action="#{productMB.disLike(productMB.selectedProduct)}" style="border-bottom: 0;" 
+                                                       update="group" rendered="#{productMB.selectedProduct.memberFavorite}">
+                                            <i class="fa fa-heart" style="color: #f45c5c; display: inline;">
+                                                <h:outputText value=" Favorilerimden Çıkar" style="font-size: medium;"/>
+                                            </i>
+                                        </p:commandLink>
+                                    </h:panelGroup>
+                                </div>                                    
+                            </div>
+
+
+                        </h3>
+
+                        <p>
+                            <h:outputText style="font-weight: bold; color: #3d4449; font-size: large;" value="Ürün Kodu : "/>
+                            <h:outputText style="font-size: large;" value="#{productMB.selectedProduct.productCode}" />                                
+                        </p>
+                        <p>
+                            <h:outputText value="#{productMB.selectedProduct.type.typeName}           " />
+                            <h:outputText style="background-color: deeppink; color: white; font-weight: bold;" value="% #{productMB.selectedProduct.discount} İndirim " 
+                                          rendered="#{productMB.selectedProduct.discount gt 30}"/>
+                        </p>
+                        <p>
+                            <h:outputText style="text-decoration: line-through;" value="#{productMB.selectedProduct.productFirstPrice} TL" />
+                            <h:outputText style=" font-size: x-large; color: orange;" value="    #{productMB.selectedProduct.productPrice} TL" />
+                        </p>
+                        <p>
+                            <i class="fa fa-truck fa-rotate-90" style="color: #4CD964; display: inline;">
+                                <h:outputText value=" Ücretsiz Kargo" style="font-size: medium; color: #4CD964;"/>
+                            </i>
+                        </p>
+                        <p>
+                            <h:outputText value="#{productMB.selectedProduct.description}" />
+                        </p>
+                        <br/>
+                        <p>
+                            <p:spinner id="minMax" value="#{productMB.quantity}" min="1" max="100" size="3"/>
+                            <h:outputText value="    Adet" />
+                        </p>
+                        <br/>
+                        <ul class="actions">
+                            <li>
+                                <h:commandButton value="Sepete Ekle" action="#{productMB.goCart()}"/>                                       
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section> 
+            <!--                <script src="assets/zoomImageSlider/js/foundation.min.js" type="text/javascript"></script>-->
+            <script src="assets/zoomImageSlider/js/setup.js" type="text/javascript"></script>
+            <script>
+                function focusing() {
+                    document.getElementById('form:prdForm:cmt').focus();
+                }
+            </script>
+        </h:form>
+    </ui:define>
+</ui:composition>

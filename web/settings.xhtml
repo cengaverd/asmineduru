@@ -1,56 +1,53 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="tr"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="template.xhtml">          
-        <ui:define name="content">
-            <h2>Hesap Ayarları</h2>
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">        
+    <ui:define name="content">
+        <h2>Hesap Ayarları</h2>
 
-            <h:form id="form">
-                <p:messages id="messages" closable="true" autoUpdate="true"/>
-                <div class="row uniform">
-                    <div class="6u 12u(xsmall)">
-                        <p:outputLabel value="Kullanıcı Adı: #{settingsMB.member.username}"/>
-                    </div>
-                    <div class="6u 12u(xsmall)">
-                        <p:outputLabel value="E-posta: #{settingsMB.member.email}"/>
-                    </div>
-                    <div class="6u 12u(xsmall)">
-                        <h:outputText value="Adınız: " style="font-size: large;"/>
-                        <p:inputText value="#{settingsMB.member.name}" required="true" 
-                                     requiredMessage="Lütfen adınızı giriniz." placeholder="Adınız"/>
-                    </div>
-                    <div class="6u 12u(xsmall)">
-                        <h:outputText value="Soyadınız: " style="font-size: large;"/>
-                        <p:inputText value="#{settingsMB.member.surname}" required="true" 
-                                     requiredMessage="Lütfen soyadınızı giriniz." placeholder="Soyadınız"/>
-                    </div>                         
-                    <div class="6u 12u(xsmall)">
-                        <p:password id="pwd1" value="#{settingsMB.password}" feedback="true"
-                                    inline="true" validator="passwordValidator"
-                                    promptLabel="Lütfen şifrenizi giriniz." weakLabel="Zayıf" 
-                                    placeholder="Şifre"
-                                    goodLabel="Orta seviye" strongLabel="Güçlü" label="Şifre"/>
-                    </div>
-                    <div class="6u 12u(xsmall)">
-                        <p:password id="pwd2" value="#{settingsMB.password2}" feedback="true"
-                                    inline="true" 
-                                    validator="confirmPasswordValidator"
-                                    promptLabel="Lütfen şifreyi tekrar giriniz." weakLabel="Zayıf" 
-                                    placeholder="Şifre Tekrar"
-                                    goodLabel="Orta seviye" strongLabel="Güçlü" label="Şifre Tekrar" />
-                    </div>
-                    <!-- Break -->
-                    <div class="12u">
-                        <ul class="actions">
-                            <li><h:commandButton class="special" value="Kaydet" action="#{settingsMB.saveMember()}"/> </li>
-                        </ul>
-                    </div>
+        <h:form id="form">
+            <p:messages id="messages" closable="true" autoUpdate="true"/>
+            <div class="row uniform">
+                <div class="6u 12u(xsmall)">
+                    <p:outputLabel value="Kullanıcı Adı: #{settingsMB.member.username}"/>
                 </div>
-            </h:form>
-        </ui:define>
-    </ui:composition>
-</html>
+                <div class="6u 12u(xsmall)">
+                    <p:outputLabel value="E-posta: #{settingsMB.member.email}"/>
+                </div>
+                <div class="6u 12u(xsmall)">
+                    <h:outputText value="Adınız: " style="font-size: large;"/>
+                    <p:inputText value="#{settingsMB.member.name}" required="true" 
+                                 requiredMessage="Lütfen adınızı giriniz." placeholder="Adınız"/>
+                </div>
+                <div class="6u 12u(xsmall)">
+                    <h:outputText value="Soyadınız: " style="font-size: large;"/>
+                    <p:inputText value="#{settingsMB.member.surname}" required="true" 
+                                 requiredMessage="Lütfen soyadınızı giriniz." placeholder="Soyadınız"/>
+                </div>                         
+                <div class="6u 12u(xsmall)">
+                    <p:password id="pwd1" value="#{settingsMB.password}" feedback="true"
+                                inline="true" validator="passwordValidator"
+                                promptLabel="Lütfen şifrenizi giriniz." weakLabel="Zayıf" 
+                                placeholder="Şifre"
+                                goodLabel="Orta seviye" strongLabel="Güçlü" label="Şifre"/>
+                </div>
+                <div class="6u 12u(xsmall)">
+                    <p:password id="pwd2" value="#{settingsMB.password2}" feedback="true"
+                                inline="true" 
+                                validator="confirmPasswordValidator"
+                                promptLabel="Lütfen şifreyi tekrar giriniz." weakLabel="Zayıf" 
+                                placeholder="Şifre Tekrar"
+                                goodLabel="Orta seviye" strongLabel="Güçlü" label="Şifre Tekrar" />
+                </div>
+                <!-- Break -->
+                <div class="12u">
+                    <ul class="actions">
+                        <li><h:commandButton class="special" value="Kaydet" action="#{settingsMB.saveMember()}"/> </li>
+                    </ul>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
