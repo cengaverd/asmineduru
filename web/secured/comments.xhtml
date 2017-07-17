@@ -9,43 +9,38 @@
     <ui:define name="content">
         <h:form id="form">
             <p:messages id="msg" autoUpdate="true" closable="true"/>
-            <p:dataTable value="#{membersMB.memberList}" var="member" id="table" 
+            <p:dataTable value="#{commentsMB.commentList}" var="comment" id="table" 
                          emptyMessage="Liste boştur." reflow="true">
                 <f:facet name="header" id="hee">
-                    <div style="text-align: center">  Üye Listesi</div>                                       
+                    <div style="text-align: center">  Yorumlar</div>                                       
                 </f:facet>
                 <p:column headerText="Üye Adı">
-                    <p:outputLabel value="#{member.username}" />
+                    <p:outputLabel value="#{comment.member.username}" />
                 </p:column>
-                <p:column headerText="Adı ve Soyadı">
-                    <p:outputLabel value="#{member.name} #{member.surname}" />
+                <p:column headerText="Ürün Id">
+                    <p:outputLabel value="#{comment.productId}" />
                 </p:column>
-                <p:column headerText="E-Mail">                   
-                    <p:outputLabel value="#{member.email}" />
+                <p:column headerText="Yorum">                   
+                    <p:outputLabel value="#{comment.comment}" />
                 </p:column> 
-                <p:column headerText="Adres">                   
-                    <p:outputLabel value="#{member.address}" />
-                </p:column>
-                <p:column headerText="Telefon">                   
-                    <p:outputLabel value="#{member.phone}" />
-                </p:column>
-                <p:column headerText="Üye Tarihi">                   
-                    <h:outputText value="#{member.memberDate}">
-                            <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
-                        </h:outputText>
-                </p:column>
+                <p:column headerText="Verilen Cevap">                   
+                    <p:outputLabel value="#{comment.adminAnswer}" />
+                </p:column> 
+                <p:column headerText="Yorum Aktif/Pasif">                   
+                    <p:outputLabel value="#{comment.usageStatus}" />
+                </p:column> 
                 <p:column>
                     <center>
                         <p:commandLink onclick="PF('sil').show();" id="sil">
                             <p:graphicImage value="/images/delete.png" />
-                            <f:setPropertyActionListener value="#{member}" 
-                                                         target="#{membersMB.selectedMember}" />
+                            <f:setPropertyActionListener value="#{comment}" 
+                                                         target="#{commentsMB.selectedComment}" />
                         </p:commandLink>
-                        <p:tooltip id="toolTipSil" for="sil" value="Sil" trackMouse="true"/>
+                        <p:tooltip id="toolTipSil" for="sil" value="Pasif Yap" trackMouse="true"/>
                     </center>
                 </p:column>
                 <f:facet name="footer">                    
-                    Toplam üye sayısı: #{fn:length(membersMB.memberList)}
+                    Toplam yorum sayısı: #{fn:length(commentsMB.commentList)}
                 </f:facet>
             </p:dataTable>            
             <br/>
@@ -53,11 +48,11 @@
 
         <p:dialog header="Üye Sil Onay" widgetVar="sil" resizable="false">
             <h:form id="silForm">               
-                <p:outputLabel value="Üyeyi silmek istediğinize emin misiniz?" />                
+                <p:outputLabel value="Yorumu pasif yapmak istediğinize emin misiniz?" />                
                 <br/><br/>
                 <center>
                     <p:commandButton update="form:table" value="Evet" oncomplete="PF('sil').hide();"
-                                     action="#{membersMB.deleteMember()}"/>
+                                     action="#{commentsMB.deleteComment()}"/>
                     <p:commandButton value="Hayır" style="margin-left: 10px;"
                                      onclick="PF('sil').hide();"/> 
                 </center>

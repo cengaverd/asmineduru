@@ -57,9 +57,12 @@ public class NavigationBean implements Serializable {
     public static String redirectToOrders() {
         return "/secured/orders.xhtml?faces-redirect=true";
     }
-    
+
     public static String redirectToMemberOrders() {
         return "/memberOrders.xhtml?faces-redirect=true";
     }
 
+    public static String redirectToComments() {
+        return "/secured/comments.xhtml?faces-redirect=true";
+    }
 }

@@ -4,6 +4,7 @@ import com.asmineduru.dao.MainDao;
 import com.asmineduru.model.Member;
 import com.asmineduru.util.MessagesController;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -55,6 +56,7 @@ public class RegistrationMB implements Serializable {
             }
             if (continueProcess) {
                 member.setPassword(password);
+                member.setMemberDate(new Date());
                 member.setActive(true);
                 mainDao.saveObject(member);
                 member = new Member();

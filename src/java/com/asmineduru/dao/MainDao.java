@@ -378,6 +378,22 @@ public class MainDao extends Dao implements Serializable {
         }
         return memberList;
     }
+    
+    public List<Comment> findAllComments() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Comment> commentList;
+        try {
+
+            String hql = "from Comment";
+            commentList = session.createQuery(hql).list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return commentList;
+    }
 
     public Integer findProductMaxId() {
         Session session = HibernateUtil.getSessionFactory().openSession();

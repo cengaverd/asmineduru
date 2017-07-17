@@ -20,6 +20,9 @@
                             <p:resetInput target="ekleForm" />
                         </p:commandButton></div>                    
                 </f:facet>
+                <p:column headerText="Ürün Id" style="text-align: center;">
+                    <p:outputLabel value="#{product.productId}" />
+                </p:column>
                 <p:column headerText="Ürün Adı" style="text-align: center;">
                     <p:outputLabel value="#{product.productName}" />
                 </p:column>

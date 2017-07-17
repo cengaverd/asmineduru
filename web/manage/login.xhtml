@@ -26,9 +26,13 @@
                                 <td><p:password id="password" value="#{sessionMB.user.password}" required="true" requiredMessage="Şifre boş bırakılamaz." /></td>
                             </tr>
                             <tr>
-                                <td align="center" colspan="2">
+                                <td align="center">
                                     <p:commandButton id="submit" style="color:red"
                                                      value="Giriş" action="#{sessionMB.login}" ajax="false" />
+                                </td>
+                                <td align="center">
+                                    <p:commandButton id="back" style="color:red"
+                                                     value="Siteye Dön" action="#{navigationBean.redirectToWebSite}" process="@this" />
                                 </td>
                             </tr>
                             <tr>

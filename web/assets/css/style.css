@@ -184,3 +184,35 @@ z-index:9999;
     background: #f56a6a;
     cursor: move;
 }
+
+.thumbnails img, .main-image img {
+      max-width: 100%;
+      padding: 3px;
+      border: 1px solid #ccc;
+      height: auto;
+      background: #fff;
+      box-shadow: 1px 1px 7px rgba(0,0,0,0.1);
+    }
+
+
+    .main-image {
+      width: 100%;
+      margin-bottom: 0.75em;
+    }
+    .thumbnails li {
+      display: inline;
+      margin: 0 0 0 0;
+      width: 40px;
+
+    }
+
+    .thumbnails li img {
+
+      width: 75px;
+
+    }
+    .thumbnails {
+
+    padding: 0;
+
+    }

@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -45,6 +46,10 @@ public class Member implements Serializable {
     private String address;
     @Column(name = "phone", length = 45)
     private String phone;
+    
+    @Column(name = "memberDate")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date memberDate;
     
     public String getUsername() {
         return username;
@@ -132,6 +137,14 @@ public class Member implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Date getMemberDate() {
+        return memberDate;
+    }
+
+    public void setMemberDate(Date memberDate) {
+        this.memberDate = memberDate;
     }
 
 }

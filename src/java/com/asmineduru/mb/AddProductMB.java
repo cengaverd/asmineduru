@@ -68,12 +68,11 @@ public class AddProductMB implements Serializable {
     public void handleFileUpload(FileUploadEvent event) throws IOException {
         uploadedFile = event.getFile();
         image = new Image();
-        image.setImageShow(new DefaultStreamedContent(new ByteArrayInputStream(uploadedFile.getContents())));
         BufferedImage bi = ImageIO.read(new ByteArrayInputStream(uploadedFile.getContents()));
         int width = bi.getWidth();
         int height = bi.getHeight();
-        byte[] original = scale(uploadedFile.getContents(), width, height);
-        image.setOriginImage(original);
+//        byte[] original = scale(uploadedFile.getContents(), width, height);
+//        image.setOriginImage(original);
         image.setImage(scale(uploadedFile.getContents(), 250, 320));
         image.setProduct(selectedProduct);
         image.setUsageStatus(1);

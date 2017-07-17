@@ -45,10 +45,10 @@ public class Image implements Serializable {
     @Column(nullable = false)
     private byte[] image;
 
-    @Basic(optional = false)
-    @Lob
-    @Column(nullable = false)
-    private byte[] originImage;
+//    @Basic(optional = false)
+//    @Lob
+//    @Column(nullable = false)
+//    private byte[] originImage;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -59,13 +59,10 @@ public class Image implements Serializable {
     private Product product;
 
     @Transient
-    private StreamedContent imageShow;
-
-    @Transient
     private String stringImage;
 
-    @Transient
-    private String stringOriginalImage;
+//    @Transient
+//    private String stringOriginalImage;
 
     public Image() {
     }
@@ -98,25 +95,13 @@ public class Image implements Serializable {
         this.image = image;
     }
 
-    public StreamedContent getImageShow() {
-        if (this.getImage() != null) {
-            return new DefaultStreamedContent(new ByteArrayInputStream(this.getImage()));
-        } else {
-            return null;
-        }
-    }
-
-    public void setImageShow(StreamedContent imageShow) {
-        this.imageShow = imageShow;
-    }
-
-    public byte[] getOriginImage() {
-        return originImage;
-    }
-
-    public void setOriginImage(byte[] originImage) {
-        this.originImage = originImage;
-    }
+//    public byte[] getOriginImage() {
+//        return originImage;
+//    }
+//
+//    public void setOriginImage(byte[] originImage) {
+//        this.originImage = originImage;
+//    }
 
     public int getUsageStatus() {
         return usageStatus;
@@ -138,17 +123,17 @@ public class Image implements Serializable {
         this.stringImage = stringImage;
     }
 
-    public String getStringOriginalImage() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("data:image/png;base64,");
-        sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(originImage, false)));
-        stringOriginalImage = sb.toString();
-        return stringOriginalImage;
-    }
-
-    public void setStringOriginalImage(String stringOriginalImage) {
-        this.stringOriginalImage = stringOriginalImage;
-    }
+//    public String getStringOriginalImage() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("data:image/png;base64,");
+//        sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(originImage, false)));
+//        stringOriginalImage = sb.toString();
+//        return stringOriginalImage;
+//    }
+//
+//    public void setStringOriginalImage(String stringOriginalImage) {
+//        this.stringOriginalImage = stringOriginalImage;
+//    }
 
     @Override
     public int hashCode() {
