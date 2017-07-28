@@ -144,7 +144,7 @@ i {
 }
 
 .commentText{
-    
+
     padding:0 15px 0 15px; 
     font-family: 'Open Sans'; 
     color: black; 
@@ -161,23 +161,23 @@ z-index:9999;
 }*/
 
 .icerik {
-	width: 100%;
+    width: 100%;
 }
 
 .sol {
-	width: 50%;
-	height: 100%;
-	float: left;
+    width: 50%;
+    height: 100%;
+    float: left;
 }
 
 
 .sag {
-	width: 45%;
-	height: 100%;
-	float: right;
-        text-align: left;
-	position: relative;
-        
+    width: 45%;
+    height: 100%;
+    float: right;
+    text-align: left;
+    position: relative;
+
 }
 
 .ui-draggable .ui-dialog-titlebar{
@@ -186,33 +186,74 @@ z-index:9999;
 }
 
 .thumbnails img, .main-image img {
-      max-width: 100%;
-      padding: 3px;
-      border: 1px solid #ccc;
-      height: auto;
-      background: #fff;
-      box-shadow: 1px 1px 7px rgba(0,0,0,0.1);
-    }
+    width: 100%;
+    padding: 3px;
+    border: 1px solid #ccc;
+    height: auto;
+    background: #fff;
+    box-shadow: 1px 1px 7px rgba(0,0,0,0.1);
+}
 
+.main-image {
+    width: 100%;
+    margin-bottom: 0.75em;
+}
+.thumbnails li {
+    display: inline;
+    margin: 0 0 0 0;
+    width: 40px;
+}
 
-    .main-image {
-      width: 100%;
-      margin-bottom: 0.75em;
-    }
-    .thumbnails li {
-      display: inline;
-      margin: 0 0 0 0;
-      width: 40px;
-
-    }
-
-    .thumbnails li img {
-
-      width: 75px;
-
-    }
-    .thumbnails {
-
+.thumbnails li img {
+    width: 70px;
+}
+.thumbnails {
     padding: 0;
+}
 
-    }
+.safety-icons{
+    border:1px solid #e8e8e8;
+    padding:10px 0;
+    margin-bottom:15px;
+}
+.safety-icons ul li {
+    width: 25%;
+    float: left;
+    padding: 0px 10px 0 10px;
+    list-style-type: none;
+    color: #666;
+    font-family: 'Proxima Nova Semibold';
+    font-size: 12px;
+    line-height: 13px;
+    text-align: center;
+    position: relative;
+}
+
+.safety-icons li:before
+{
+    content: '';
+    position: absolute;
+    top: 10px;
+    width: 1px;
+    height: 30px;
+    background: #e8e8e8;
+    left: 0;
+}
+.safety-icons li:nth-child(1):before{
+    display: none;
+}
+
+.breadcrumb {
+  list-style: none;
+}
+.breadcrumb > li {
+  display: inline-block;
+}
+.breadcrumb > li + li:before {
+  padding: 0 2px;
+  color: #ccc;
+  content: "/\00a0";
+}
+.breadcrumb > .active {
+  color: #777;
+}

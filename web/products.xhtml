@@ -7,6 +7,14 @@
     <ui:define name="content">
         <h:form id="formProducts">
             <section>
+                <ol class="breadcrumb" style="padding-left: 0; margin: 0 0 1em 0;">
+                    <li class="breadcrumb-item">
+                        <p:commandLink id="mmm" action="#{navigationBean.redirectToWebSite()}" style="border-bottom: 0;">
+                            Ana Sayfa
+                        </p:commandLink>
+                    </li>                    
+                    <li class="breadcrumb-item active">#{productMB.selectedType.brand.brandName} (#{productMB.selectedType.typeName})</li>
+                </ol>
                 <header class="major">
                     <h2>#{productMB.selectedType.brand.brandName} (#{productMB.selectedType.typeName})</h2>
                 </header>

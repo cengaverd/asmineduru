@@ -34,6 +34,19 @@
             <section id="magnific">
                 <div class="row">
                     <div class="large-12 column">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <p:commandLink id="mmm" action="#{navigationBean.redirectToWebSite()}" style="border-bottom: 0;">
+                                    Ana Sayfa
+                                </p:commandLink>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <p:commandLink id="ttt" action="#{productMB.goProducts(productMB.selectedProduct.type)}" style="border-bottom: 0;">
+                                    #{productMB.selectedProduct.type.brand.brandName} (#{productMB.selectedProduct.type.typeName})
+                                </p:commandLink>
+                            </li>
+                            <li class="breadcrumb-item active">#{productMB.selectedProduct.productCode}</li>
+                        </ol>
                         <header class="major">
                             <h2>#{productMB.selectedProduct.type.brand.brandName} (#{productMB.selectedProduct.type.typeName})</h2>
                         </header>
@@ -52,7 +65,6 @@
                                 </li>
                             </ui:repeat>
                         </ul>
-                        
 
                         <p:messages id="messages" closable="true" autoUpdate="true"/>
                         <h:panelGrid id="comments" style="margin-top: 10px;">                                 
@@ -122,19 +134,19 @@
                                 <div class="sag">
                                     <h:panelGroup id="group">
                                         <center>
-                                        <p:commandLink id="like" action="#{productMB.like(productMB.selectedProduct)}" style="border-bottom: 0;"
-                                                       update="group" rendered="#{!productMB.selectedProduct.memberFavorite}">
-                                            <i class="fa fa-heart-o" style="color: #f45c5c; display: inline;">
-                                                <h:outputText value=" Favorilerime Ekle" style="font-size: medium;"/>
-                                            </i>
-                                        </p:commandLink>
-                                        <p:commandLink id="disLike" action="#{productMB.disLike(productMB.selectedProduct)}" style="border-bottom: 0;" 
-                                                       update="group" rendered="#{productMB.selectedProduct.memberFavorite}">
-                                            <i class="fa fa-heart" style="color: #f45c5c; display: inline;">
-                                                <h:outputText value=" Favorilerimden Çıkar" style="font-size: medium;"/>
-                                            </i>
-                                        </p:commandLink>
-                                            </center>
+                                            <p:commandLink id="like" action="#{productMB.like(productMB.selectedProduct)}" style="border-bottom: 0;"
+                                                           update="group" rendered="#{!productMB.selectedProduct.memberFavorite}">
+                                                <i class="fa fa-heart-o" style="color: #f45c5c; display: inline;">
+                                                    <h:outputText value=" Favorilerime Ekle" style="font-size: medium;"/>
+                                                </i>
+                                            </p:commandLink>
+                                            <p:commandLink id="disLike" action="#{productMB.disLike(productMB.selectedProduct)}" style="border-bottom: 0;" 
+                                                           update="group" rendered="#{productMB.selectedProduct.memberFavorite}">
+                                                <i class="fa fa-heart" style="color: #f45c5c; display: inline;">
+                                                    <h:outputText value=" Favorilerimden Çıkar" style="font-size: medium;"/>
+                                                </i>
+                                            </p:commandLink>
+                                        </center>
                                     </h:panelGroup>
                                 </div>                                    
                             </div>
@@ -174,6 +186,15 @@
                                 <h:commandButton value="Sepete Ekle" action="#{productMB.goCart()}"/>                                       
                             </li>
                         </ul>
+                        <br/>
+                        <div class="safety-icons">
+                            <ul class="clearfix">
+                                <li><i class="fa fa-star-o fa-2x"/><br/><br/>Orijinal Markalar</li>
+                                <li><i class="fa fa-exchange fa-2x"/><br/><br/>İade Garantisi</li>
+                                <li><i class="fa fa-lock fa-2x"/><br/><br/>Güvenli Alışveriş</li>
+                                <li><i class="fa fa-comments-o fa-2x"/><br/><br/>7/24 Destek</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section> 

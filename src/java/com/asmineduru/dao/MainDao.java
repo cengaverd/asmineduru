@@ -368,7 +368,7 @@ public class MainDao extends Dao implements Serializable {
         List<Member> memberList;
         try {
 
-            String hql = "from Member";
+            String hql = "from Member order by memberDate desc";
             memberList = session.createQuery(hql).list();
 
         } catch (Exception e) {
@@ -384,7 +384,7 @@ public class MainDao extends Dao implements Serializable {
         List<Comment> commentList;
         try {
 
-            String hql = "from Comment";
+            String hql = "from Comment order by commentDate desc";
             commentList = session.createQuery(hql).list();
 
         } catch (Exception e) {
@@ -585,7 +585,7 @@ public class MainDao extends Dao implements Serializable {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Orders> orders;
         try {
-            String hql = "from Orders";
+            String hql = "from Orders order by orderNumber desc";
             orders = session.createQuery(hql).list();
 
         } catch (Exception e) {
