@@ -48,6 +48,10 @@ public class Image implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private int usageStatus;
+    
+    @Basic(optional = false)
+    @Column
+    private Integer imageOrder;
 
     @ManyToOne
     @JoinColumn(name = "product")
@@ -97,6 +101,14 @@ public class Image implements Serializable {
     public void setUsageStatus(int usageStatus) {
         this.usageStatus = usageStatus;
     }
+
+    public Integer getImageOrder() {
+        return imageOrder;
+    }
+
+    public void setImageOrder(Integer imageOrder) {
+        this.imageOrder = imageOrder;
+    }    
 
     public String getStringImage() {
         StringBuilder sb = new StringBuilder();

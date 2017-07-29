@@ -39,7 +39,9 @@ public class MembersMB implements Serializable {
     
     public void deleteMember() {
         try {
-            mainDao.deleteObject(selectedMember);
+            
+            selectedMember.setActive(false);
+            mainDao.updateObject(selectedMember);
             memberList = mainDao.findAllMembers();
             MessagesController.bilgiVer("Üye silinmiştir.");
         } catch (Exception e) {

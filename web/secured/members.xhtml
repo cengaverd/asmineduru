@@ -34,6 +34,10 @@
                             <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
                         </h:outputText>
                 </p:column>
+                <p:column headerText="Aktif/Pasif">                   
+                    <p:outputLabel value="Aktif" rendered="#{member.active}" />
+                    <p:outputLabel value="Pasif" rendered="#{!member.active}" />
+                </p:column>
                 <p:column>
                     <center>
                         <p:commandLink onclick="PF('sil').show();" id="sil">

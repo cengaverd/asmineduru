@@ -13,13 +13,9 @@ import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
 import com.asmineduru.model.Users;
 import com.asmineduru.util.HibernateUtil;
-import com.asmineduru.util.MessagesController;
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -28,7 +24,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 
@@ -513,6 +508,22 @@ public class MainDao extends Dao implements Serializable {
         }
         return cartList;
     }
+    
+    public List<Cart> findAllCart() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Cart> cartList;
+        try {
+            String hql = "FROM Cart c";
+            cartList = session.createQuery(hql)
+                    .list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return cartList;
+    }
 
     public Likes findLikeByMemberAndProduct(Integer memberId, Integer productId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -546,6 +557,22 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
         return likes;
+    }
+    
+    public List<Comment> findCommentByMember(Integer memberId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Comment> commentList;
+        try {
+            String hql = "FROM Comment c WHERE c.member.memberId=:memberId";
+            commentList = session.createQuery(hql)
+                    .setParameter("memberId", memberId).list();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return commentList;
     }
 
     public List<Comment> findCommentListByProduct(Integer productId) {

@@ -16,12 +16,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.Where;
 
 /**
  *
@@ -72,6 +74,8 @@ public class Product implements Serializable {
     
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @Fetch (FetchMode.SELECT)
+    @Where(clause = "usageStatus=1")
+    @OrderBy("imageOrder ASC")
     private List<Image> imageList=new ArrayList<>();
     
     @ManyToOne

@@ -1,0 +1,48 @@
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">        
+    <ui:define name="content">
+        <h:form id="formComment">
+            <section>
+                <header class="major">
+                    <h2>Yorumlarım</h2>
+                </header>
+                <p:outputLabel value="Yorum bulunmamaktadır." rendered="#{commentMB.commentList.size() eq 0}"/>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                            <tr>
+                                <th><p:outputLabel value="Ürün" rendered="#{commentMB.commentList.size() gt 0}"/></th>
+                                <th><p:outputLabel value="Yorum" rendered="#{commentMB.commentList.size() gt 0}"/></th>
+                                <th><p:outputLabel value="Yönetici Cevabı" rendered="#{commentMB.commentList.size() gt 0}"/></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat var="comment" value="#{commentMB.commentList}" id="repeat" varStatus="val">  
+                                <tr>
+                                    <td>
+                                        <p:commandLink id="ajax" actionListener="#{productMB.loadData(comment.product)}" action="/product.xhtml?faces-redirect=true" class="image">
+                                            <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" width="50"
+                                                            alt="Resim bulunamadı.">
+                                                <f:param name="imageId" value="#{comment.product.imageList.get(0).imageId}" />
+                                            </p:graphicImage>
+                                        </p:commandLink>
+                                    </td>
+                                    <td>
+                                        <p:outputLabel value="#{comment.comment}" />
+                                    </td>
+                                    <td>
+                                        <p:outputLabel value="#{comment.adminAnswer}" />
+                                    </td>
+                                </tr> 
+                            </ui:repeat>
+                        </tbody>                        
+                    </table>
+                </div>
+            </section>
+        </h:form>
+    </ui:define>
+</ui:composition>

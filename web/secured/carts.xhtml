@@ -1,0 +1,43 @@
+<ui:composition template="template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="msg" autoUpdate="true" closable="true"/>
+            <p:dataTable value="#{cartsMB.cartList}" var="cart" id="table" 
+                         emptyMessage="Liste boştur." reflow="true">
+                <f:facet name="header" id="hee">
+                    <div style="text-align: center">  Sepetteki Ürün Listesi ( #{fn:length(cartsMB.cartList)} Adet Ürün )</div>                                       
+                </f:facet>
+                <p:column headerText="Ürün" sortable="true" sortBy="#{cart.product.productId}">
+                    <p:commandLink id="ajax" actionListener="#{productMB.loadData(comment.product)}" action="/product.xhtml?faces-redirect=true" class="image">
+                        <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" width="30"
+                                        alt="Resim bulunamadı.">
+                            <f:param name="imageId" value="#{cart.product.imageList.get(0).imageId}" />
+                        </p:graphicImage>
+                    </p:commandLink>
+                </p:column>
+                <p:column headerText="Üye Adı">
+                    <p:outputLabel value="#{cart.member.username}" />
+                </p:column>
+                <p:column headerText="Ürün Miktarı">                   
+                    <p:outputLabel value="#{cart.quantity}" />
+                </p:column> 
+                <p:column headerText="Aktif/Silinmiş">                   
+                    <p:outputLabel value="Aktif" rendered="#{cart.usageStatus}"/>
+                    <p:outputLabel value="Silinmiş" rendered="#{!cart.usageStatus}"/>
+                </p:column> 
+               
+                <f:facet name="footer">                    
+                    Toplam üye sayısı: #{fn:length(cartsMB.cartList)}
+                </f:facet>
+            </p:dataTable>            
+            <br/>
+        </h:form>           
+    </ui:define>
+</ui:composition>

@@ -67,15 +67,16 @@ public class AddProductMB implements Serializable {
 
     public void handleFileUpload(FileUploadEvent event) throws IOException {
         
-        if (imageList.size()<3) {
-        
+        if (imageList.size()<3) {            
+       
         uploadedFile = event.getFile();
         image = new Image();
         BufferedImage bi = ImageIO.read(new ByteArrayInputStream(uploadedFile.getContents()));
         image.setImage(scale(uploadedFile.getContents(), 250, 320));
         image.setProduct(selectedProduct);
-        image.setUsageStatus(1);        
-        
+        image.setUsageStatus(1);  
+        image.setImageOrder(imageList.size()+1);
+       
 //        int width = bi.getWidth();
 //        int height = bi.getHeight();
         ImageLarge imageLarge=new ImageLarge();
@@ -151,6 +152,7 @@ public class AddProductMB implements Serializable {
         try {
 
             selectedProduct.setType(type);
+            selectedProduct.getImageList().clear();
             selectedProduct.getImageList().addAll(imageList);
             mainDao.saveOrUpdateProductAndImageList(selectedProduct);
             productList = mainDao.findAllProduct();
