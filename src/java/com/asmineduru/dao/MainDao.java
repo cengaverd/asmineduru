@@ -668,6 +668,7 @@ public class MainDao extends Dao implements Serializable {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "mail.asmineduru.com");
         props.put("mail.smtp.port", "2525");
+        System.setProperty("mail.mime.charset","UTF-8");
 
         javax.mail.Session session = javax.mail.Session.getInstance(props,
                 new javax.mail.Authenticator() {
@@ -685,6 +686,7 @@ public class MainDao extends Dao implements Serializable {
             message.setSubject(konu);
             message.setText(text);
 
+            
             Transport.send(message);
             sent = true;
 

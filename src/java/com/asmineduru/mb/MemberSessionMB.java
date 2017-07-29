@@ -119,6 +119,7 @@ public class MemberSessionMB implements Serializable {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "mail.asmineduru.com");
         props.put("mail.smtp.port", "2525");
+        System.setProperty("mail.mime.charset","UTF-8");
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
