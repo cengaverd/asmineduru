@@ -26,10 +26,10 @@ public class Comment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer commentId;
     @Column(length = 500)
-    private String comment;    
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer productId;
+    private String comment;  
+    @ManyToOne
+    @JoinColumn(name = "product")
+    private Product product;
     @OneToOne
     @JoinColumn(name = "member")
     private Member member;    
@@ -67,14 +67,13 @@ public class Comment implements Serializable {
         this.comment = comment;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
-
     public Member getMember() {
         return member;
     }

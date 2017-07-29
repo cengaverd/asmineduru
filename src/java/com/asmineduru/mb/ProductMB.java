@@ -3,15 +3,18 @@ package com.asmineduru.mb;
 import com.asmineduru.dao.MainDao;
 import com.asmineduru.model.Cart;
 import com.asmineduru.model.Comment;
+import com.asmineduru.model.Image;
 import com.asmineduru.model.Likes;
 import com.asmineduru.model.OrderProduct;
 import com.asmineduru.model.Orders;
 import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
 import com.asmineduru.util.MessagesController;
+import com.asmineduru.util.Sabitler;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -191,22 +194,23 @@ public class ProductMB implements Serializable {
             communicationView = false;
             cartView = false;
             completeView = false;
+            
+            mainDao.sendEmail(Sabitler.MAIL_ADRESS, "Asmine Duru Yeni Sipariş", order.getTotalPrice() +" TL ürün siparişi yapılmıştır. Lütfen kontrol ediniz.");
 
         } catch (Exception e) {
 
         }
     }
-    
-     public void cancelOrder() {
+
+    public void cancelOrder() {
         try {
 
             selectedOrder.setUsageStatus(false);
             mainDao.updateObject(selectedOrder);
-            
+
             RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("PF('sip').hide();");
+            context.execute("PF('sip').hide();");
             goMemberOrderList();
-            
 
         } catch (Exception e) {
 
@@ -270,6 +274,10 @@ public class ProductMB implements Serializable {
             sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(selectedProduct.getImageList().get(0).getImage(), false)));
             contourChart = sb.toString();
 
+            for (Image image : selectedProduct.getImageList()) {
+                image.setImageLarge(mainDao.findLargeImageByImageId(image.getImageId()));
+            }
+
             comment = new Comment();
             inputComment = null;
             commentList = new ArrayList<>();
@@ -291,7 +299,10 @@ public class ProductMB implements Serializable {
                     if (adminAnswer) {
 
                         comment.setAdminAnswer(inputComment);
-                        comment.setAdminAnswerDate(new Date());
+                        Calendar cal = Calendar.getInstance(); // creates calendar
+                        cal.setTime(new Date()); // sets calendar time/date
+                        cal.add(Calendar.HOUR_OF_DAY, 3); // adds one hour
+                        comment.setAdminAnswerDate(cal.getTime());
                         mainDao.updateObject(comment);
                         commentList = mainDao.findCommentListByProduct(selectedProduct.getProductId());
                         comment = new Comment();
@@ -300,10 +311,14 @@ public class ProductMB implements Serializable {
 
                         comment.setComment(inputComment);
                         comment.setMember(memberSessionMB.getMember());
-                        comment.setProductId(selectedProduct.getProductId());
+                        comment.setProduct(selectedProduct);
                         comment.setUsageStatus(true);
-                        comment.setCommentDate(new Date());
+                        Calendar cal = Calendar.getInstance(); // creates calendar
+                        cal.setTime(new Date()); // sets calendar time/date
+                        cal.add(Calendar.HOUR_OF_DAY, 3); // adds one hour
+                        comment.setCommentDate(cal.getTime());
                         mainDao.saveObject(comment);
+                        mainDao.sendEmail(Sabitler.MAIL_ADRESS, "Asmine Duru Yorum Girişi", selectedProduct.getProductCode()+" kodlu ürün için ("+comment.getComment() +") yorumu girilmiştir. Lütfen kontrol ediniz.");
                         commentList = mainDao.findCommentListByProduct(selectedProduct.getProductId());
                         comment = new Comment();
                         inputComment = null;

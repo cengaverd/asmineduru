@@ -137,7 +137,7 @@ public class MemberSessionMB implements Serializable {
                 member1.setActive(false);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(new Date());
-                cal.add(Calendar.HOUR_OF_DAY, 6);
+                cal.add(Calendar.HOUR_OF_DAY, 9);
                 member1.setExpiryDate(cal.getTime());
                 mainDao.updateObject(member1);
 

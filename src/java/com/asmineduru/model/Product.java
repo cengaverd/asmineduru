@@ -84,7 +84,7 @@ public class Product implements Serializable {
     @Formula("(select count(*) from Likes l where l.productId=productId)")
     private Integer likeCount;
     
-    @Formula("(select count(*) from Comment c where c.productId=productId and c.usageStatus=1)")
+    @Formula("(select count(*) from Comment c where c.product=productId and c.usageStatus=1)")
     private Integer commentCount;
     
     @Transient

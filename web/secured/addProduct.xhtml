@@ -46,8 +46,9 @@
                 </p:column>
 
                 <p:column headerText="Fotoğraf" style="text-align:">
-                    <img width="30" src="#{product.imageList.get(0).stringImage}"  />
-
+                    <ui:repeat var="image" value="#{product.imageList}" >                            
+                        <img width="30" src="#{image.stringImage}"   title="#{productMB.selectedProduct.productName}"/>
+                    </ui:repeat>
                 </p:column>
                 <p:column>
                     <center>
@@ -124,9 +125,9 @@
                                              oncomplete="PF('resimEkle').show();" process="@this"/>
                         </p:outputPanel> 
                         <p:outputPanel>
-                        <c:forEach var="image" items="#{addProductMB.imageList}" >                            
-                            <img width="30" src="#{image.stringImage}"   title="#{productMB.selectedProduct.productName}"/>
-                        </c:forEach>
+                            <ui:repeat var="image" value="#{addProductMB.imageList}" >                            
+                                <img width="30" src="#{image.stringImage}"   title="#{productMB.selectedProduct.productName}"/>
+                            </ui:repeat>
                         </p:outputPanel> 
                         <h:outputText value="Sol Tarafta Görünsün: " /> 
                         <p:selectBooleanCheckbox value="#{addProductMB.selectedProduct.showLeftSide}" />

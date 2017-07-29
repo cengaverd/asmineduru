@@ -12,8 +12,12 @@ import javax.faces.validator.ValidatorException;
 
 @FacesValidator("passwordValidator")
 public class PasswordValidator implements Validator {
+    //Şifreniz 1 büyük harf, 1 küçük harf ve 1 rakam içermelidir ve en az 6 karakterden oluşmalıdır.
+    //private static final String PASSWORD_PATTERN = "((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,20})";
+    
+    
+    private static final String PASSWORD_PATTERN = "(.{4,})";
 
-    private static final String PASSWORD_PATTERN = "((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,20})";
 
     private final Pattern pattern;
     private Matcher matcher;
@@ -30,7 +34,7 @@ public class PasswordValidator implements Validator {
         if (!matcher.matches()) {
 
             FacesMessage msg
-                    = new FacesMessage("Şifreniz 1 büyük harf, 1 küçük harf ve 1 rakam içermelidir ve en az 6 karakterden oluşmalıdır.");
+                    = new FacesMessage("Şifreniz en az 4 karakterden oluşmalıdır.");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }

@@ -12,7 +12,7 @@
             <p:dataTable value="#{membersMB.memberList}" var="member" id="table" 
                          emptyMessage="Liste boştur." reflow="true">
                 <f:facet name="header" id="hee">
-                    <div style="text-align: center">  Üye Listesi</div>                                       
+                    <div style="text-align: center">  Üye Listesi ( #{fn:length(membersMB.memberList)} Üye )</div>                                       
                 </f:facet>
                 <p:column headerText="Üye Adı">
                     <p:outputLabel value="#{member.username}" />

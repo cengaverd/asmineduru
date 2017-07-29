@@ -12,13 +12,18 @@
             <p:dataTable value="#{commentsMB.commentList}" var="comment" id="table" 
                          emptyMessage="Liste boştur." reflow="true">
                 <f:facet name="header" id="hee">
-                    <div style="text-align: center">  Yorumlar</div>                                       
+                    <div style="text-align: center">  Yorumlar ( #{fn:length(commentsMB.commentList)} Yorum )</div>                                       
                 </f:facet>
                 <p:column headerText="Üye Adı">
                     <p:outputLabel value="#{comment.member.username}" />
                 </p:column>
-                <p:column headerText="Ürün Id">
-                    <p:outputLabel value="#{comment.productId}" />
+                <p:column headerText="Ürün" >
+                    <p:commandLink id="ajax" actionListener="#{productMB.loadData(comment.product)}" action="/product.xhtml?faces-redirect=true" class="image">
+                        <p:graphicImage id="myImagepro" value="#{imageStreamerMB.image}" width="30"
+                                        alt="Resim bulunamadı.">
+                            <f:param name="imageId" value="#{comment.product.imageList.get(0).imageId}" />
+                        </p:graphicImage>
+                    </p:commandLink>
                 </p:column>
                 <p:column headerText="Yorum">                   
                     <p:outputLabel value="#{comment.comment}" />
@@ -26,17 +31,22 @@
                 <p:column headerText="Verilen Cevap">                   
                     <p:outputLabel value="#{comment.adminAnswer}" />
                 </p:column> 
-                <p:column headerText="Yorum Aktif/Pasif">                   
-                    <p:outputLabel value="#{comment.usageStatus}" />
-                </p:column> 
+                <p:column>                   
+                    <p:commandLink onclick="PF('cevapVer').show();" id="cevapVer" value="Cevap Ver" update="cevapForm">
+                        <f:setPropertyActionListener value="#{comment}" 
+                                                     target="#{commentsMB.selectedComment}" />
+                    </p:commandLink>
+                </p:column>
                 <p:column>
                     <center>
-                        <p:commandLink onclick="PF('sil').show();" id="sil">
-                            <p:graphicImage value="/images/delete.png" />
+                        <p:commandLink onclick="PF('aktifEt').show();" id="aktifEt" value="Aktif Et" rendered="#{!comment.usageStatus}">
                             <f:setPropertyActionListener value="#{comment}" 
                                                          target="#{commentsMB.selectedComment}" />
                         </p:commandLink>
-                        <p:tooltip id="toolTipSil" for="sil" value="Pasif Yap" trackMouse="true"/>
+                        <p:commandLink onclick="PF('pasifYap').show();" id="pasifYap" value="Pasif Yap" rendered="#{comment.usageStatus}">
+                            <f:setPropertyActionListener value="#{comment}" 
+                                                         target="#{commentsMB.selectedComment}" />
+                        </p:commandLink>
                     </center>
                 </p:column>
                 <f:facet name="footer">                    
@@ -46,15 +56,46 @@
             <br/>
         </h:form>   
 
-        <p:dialog header="Üye Sil Onay" widgetVar="sil" resizable="false">
-            <h:form id="silForm">               
+        <p:dialog header="Yorum Pasif Yap" widgetVar="pasifYap" resizable="false">
+            <h:form id="pasifForm">               
                 <p:outputLabel value="Yorumu pasif yapmak istediğinize emin misiniz?" />                
                 <br/><br/>
                 <center>
-                    <p:commandButton update="form:table" value="Evet" oncomplete="PF('sil').hide();"
-                                     action="#{commentsMB.deleteComment()}"/>
+                    <p:commandButton update="form:table" value="Evet" oncomplete="PF('pasifYap').hide();"
+                                     action="#{commentsMB.pasiveComment()}"/>
                     <p:commandButton value="Hayır" style="margin-left: 10px;"
-                                     onclick="PF('sil').hide();"/> 
+                                     onclick="PF('pasifYap').hide();"/> 
+                </center>
+            </h:form>
+        </p:dialog>
+        <p:dialog header="Yorum Aktif Et" widgetVar="aktifEt" resizable="false">
+            <h:form id="aktifForm">               
+                <p:outputLabel value="Yorumu aktif etmek istediğinize emin misiniz?" />                
+                <br/><br/>
+                <center>
+                    <p:commandButton update="form:table" value="Evet" oncomplete="PF('aktifEt').hide();"
+                                     action="#{commentsMB.activeComment()}"/>
+                    <p:commandButton value="Hayır" style="margin-left: 10px;"
+                                     onclick="PF('aktifEt').hide();"/> 
+                </center>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Cevap Ver" widgetVar="cevapVer" resizable="false" width="300">
+            <h:form id="cevapForm">               
+                <p:outputLabel value="Vermek istediğiniz cevabı yazınız.?" />                
+                <br/><br/>
+                <p:outputLabel value="#{commentsMB.selectedComment.comment}" />  
+                <br/><br/>
+                <p:inputTextarea value="#{commentsMB.selectedComment.adminAnswer}" 
+                                 autoResize="false" rows="4" style="width: 250px;"
+                                 />
+            <br/><br/>
+                <center>
+                    <p:commandButton update="form:table" value="Kaydet" oncomplete="PF('cevapVer').hide();"
+                                     action="#{commentsMB.answerComment()}"/>
+                    <p:commandButton value="İptal" style="margin-left: 10px;"
+                                     onclick="PF('cevapVer').hide();"/> 
                 </center>
             </h:form>
         </p:dialog>

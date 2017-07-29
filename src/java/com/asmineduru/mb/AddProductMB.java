@@ -3,6 +3,7 @@ package com.asmineduru.mb;
 import com.asmineduru.dao.MainDao;
 import com.asmineduru.model.Brand;
 import com.asmineduru.model.Image;
+import com.asmineduru.model.ImageLarge;
 import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
 import com.asmineduru.util.MessagesController;
@@ -22,7 +23,6 @@ import javax.faces.bean.ViewScoped;
 import javax.imageio.ImageIO;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
@@ -66,19 +66,30 @@ public class AddProductMB implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) throws IOException {
+        
+        if (imageList.size()<3) {
+        
         uploadedFile = event.getFile();
         image = new Image();
         BufferedImage bi = ImageIO.read(new ByteArrayInputStream(uploadedFile.getContents()));
-        int width = bi.getWidth();
-        int height = bi.getHeight();
-//        byte[] original = scale(uploadedFile.getContents(), width, height);
-//        image.setOriginImage(original);
         image.setImage(scale(uploadedFile.getContents(), 250, 320));
         image.setProduct(selectedProduct);
-        image.setUsageStatus(1);
+        image.setUsageStatus(1);        
+        
+//        int width = bi.getWidth();
+//        int height = bi.getHeight();
+        ImageLarge imageLarge=new ImageLarge();
+        byte[] original = scale(uploadedFile.getContents(), 400, 520);
+        imageLarge.setImageLarge(original);
+        imageLarge.setImage(image);
+        imageLarge.setUsageStatus(1);
+        image.setImageLarge(imageLarge);        
         imageList.add(image);
         bi.flush();
         System.gc();
+        }else{
+            MessagesController.uyariVer("En fazla 3 resim ekleyebilirisiniz.");
+        }
     }
 
     public void saveProduct() {
@@ -229,8 +240,14 @@ public class AddProductMB implements Serializable {
 
     public void deleteImage() {
         try {
+            
+            ImageLarge imageLarge=mainDao.findLargeImageByImageId(selectedImage.getImageId());
+            selectedImage.setImageLarge(imageLarge);
             imageList.remove(selectedImage);
-            mainDao.deleteObject(selectedImage);
+            if (selectedProduct.getImageList().contains(selectedImage)) {
+                selectedProduct.getImageList().remove(selectedImage);
+            }
+            mainDao.deleteImage(selectedImage);            
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('resimSil').hide();");
         } catch (Exception e) {

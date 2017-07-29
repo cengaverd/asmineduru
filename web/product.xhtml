@@ -6,68 +6,33 @@
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-        <link href="assets/css/foundation.css" rel="stylesheet" type="text/css"/>
-        <script>
-            !function (a) {
-                a.fn.extend({simpleGal: function (b) {
-                        var c = {mainImage: ".placeholder"};
-                        return b = a.extend(c, b), this.each(function () {
-                            var c = a(this).find("a"), d = a(this).siblings().find(b.mainImage);
-                            c.on("click", function (b) {
-                                b.preventDefault();
-                                var c = a(this).attr("href");
-                                d.attr("src", c)
-                            })
-                        })
-                    }})
-            }(jQuery);
-
-            jQuery(document).ready(function () {
-                jQuery('.thumbnails').simpleGal({
-                    mainImage: '.custom'
-                });
-            });
-
-        </script>
+        <link href="assets/image/css/xzoom.css" rel="stylesheet" type="text/css"/>        
+        <link href="assets/image/css/magnific-popup.css" rel="stylesheet" type="text/css" media="all"/>
+        
+        <script src="assets/image/js/jquery.hammer.min.js" type="text/javascript"></script>
+        <script src="assets/image/js/xzoom.min.js" type="text/javascript"></script>
+        <script src="assets/image/js/magnific-popup.js" type="text/javascript"></script>
+        <script src="assets/image/js/setup.js" type="text/javascript"></script> 
         <h:form id="prdForm">
             <!-- magnific start -->
             <section id="magnific">
                 <div class="row">
-                    <div class="large-12 column">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <p:commandLink id="mmm" action="#{navigationBean.redirectToWebSite()}" style="border-bottom: 0;">
-                                    Ana Sayfa
-                                </p:commandLink>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <p:commandLink id="ttt" action="#{productMB.goProducts(productMB.selectedProduct.type)}" style="border-bottom: 0;">
-                                    #{productMB.selectedProduct.type.brand.brandName} (#{productMB.selectedProduct.type.typeName})
-                                </p:commandLink>
-                            </li>
-                            <li class="breadcrumb-item active">#{productMB.selectedProduct.productCode}</li>
-                        </ol>
+                    <div class="12u">
                         <header class="major">
                             <h2>#{productMB.selectedProduct.type.brand.brandName} (#{productMB.selectedProduct.type.typeName})</h2>
                         </header>
                     </div>
-                    <div class="large-5 column">
-
-                        <div class="main-image">
-                            <img src="#{productMB.selectedProduct.imageList.get(0).stringImage}" alt="Placeholder" class="custom"/>
-                        </div>
-                        <ul class="thumbnails">
-                            <ui:repeat var="img" value="#{productMB.selectedProduct.imageList}" id="repeat"> 
-                                <li>
-                                    <a href="#{img.stringImage}">
-                                        <img src="#{img.stringImage}" alt="Thumbnails"/>
-                                    </a>
-                                </li>
-                            </ui:repeat>
-                        </ul>
-
+                    <div class="5u 12u(medium)">
+                        <div class="xzoom-container">
+                            <img class="xzoom5" id="xzoom-magnific" src="#{productMB.selectedProduct.imageList.get(0).stringImage}" xoriginal="#{productMB.selectedProduct.imageList.get(0).imageLarge.stringImageLarge}" />
+                            <div class="xzoom-thumbs">
+                                <ui:repeat var="image" value="#{productMB.selectedProduct.imageList}" rendered="#{fn:length(productMB.selectedProduct.imageList) gt 1}">
+                                    <a href="#{image.imageLarge.stringImageLarge}" style="border-bottom:0;"><img class="xzoom-gallery5" width="80" src="#{image.stringImage}"   title="#{productMB.selectedProduct.productName}"/></a>
+                                </ui:repeat>
+                            </div>
+                        </div> 
                         <p:messages id="messages" closable="true" autoUpdate="true"/>
-                        <h:panelGrid id="comments" style="margin-top: 10px;">                                 
+                        <h:panelGrid id="comments">                                 
                             <h:panelGrid style="text-align: right;">
                                 <p:inputTextarea id="cmt" value="#{productMB.inputComment}" placeholder="Yorum Giriniz." maxlength="500" autoResize="false" />
                                 <p:commandButton type="button small" value="Gönder" action="#{productMB.addComment}" update="comments">
@@ -125,7 +90,7 @@
                         </h:panelGrid>
                         <br/>
                     </div>
-                    <div class="large-7 column"> 
+                    <div class="7u 12u(medium)"> 
                         <h3>
                             <div class="icerik">
                                 <div class="sol">
@@ -133,20 +98,18 @@
                                 </div>
                                 <div class="sag">
                                     <h:panelGroup id="group">
-                                        <center>
-                                            <p:commandLink id="like" action="#{productMB.like(productMB.selectedProduct)}" style="border-bottom: 0;"
-                                                           update="group" rendered="#{!productMB.selectedProduct.memberFavorite}">
-                                                <i class="fa fa-heart-o" style="color: #f45c5c; display: inline;">
-                                                    <h:outputText value=" Favorilerime Ekle" style="font-size: medium;"/>
-                                                </i>
-                                            </p:commandLink>
-                                            <p:commandLink id="disLike" action="#{productMB.disLike(productMB.selectedProduct)}" style="border-bottom: 0;" 
-                                                           update="group" rendered="#{productMB.selectedProduct.memberFavorite}">
-                                                <i class="fa fa-heart" style="color: #f45c5c; display: inline;">
-                                                    <h:outputText value=" Favorilerimden Çıkar" style="font-size: medium;"/>
-                                                </i>
-                                            </p:commandLink>
-                                        </center>
+                                        <p:commandLink id="like" action="#{productMB.like(productMB.selectedProduct)}" style="border-bottom: 0;"
+                                                       update="group" rendered="#{!productMB.selectedProduct.memberFavorite}">
+                                            <i class="fa fa-heart-o" style="color: #f45c5c; display: inline;">
+                                                <h:outputText value=" Favorilerime Ekle" style="font-size: medium;"/>
+                                            </i>
+                                        </p:commandLink>
+                                        <p:commandLink id="disLike" action="#{productMB.disLike(productMB.selectedProduct)}" style="border-bottom: 0;" 
+                                                       update="group" rendered="#{productMB.selectedProduct.memberFavorite}">
+                                            <i class="fa fa-heart" style="color: #f45c5c; display: inline;">
+                                                <h:outputText value=" Favorilerimden Çıkar" style="font-size: medium;"/>
+                                            </i>
+                                        </p:commandLink>
                                     </h:panelGroup>
                                 </div>                                    
                             </div>
@@ -155,8 +118,8 @@
                         </h3>
 
                         <p>
-                            <h:outputText style="font-weight: bold; color: #3d4449; font-size: medium;" value="Ürün Kodu : "/>
-                            <h:outputText style="font-size: medium;" value="#{productMB.selectedProduct.productCode}" />                                
+                            <h:outputText style="font-weight: bold; color: #3d4449; font-size: large;" value="Ürün Kodu : "/>
+                            <h:outputText style="font-size: large;" value="#{productMB.selectedProduct.productCode}" />                                
                         </p>
                         <p>
                             <h:outputText value="#{productMB.selectedProduct.type.typeName}           " />
@@ -186,18 +149,9 @@
                                 <h:commandButton value="Sepete Ekle" action="#{productMB.goCart()}"/>                                       
                             </li>
                         </ul>
-                        <br/>
-                        <div class="safety-icons">
-                            <ul class="clearfix">
-                                <li><i class="fa fa-star-o fa-2x"/><br/><br/>Orijinal Markalar</li>
-                                <li><i class="fa fa-exchange fa-2x"/><br/><br/>İade Garantisi</li>
-                                <li><i class="fa fa-lock fa-2x"/><br/><br/>Güvenli Alışveriş</li>
-                                <li><i class="fa fa-comments-o fa-2x"/><br/><br/>7/24 Destek</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
-            </section> 
+            </section>                       
         </h:form>
     </ui:define>
 </ui:composition>

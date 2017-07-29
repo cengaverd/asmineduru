@@ -4,6 +4,7 @@ import com.asmineduru.model.Brand;
 import com.asmineduru.model.Cart;
 import com.asmineduru.model.Comment;
 import com.asmineduru.model.Image;
+import com.asmineduru.model.ImageLarge;
 import com.asmineduru.model.Likes;
 import com.asmineduru.model.Member;
 import com.asmineduru.model.OrderProduct;
@@ -12,8 +13,19 @@ import com.asmineduru.model.Product;
 import com.asmineduru.model.Type;
 import com.asmineduru.model.Users;
 import com.asmineduru.util.HibernateUtil;
+import com.asmineduru.util.MessagesController;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -194,6 +206,7 @@ public class MainDao extends Dao implements Serializable {
             session.save(product);
             for (Image image : product.getImageList()) {
                 session.save(image);
+                session.save(image.getImageLarge());
             }
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -211,6 +224,9 @@ public class MainDao extends Dao implements Serializable {
             session.saveOrUpdate(product);
             for (Image image : product.getImageList()) {
                 session.saveOrUpdate(image);
+                if (image.getImageLarge() != null) {
+                    session.saveOrUpdate(image.getImageLarge());
+                }
             }
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -378,7 +394,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return memberList;
     }
-    
+
     public List<Comment> findAllComments() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Comment> commentList;
@@ -412,7 +428,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return maxId;
     }
-    
+
     public Integer findOrderMaxId() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Integer maxId;
@@ -515,7 +531,7 @@ public class MainDao extends Dao implements Serializable {
         }
         return like;
     }
-    
+
     public List<Likes> findLikeByMember(Integer memberId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Likes> likes;
@@ -531,12 +547,12 @@ public class MainDao extends Dao implements Serializable {
         }
         return likes;
     }
-    
+
     public List<Comment> findCommentListByProduct(Integer productId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Comment> commentList;
         try {
-            String hql = "FROM Comment c WHERE c.productId=:productId and c.usageStatus=1 order by c.commentId desc";
+            String hql = "FROM Comment c WHERE c.product.productId=:productId and c.usageStatus=1 order by c.commentId desc";
             commentList = session.createQuery(hql)
                     .setParameter("productId", productId).list();
 
@@ -564,8 +580,8 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
     }
-    
-     public void updateCartList(List<Cart> cartList) {
+
+    public void updateCartList(List<Cart> cartList) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
@@ -580,8 +596,8 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
     }
-     
-     public List<Orders> findOrders() {
+
+    public List<Orders> findOrders() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Orders> orders;
         try {
@@ -595,8 +611,8 @@ public class MainDao extends Dao implements Serializable {
         }
         return orders;
     }
-     
-     public List<Orders> findMemberOrderList(Integer memberId) {
+
+    public List<Orders> findMemberOrderList(Integer memberId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Orders> orders;
         try {
@@ -609,5 +625,72 @@ public class MainDao extends Dao implements Serializable {
             session.close();
         }
         return orders;
+    }
+
+    public ImageLarge findLargeImageByImageId(Integer imageId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        ImageLarge imageLarge;
+        try {
+            String hql = "from ImageLarge i where i.image.imageId=:imageId";
+            imageLarge = (ImageLarge) session.createQuery(hql).setParameter("imageId", imageId).uniqueResult();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            session.close();
+        }
+        return imageLarge;
+    }
+
+    public void deleteImage(Image image) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            session.delete(image);
+            session.delete(image.getImageLarge());
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    public boolean sendEmail(String mailAdresi, String konu, String text) {
+
+        boolean sent;
+        final String username = "destek@asmineduru.com";
+        final String password = "aS3421";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "mail.asmineduru.com");
+        props.put("mail.smtp.port", "2525");
+
+        javax.mail.Session session = javax.mail.Session.getInstance(props,
+                new javax.mail.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("destek@asmineduru.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(mailAdresi));
+            message.setSubject(konu);
+            message.setText(text);
+
+            Transport.send(message);
+            sent = true;
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        return sent;
     }
 }

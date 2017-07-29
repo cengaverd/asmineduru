@@ -3,11 +3,14 @@ package com.asmineduru.mb;
 import com.asmineduru.dao.MainDao;
 import com.asmineduru.model.Member;
 import com.asmineduru.util.MessagesController;
+import com.asmineduru.util.Sabitler;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 /**
@@ -19,6 +22,9 @@ import javax.faces.bean.ViewScoped;
 public class RegistrationMB implements Serializable {
 
     private final MainDao mainDao = new MainDao();
+    
+    @ManagedProperty(value = "#{memberSessionMB}")
+    private MemberSessionMB memberSessionMB;
 
     private Member member;
     private String password;
@@ -33,7 +39,8 @@ public class RegistrationMB implements Serializable {
         }
     }
 
-    public void saveMember() {
+    public String saveMember() {
+        String result = null;
         try {
 
             List<Member> memberList = mainDao.findAllMembers();
@@ -56,17 +63,25 @@ public class RegistrationMB implements Serializable {
             }
             if (continueProcess) {
                 member.setPassword(password);
-                member.setMemberDate(new Date());
+                Calendar cal = Calendar.getInstance(); // creates calendar
+                cal.setTime(new Date()); // sets calendar time/date
+                cal.add(Calendar.HOUR_OF_DAY, 3); // adds one hour                
+                member.setMemberDate(cal.getTime());
                 member.setActive(true);
-                mainDao.saveObject(member);
+                mainDao.saveObject(member);  
+                mainDao.sendEmail(Sabitler.MAIL_ADRESS, "Asmine Duru Yeni Üye", member.getUsername()+" kullanıcı adlı yeni bir üyeniz olmuştur.");
+                memberSessionMB.setEmail(member.getEmail());
+                memberSessionMB.setPassword(password);
                 member = new Member();
-                MessagesController.bilgiVer("Hesabınız oluşturulmuştur. Giriş yapabilirsiniz.");
+                memberSessionMB.login();
+                result = NavigationBean.redirectToWebSite();
             }
 
         } catch (Exception e) {
 
             MessagesController.hataVer("Hesap oluşturma işleminde hata oluştu.");
         }
+        return result;
     }
 
     public Member getMember() {
@@ -91,6 +106,14 @@ public class RegistrationMB implements Serializable {
 
     public void setPassword2(String password2) {
         this.password2 = password2;
+    }
+
+    public MemberSessionMB getMemberSessionMB() {
+        return memberSessionMB;
+    }
+
+    public void setMemberSessionMB(MemberSessionMB memberSessionMB) {
+        this.memberSessionMB = memberSessionMB;
     }
 
 }
